@@ -1,15 +1,16 @@
 import { motion } from "framer-motion"
 import useAuthstore from "../store/authstore"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
-import { Button } from "@radix-ui/themes";
+import toast from "react-hot-toast";
 import api from "../axios";
+import { FaUser } from "react-icons/fa";
 
 export default function Authform({ type }) {
-    const { login,user } = useAuthstore();
+    const { login, user } = useAuthstore();
     const navigate = useNavigate();
-   
+
     const islogin = type === "login";
 
     const validationschema = Yup.object({
@@ -28,49 +29,163 @@ export default function Authform({ type }) {
             console.log(res.data);
             login(res.data)
             if (islogin) {
+                  toast('Logged in',
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    }
+                )
+
                 navigate("/home")
+              
             } else {
+                 toast('Signup successful',
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
                 navigate("/login")
             }
 
         } catch (error) {
             setErrors({ email: "something went wrong" })
+              toast('Something went wrong',
+                    {
+                        icon: '❌',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
         } finally {
             setSubmitting(false)
         }
     }
     return (
+
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-            className="max-w-md mx-auto bg-white mt-20 p-6 shadow-xl rounded-lg"
+            className={`max-w-sm mx-auto md:max-w-md  p-6 shadow-xl rounded-lg ${islogin ? "mt-60": "mt-50"} `}
         >
-            <h2 className="text-2xl font-bold text-center mb-6">{islogin ? "Login" : "Sign Up"}</h2>
+          
+          <h2 className="text-2xl font-bold text-center mb-6 flex justify-center items-center gap-2">  <FaUser/>{islogin ?  "Login" : "Sign Up"}</h2>
             <Formik initialValues={{ name: "", email: "", password: "", role: "reader" }} validationSchema={validationschema} onSubmit={handlesubmit}>
-                {({ isSubmitting }) => (
+                {({ isSubmitting, handleBlur, handleChange, values }) => (
                     <Form className="space-y-4">
                         {!islogin && (
                             <>
-                                <Field name="name" className="input w-full" placeholder="Name" />
-                                <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                               <div>
+                                    <label className="input w-full">
+                                    <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <g
+                                            strokeLinejoin="round"
+                                            strokeLinecap="round"
+                                            strokeWidth="2.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                        >
+                                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </g>
+                                    </svg>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.name}
+                                        placeholder="Your name"
 
-                                <Field as="select" name="role" className="w-full input" >
+                                    />
+                                </label>
+                                <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1 ml-2" />
+                               </div>
+                               
+
+                                <select className="select w-full" name="role" onChange={handleChange} onBlur={handleBlur} value={values.role}>
+
                                     <option value="reader">Reader</option>
                                     <option value="writer">Writer</option>
                                     <option value="editor">Editor</option>
-                                </Field>
+                                </select>
+
                                 <ErrorMessage name="role" component="div" className="text-red-500 text-sm" />
                             </>
                         )}
-                        <Field name="email" className="input w-full" placeholder="Email" />
-                        <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
 
-                        <Field name="password" className="input w-full" placeholder="Password" />
-                        <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
+                        <div>
+                            <label className="input join-item w-full">
+                                <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g
+                                        strokeLinejoin="round"
+                                        strokeLinecap="round"
+                                        strokeWidth="2.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                    >
+                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                    </g>
+                                </svg>
+                                <input type="email" placeholder="mail@site.com" id="email" name="email" onChange={handleChange} onBlur={handleBlur} value={values.email} />
+                                
+                            </label>
+                              <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1 ml-2 " />
 
-                        <Button className="w-full" type="submit" disabled={isSubmitting}>{islogin ? "Login": "Sign Up"}</Button>
+                          
 
+                        </div>
+
+
+
+                        <div>
+                            <label className="input w-full">
+                                <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <g
+                                        strokeLinejoin="round"
+                                        strokeLinecap="round"
+                                        strokeWidth="2.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+                                        ></path>
+                                        <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                                    </g>
+                                </svg>
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    placeholder="Password"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.password}
+                                />
+                            </label>
+
+                            <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1 ml-2" />
+                        </div>
+
+
+                        <button className="w-full btn btn-active" type="submit" disabled={isSubmitting}>{islogin ? "Login" : "Sign Up"}</button>
+                      {islogin ? ( <div className="text-center"><Link className="btn-link" to={"/signup"}>Don't have a account , Create one</Link></div>   ): (<div className="text-center"><Link className="btn-link " to={"/login"}>Already have a account</Link></div>   )} 
+                         
                     </Form>
                 )}
             </Formik>
         </motion.div>
+
+
     )
 }
