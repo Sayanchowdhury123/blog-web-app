@@ -73,7 +73,7 @@ export default function Authform({ type }) {
     return (
 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-            className={`max-w-sm mx-auto md:max-w-md  p-6 shadow-xl rounded-lg ${islogin ? "mt-60": "mt-50"} `}
+            className={`max-w-sm mx-auto md:max-w-md  p-6 shadow-xl rounded-lg ${islogin ? "mt-70": "mt-50"} `}
         >
           
           <h2 className="text-2xl font-bold text-center mb-6 flex justify-center items-center gap-2">  <FaUser/>{islogin ?  "Login" : "Sign Up"}</h2>
