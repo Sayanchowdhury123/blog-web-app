@@ -5,12 +5,14 @@ import { ImBlog } from "react-icons/im";
 import { FaUser } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSaveSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import { IoMdCreate } from "react-icons/io";
 
 
 export default function Sidebar() {
-
+    const navigate = useNavigate()
     const { shownav, user, setshownav, logout } = useAuthstore()
-    console.log(user);
+    
 
     return (
         <motion.div initial={{x: "100%" }} animate={{x: shownav ? 0 : "100%"}} transition={{duration: 0.3, ease:"easeInOut"}} className={`bg-base-200 p-4   w-[300px] h-screen z-100 absolute right-0 `}>
@@ -32,10 +34,26 @@ export default function Sidebar() {
             <hr/>
 
             <div className="mt-4 space-y-2 cursor-pointer font-semibold text-sm">
-                <div className="flex items-center gap-2" >
+                {user.role === "writer" || user.role === "editor" ? (
+                  <div className="flex items-center gap-2" onClick={() => {
+                navigate("/yourblogs")
+                setshownav()
+                  }} >
                    <ImBlog/>
                    <p>Your blogs</p>
                 </div>
+                ) : ""}
+
+                 {user.role === "writer" || user.role === "editor" ? (
+                  <div className="flex items-center gap-2" onClick={() => {
+                navigate("/create-blogs")
+                setshownav()
+                  }} >
+                   <IoMdCreate/>
+                   <p>Create blogs</p>
+                </div>
+                ) : ""}
+               
 
                 <div className="flex items-center gap-2">
                   <FaUserCircle/>

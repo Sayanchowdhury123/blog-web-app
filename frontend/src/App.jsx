@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Privateroute from './pages/Privateroute';
 import {Toaster} from "react-hot-toast";
+import Blogmanage from './pages/Blogmanagement';
+import Createblogs from './pages/Createblogs';
 function App() {
 
 
@@ -20,6 +22,8 @@ function App() {
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/home' element={<Privateroute><Home/></Privateroute> } />
+          <Route path='/yourblogs' element={<Privateroute><Blogmanage/></Privateroute>} />
+          <Route path='/create-blogs' element={<Privateroute><Createblogs/></Privateroute>} />
         </Routes>
       </Router>
     </>
