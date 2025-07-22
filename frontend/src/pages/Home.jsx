@@ -6,6 +6,7 @@ export default function Home(){
  const {logout,setshownav,user} = useAuthstore()
  console.log(localStorage.getItem("user"));
     return(
+        
         <div className="h-screen  relative overflow-hidden">
             <Sidebar/>
             

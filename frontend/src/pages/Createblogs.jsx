@@ -7,6 +7,10 @@ import { IoIosClose } from "react-icons/io";
 import { motion } from "framer-motion";
 import { CiHashtag } from "react-icons/ci";
 import { RiAiGenerate } from "react-icons/ri";
+import api from "../axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import Loadingscrenn from "../components/Loadingscreen";
 
 export default function Createblogs() {
     const { logout, setshownav, user } = useAuthstore()
@@ -15,7 +19,9 @@ export default function Createblogs() {
     const [result, setresult] = useState("")
     const [tags, settags] = useState([])
     const [file, setfile] = useState("")
-
+    const [title, settitle] = useState("")
+    const navigate = useNavigate()
+    const [l,setl] = useState(false)
 
     const generate = async () => {
         setloading(true)
@@ -40,7 +46,7 @@ export default function Createblogs() {
                 return [...prev, tag]
             })
             settag("")
-            console.log(tags);
+
         }
 
     }
@@ -57,66 +63,141 @@ export default function Createblogs() {
 
     const handlefile = (e) => {
         const ci = e.target.files[0]
-
         setfile(ci)
 
     }
 
+    const createblogs = async () => {
+        setl(true)
+        const formdata = new FormData()
+        formdata.append("title", title)
+        formdata.append("blogtext", result)
+        formdata.append("tags", tags)
+        formdata.append("coverimage", file)
 
+        try {
 
+            if (file && Array.isArray(tags) && title && result) {
+                const res = await api.post("/blogs/create-blog", formdata, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                        "Content-Type": "multipart/form-data"
+
+                    }
+                })
+
+                console.log(res.data);
+                toast('Blog creation successful',
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
+
+                navigate("/yourblogs")
+            }
+        } catch (error) {
+            console.log(error);
+            toast('Blog creation failed',
+                {
+                    icon: '❌',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                })
+        }finally{
+            setl(false)
+        }
+    }
+
+  if (l) return <Loadingscrenn/>
+  
     return (
-        <div className="h-screen overflow-x-hidden  relative ">
+        <div className=" overflow-x-hidden  relative  h-screen">
             <Sidebar />
-            <div className="p-4 ">
-                <div className="flex items-center justify-between " >
-                    <h1 className="text-4xl font-semibold"> Create Blogs</h1>
-                    <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
-                </div>
 
-                <div className="mt-6  ">
+
+            <div className="inset-0 flex justify-center items-center bg-black/60">
+
+            </div>
+            <div className="flex items-center justify-between px-6 pt-6 " >
+                <h1 className="text-4xl font-bold"> BlogApp</h1>
+                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
+            </div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
+
+
+
+
+                <div className=" bg-base-300 p-6 shadow-lg rounded-xl space-y-6 ">
+
+                    <div>
+                        <h1 className="text-3xl font-bold">Create Blog</h1>
+                    </div>
+
+                    <div className="">
+                        <label htmlFor="b" className="label mb-2">
+                            <span className="label-text font-semibold">Title</span>
+                        </label>
+                        <input type="text" id="b" className="input w-full" placeholder="Add title" required onChange={(e) => settitle(e.target.value)} />
+
+                    </div>
+
                     <div className="relative">
-                        <textarea name="" id="" className="textarea w-full h-[50vh] " placeholder="write a blog with AI" onChange={(e) => setresult(e.target.value)} value={result} style={{ scrollbarWidth: "none" }}></textarea>
+                        <label className="label mb-2" htmlFor="c">
+                            <span className="label-text font-semibold">Content</span>
+                        </label>
+                        <textarea name="" id="c" className="textarea  w-full min-h-[150px] " placeholder="write a blog with AI" onChange={(e) => setresult(e.target.value)} required value={result} style={{ scrollbarWidth: "none", scrollBehavior: "smooth" }}></textarea>
 
-                        <button className="btn mt-2 absolute bottom-4 z-20 right-6" onClick={generate} >{loading ? <span>Generating<span className="loading loading-spinner loading-sm ml-2"></span></span> : (<div className="flex items-center gap-1"><RiAiGenerate/><p>Generate Blog</p></div>)}</button>
+                        <button className="btn mt-2 absolute bottom-4 z-20 right-6" onClick={generate} >{loading ? <span>Generating<span className="loading loading-spinner loading-sm ml-2"></span></span> : (<div className="flex items-center gap-1"><RiAiGenerate /><p>Generate Blog</p></div>)}</button>
                     </div>
 
-                    <div className="mt-2">
-                        <label htmlFor="f" className="block mb-1">Cover Image</label>
-                        <input type="file" id="f" className="file-input" onChange={handlefile} required />
+                    <div className="">
+                        <label htmlFor="f" className="label mb-2">
+                            <span className="label-text font-semibold">Cover Image</span>
+                        </label>
+                        <input type="file" id="f" className="file-input w-full" onChange={handlefile} required />
                     </div>
 
-                    <div className="mt-2">
-                        <label htmlFor="f" className="block mb-1">Tags</label>
-                        <div className="flex items-center gap-2 mb-2" >
+                    <div className="">
+                        <label htmlFor="t" className="label mb-2">
+                            <span className="label-text font-semibold">Tags</span>
+                        </label>
+                        <div className="flex flex-wrap gap-2 " >
                             {
                                 tags?.map((t, i) => (
-                                    <div key={i} className="flex items-center btn btn-sm btn-neutral">
+                                    <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center badge badge-neutral gap-1 px-2 py-1 cursor-pointer">
                                         <p>#{t}</p>
                                         <IoIosClose className="text-2xl" onClick={() => removet(i)} />
-                                    </div>
+                                    </motion.div>
                                 ))
                             }
                         </div>
+                    </div>
 
-                        <div className="join">
-                            <div>
-                                <label className="input   join-item">
-                                      <CiHashtag/>
-                                    <input type="email" placeholder="Create tags" onChange={(e) => settag(e.target.value)} required />
-                                </label>
-                               
-                            </div>
-                            <button className="btn btn-neutral join-item" onClick={addt}>Add</button>
+                    <div className="flex gap-2 items-end">
+                        <div className="flex-1">
+                            <label htmlFor="t" className="label mb-2">
+                                <span className="label-text font-semibold">Add Tag</span>
+                            </label>
+
+                            <input type="email" id="t" className="input w-full" value={tag} placeholder="Create tag..." onChange={(e) => settag(e.target.value)} required />
                         </div>
+                        <button className="btn btn-neutral " onClick={addt}>Add</button>
+                    </div>
 
+
+                    <div className="text-right">
+                        <button className="btn btn-primary" onClick={createblogs}>Create Blog</button>
                     </div>
 
                 </div>
-
-
-            </div>
-
-
+            </motion.div>
         </div>
     )
 }

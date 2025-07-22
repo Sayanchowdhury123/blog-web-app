@@ -11,6 +11,7 @@ import Privateroute from './pages/Privateroute';
 import {Toaster} from "react-hot-toast";
 import Blogmanage from './pages/Blogmanagement';
 import Createblogs from './pages/Createblogs';
+import Loading from './pages/Loadings';
 function App() {
 
 
@@ -19,6 +20,7 @@ function App() {
     	<Router>
         <Toaster position='top-left' reverseOrder={true}/>
         <Routes>
+         
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/home' element={<Privateroute><Home/></Privateroute> } />
