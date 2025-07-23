@@ -5,25 +5,29 @@ import useAuthstore from "../store/authstore";
 import api from "../axios";
 import { useEffect } from "react";
 import Loadingscrenn from "../components/Loadingscreen";
+import { motion } from "framer-motion";
+import Alert from "../components/Alert";
+import toast from "react-hot-toast";
+import Loading2 from "../components/Loadin2";
 
 export default function Blogmanage() {
-  const { logout, setshownav, user } = useAuthstore()
+  const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid } = useAuthstore()
   const [text, settext] = useState("")
   const [loading, setloading] = useState(false)
   const [blogs, setblogs] = useState([])
+  const [l, setl] = useState(false)
 
   const fb = async () => {
     setloading(true)
     try {
+
       const res = await api.get("/blogs", {
         headers: {
           Authorization: `Bearer ${user.token}`,
-         
-
         }
       })
       setblogs(res.data)
-      console.log(res.data);
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -35,22 +39,100 @@ export default function Blogmanage() {
     fb()
   }, [])
 
+  const delblog = async () => {
+    setl(true)
+    try {
+      const res = api.delete(`/blogs/del-blog/${blogid}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        }
+      })
+      console.log((await res).data);
+      setblogs((prev) => prev.filter(b => b._id !== blogid))
+      toast('Blog deleted',
+        {
+          icon: '🎉',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        })
+      setshowalert()
+      setblogid()
+
+    } catch (error) {
+      console.log(error);
+      toast('Blog deletion failed',
+        {
+          icon: '❌',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        })
+    } finally {
+      setl(false)
+    }
+  }
 
 
 
 
 
 
-
-  if (loading) <Loadingscrenn />
+  if(loading) <Loadingscrenn />
   return (
     <div className="h-screen  relative overflow-x-hidden">
+
+      {
+        l && (
+          <Loading2 />
+        )
+      }
+
       <Sidebar />
-      <div className="p-4 ">
+      <div className="p-4 space-y-6 ">
         <div className="flex items-center justify-between " >
-          <h1 className="text-4xl font-semibold"> Your Blogs</h1>
+          <h1 className="text-4xl font-bold">  BlogApp</h1>
           <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
         </div>
+
+
+
+        <div>
+          <h1 className="text-3xl text-center font-semibold">Your Blogs</h1>
+        </div>
+        {showalert && (
+          <div className="absolute backdrop-blur-sm z-20 inset-0 flex justify-center items-center">
+            <Alert del={delblog} />
+          </div>
+
+        )}
+
+
+        <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" >
+          {
+            blogs?.map((b, i) => (
+              <motion.div whileHover={{ scale: 1.03 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id}>
+                <figure>
+                  <img
+                    src={`${b.coverimage}`}
+                    alt="Shoes" />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{b?.title}</h2>
+                  <p></p>
+                  <div className="card-actions justify-end">
+                    <button className="btn btn-primary">Edit Blog</button>
+                    <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          }
+        </motion.div>
 
 
       </div>

@@ -122,9 +122,7 @@ export default function Createblogs() {
             <Sidebar />
 
 
-            <div className="inset-0 flex justify-center items-center bg-black/60">
-
-            </div>
+ 
             <div className="flex items-center justify-between px-6 pt-6 " >
                 <h1 className="text-4xl font-bold"> BlogApp</h1>
                 <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />

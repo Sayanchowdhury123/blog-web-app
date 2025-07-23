@@ -65,3 +65,15 @@ exports.fetchblogs = async (req,res) => {
     res.status(500).json({msg:"internal server error"})
   }
 }
+
+
+exports.deleteblog = async (req,res) => {
+  const {blogid} = req.params;
+  try {
+     const del = await Blogs.findByIdAndDelete(blogid)
+        res.status(200).json(blogid)
+  } catch (error) {
+      console.log(error);
+    res.status(500).json({msg:"internal server error"})
+  }
+}
