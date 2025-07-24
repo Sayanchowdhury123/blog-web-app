@@ -9,18 +9,22 @@ import { motion } from "framer-motion";
 import Alert from "../components/Alert";
 import toast from "react-hot-toast";
 import Loading2 from "../components/Loadin2";
+import Editblog from "../components/Editblog";
+import { useLocation } from "react-router-dom";
 
 export default function Blogmanage() {
-  const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid } = useAuthstore()
+  const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid,setshowedit,showedit,fetchdata } = useAuthstore()
   const [text, settext] = useState("")
   const [loading, setloading] = useState(false)
   const [blogs, setblogs] = useState([])
   const [l, setl] = useState(false)
+  const location = useLocation()
+
 
   const fb = async () => {
-    setloading(true)
+  
     try {
-
+       setloading(true)
       const res = await api.get("/blogs", {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -37,7 +41,10 @@ export default function Blogmanage() {
 
   useEffect(() => {
     fb()
+  
   }, [])
+
+ 
 
   const delblog = async () => {
     setl(true)
@@ -82,9 +89,10 @@ export default function Blogmanage() {
 
 
 
-  if(loading) <Loadingscrenn />
+  if(loading)  return <Loadingscrenn />
   return (
     <div className="h-screen  relative overflow-x-hidden">
+      
 
       {
         l && (
@@ -111,6 +119,14 @@ export default function Blogmanage() {
 
         )}
 
+        {
+          showedit && (
+            <div className="absolute backdrop-blur-sm z-20 inset-0 flex justify-center items-center">
+              <Editblog blogs={blogs} />
+             </div>
+          )
+        }
+
 
         <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" >
           {
@@ -125,7 +141,7 @@ export default function Blogmanage() {
                   <h2 className="card-title">{b?.title}</h2>
                   <p></p>
                   <div className="card-actions justify-end">
-                    <button className="btn btn-primary">Edit Blog</button>
+                    <button className="btn btn-primary" onClick={() => setshowedit(b._id,b)}>Edit Blog</button>
                     <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
                   </div>
                 </div>

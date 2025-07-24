@@ -1,17 +1,15 @@
 import { create } from "zustand";
 import api from "../axios";
 
-const ls = localStorage.getItem("user")
-const localuser = JSON.parse(ls)
-
+const ls = localStorage.getItem("user");
+const localuser = JSON.parse(ls);
 
 const useAuthstore = create((set) => ({
   user: localuser || null,
-  
+
   login: (user) => {
-  
-    localStorage.setItem("user",JSON.stringify(user));
-    
+    localStorage.setItem("user", JSON.stringify(user));
+
     set({ user });
   },
   logout: () => {
@@ -20,17 +18,26 @@ const useAuthstore = create((set) => ({
     set({ user: null });
   },
   shownav: false,
-  blogid:"",
-  setshownav: () => set((state) => {
-    return {shownav: !state.shownav}
-  }),
+  blogid: "",
+  setshownav: () =>
+    set((state) => {
+      return { shownav: !state.shownav };
+    }),
   showalert: false,
-  setshowalert: (id) => set((state) => {
-    return {showalert: !state.showalert,blogid:id}
-  }),
+  setshowalert: (id) =>
+    set((state) => {
+      return { showalert: !state.showalert, blogid: id };
+    }),
   setblogid: () => {
-    set({blogid:""})
-  }
+    set({ blogid: "" });
+  },
+  showedit: false,
+  bloginfo: "",
+  setshowedit: (id, b) =>
+    set((state) => {
+      return { showedit: !state.showedit, blogid: id, bloginfo: b };
+    }),
+
 
 }));
 

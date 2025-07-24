@@ -11,17 +11,20 @@ import api from "../axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loadingscrenn from "../components/Loadingscreen";
+import Loading2 from "./Loadin2";
+import { FaEye } from "react-icons/fa";
 
-export default function Createblogs() {
-    const { logout, setshownav, user } = useAuthstore()
+export default function Editblog({fb}) {
+    const { logout, setshownav, user, blogid,setblogid, setshowedit,bloginfo } = useAuthstore()
+    
     const [tag, settag] = useState("")
     const [loading, setloading] = useState(false)
-    const [result, setresult] = useState("")
-    const [tags, settags] = useState([])
+    const [result, setresult] = useState(bloginfo.blogtext)
+    const [tags, settags] = useState(bloginfo.tags)
     const [file, setfile] = useState("")
-    const [title, settitle] = useState("")
+    const [title, settitle] = useState(bloginfo.title)
     const navigate = useNavigate()
-    const [l,setl] = useState(false)
+    const [l, setl] = useState(false)
 
     const generate = async () => {
         setloading(true)
@@ -77,8 +80,8 @@ export default function Createblogs() {
 
         try {
 
-            if (file && Array.isArray(tags) && title && result) {
-                const res = await api.post("/blogs/create-blog", formdata, {
+            
+                const res = await api.put(`/blogs/${bloginfo._id}/update-blog`, formdata, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                         "Content-Type": "multipart/form-data"
@@ -86,8 +89,8 @@ export default function Createblogs() {
                     }
                 })
 
-                console.log(res.data);
-                toast('Blog creation successful',
+                
+                toast('Blog Updation successful',
                     {
                         icon: '🎉',
                         style: {
@@ -97,11 +100,16 @@ export default function Createblogs() {
                         },
                     })
 
-                navigate("/yourblogs")
-            }
+                    setblogid()
+                    setshowedit()
+
+                  
+
+                
+            
         } catch (error) {
             console.log(error);
-            toast('Blog creation failed',
+            toast('Blog updation failed',
                 {
                     icon: '❌',
                     style: {
@@ -110,23 +118,23 @@ export default function Createblogs() {
                         color: '#fff',
                     },
                 })
-        }finally{
+        } finally {
             setl(false)
         }
     }
 
-  if (l) return <Loadingscrenn/>
-  
+
     return (
-        <div className=" overflow-x-hidden  relative  h-screen">
-            <Sidebar />
+        <div className="   relative  ">
 
 
- 
-            <div className="flex items-center justify-between px-6 pt-6 " >
-                <h1 className="text-4xl font-bold"> BlogApp</h1>
-                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
-            </div>
+            {
+                l && (
+                    <Loading2 />
+                )
+            }
+
+
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
 
 
@@ -135,14 +143,14 @@ export default function Createblogs() {
                 <div className=" bg-base-300 p-6 shadow-lg rounded-xl space-y-6 ">
 
                     <div>
-                        <h1 className="text-3xl font-bold">Create Blog</h1>
+                        <h1 className="text-3xl font-bold">Update Blog</h1>
                     </div>
 
                     <div className="">
                         <label htmlFor="b" className="label mb-2">
                             <span className="label-text font-semibold">Title</span>
                         </label>
-                        <input type="text" id="b" className="input w-full" placeholder="Add title" required onChange={(e) => settitle(e.target.value)} />
+                        <input type="text" id="b" className="input w-full" placeholder="Add title" required onChange={(e) => settitle(e.target.value)} value={title} />
 
                     </div>
 
@@ -191,7 +199,8 @@ export default function Createblogs() {
 
 
                     <div className="text-right">
-                        <button className="btn btn-primary" onClick={createblogs}>Create Blog</button>
+                        <button className="btn btn-primary mr-2" onClick={createblogs}>Update Blog</button>
+                           <button className="btn btn-error" onClick={setshowedit}>Cancel</button>
                     </div>
 
                 </div>
