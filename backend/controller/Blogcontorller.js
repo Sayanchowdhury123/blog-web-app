@@ -88,7 +88,7 @@ exports.editblog = async (req, res) => {
       try {
         if (b.cid) {
           await cloudinary.uploader.destroy(b.cid, {
-            resource_type: "coverimages",
+            resource_type: "image",
           });
         }
 
@@ -108,7 +108,7 @@ exports.editblog = async (req, res) => {
     b.coverimage = result?.secure_url || b.coverimage;
 
     await b.save();
-
+    await b.populate("creator comments.user")
     res.status(200).json("Blog updated")
 
   } catch (error) {
@@ -120,13 +120,25 @@ exports.editblog = async (req, res) => {
 exports.deleteblog = async (req, res) => {
   const { blogid } = req.params;
   try {
-    const b = await Blogs.findById(blogid);
-    if (b.cid) {
-      await cloudinary.uploader.destroy(b.cid, {
-        resource_type: "coverimages",
-      });
+console.log(blogid);
+    const b = await Blogs.findById(blogid)
+      if (!b) {
+      return res.status(400).json({ msg: "blog not found" });
     }
-    const del = await Blogs.findByIdAndDelete(blogid);
+
+  
+    
+       try {
+         if (b.cid) {
+          await cloudinary.uploader.destroy(b.cid, {
+            resource_type: "image",
+          });
+        }
+       } catch (error) {
+          console.log("image deletion error");
+       }
+      
+    await Blogs.findOneAndDelete({_id: blogid})
     res.status(200).json(blogid);
   } catch (error) {
     console.log(error);

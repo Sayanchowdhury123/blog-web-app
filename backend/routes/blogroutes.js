@@ -8,7 +8,7 @@ const { createblogs,fetchblogs, deleteblog, editblog } = require("../controller/
 router.get("/",authmiddleware,fetchblogs)
 router.post("/create-blog",authmiddleware,authorizerole("writer","editor"),createblogs)
 router.put("/:blogid/update-blog",authmiddleware,authorizerole("writer","editor"),editblog)
-router.delete("/del-blog/:blogid",authmiddleware,authorizerole("writer","editor"),deleteblog)
+router.delete("/:blogid/del-blog",authmiddleware,authorizerole("writer","editor"),deleteblog)
 
 
 module.exports = router;

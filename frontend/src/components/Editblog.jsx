@@ -14,9 +14,9 @@ import Loadingscrenn from "../components/Loadingscreen";
 import Loading2 from "./Loadin2";
 import { FaEye } from "react-icons/fa";
 
-export default function Editblog({fb}) {
-    const { logout, setshownav, user, blogid,setblogid, setshowedit,bloginfo } = useAuthstore()
-    
+export default function Editblog({ fb }) {
+    const { logout, setshownav, user, blogid, setblogid, setshowedit, bloginfo } = useAuthstore()
+
     const [tag, settag] = useState("")
     const [loading, setloading] = useState(false)
     const [result, setresult] = useState(bloginfo.blogtext)
@@ -70,7 +70,7 @@ export default function Editblog({fb}) {
 
     }
 
-    const createblogs = async () => {
+    const edittblogs = async () => {
         setl(true)
         const formdata = new FormData()
         formdata.append("title", title)
@@ -80,33 +80,34 @@ export default function Editblog({fb}) {
 
         try {
 
-            
-                const res = await api.put(`/blogs/${bloginfo._id}/update-blog`, formdata, {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                        "Content-Type": "multipart/form-data"
 
-                    }
+            const res = await api.put(`/blogs/${bloginfo._id}/update-blog`, formdata, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                    "Content-Type": "multipart/form-data"
+
+                }
+            })
+
+
+            toast('Blog Updation successful',
+                {
+                    icon: '🎉',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
                 })
 
-                
-                toast('Blog Updation successful',
-                    {
-                        icon: '🎉',
-                        style: {
-                            borderRadius: '10px',
-                            background: '#333',
-                            color: '#fff',
-                        },
-                    })
+            setblogid()
+            setshowedit()
+            fb();
 
-                    setblogid()
-                    setshowedit()
 
-                  
 
-                
-            
+
+
         } catch (error) {
             console.log(error);
             toast('Blog updation failed',
@@ -128,11 +129,6 @@ export default function Editblog({fb}) {
         <div className="   relative  ">
 
 
-            {
-                l && (
-                    <Loading2 />
-                )
-            }
 
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
@@ -164,8 +160,9 @@ export default function Editblog({fb}) {
                     </div>
 
                     <div className="">
-                        <label htmlFor="f" className="label mb-2">
+                        <label htmlFor="f" className="label mb-2 ">
                             <span className="label-text font-semibold">Cover Image</span>
+                            <a href={bloginfo.coverimage} target="_blank" rel="noopener noreferrer" className="tooltip mt-1" data-tip="Preview"><FaEye/></a>
                         </label>
                         <input type="file" id="f" className="file-input w-full" onChange={handlefile} required />
                     </div>
@@ -199,8 +196,8 @@ export default function Editblog({fb}) {
 
 
                     <div className="text-right">
-                        <button className="btn btn-primary mr-2" onClick={createblogs}>Update Blog</button>
-                           <button className="btn btn-error" onClick={setshowedit}>Cancel</button>
+                        <button className="btn btn-primary mr-2" onClick={edittblogs}>Update Blog</button>
+                        <button className="btn btn-error" onClick={setshowedit}>Cancel</button>
                     </div>
 
                 </div>

@@ -21,7 +21,20 @@ export default function Createblogs() {
     const [file, setfile] = useState("")
     const [title, settitle] = useState("")
     const navigate = useNavigate()
-    const [l,setl] = useState(false)
+    const [l,setl] = useState(false) 
+
+
+    const typewritereffect = (text) => {
+        let i = 0;
+        setresult("")
+        const interval = setInterval(() => {
+            setresult((prev) => prev + text?.charAt(i))
+            i++;
+            if(i >= text?.length){
+                clearInterval(interval)
+            }
+        }, 20);
+    }
 
     const generate = async () => {
         setloading(true)
@@ -29,7 +42,7 @@ export default function Createblogs() {
             const blog = await generatebog(result);
             console.log(blog);
             const cleanblog = blog?.replace(/[#*_`~>()]+/g, "").replace(/\n{2,}/g, "\n\n").replace(/-{2,}/g, "").replace(/"([^"]+)"/g, '$1').replace(/(?<=\s)-+(?=\s)/g, "").trim()
-            setresult(cleanblog)
+            typewritereffect(cleanblog)
         } catch (error) {
             console.log(error);
             setresult("failed to generate blogs")

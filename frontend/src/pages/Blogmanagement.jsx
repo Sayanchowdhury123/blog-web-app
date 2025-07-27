@@ -13,14 +13,14 @@ import Editblog from "../components/Editblog";
 import { useLocation } from "react-router-dom";
 
 export default function Blogmanage() {
-  const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid,setshowedit,showedit,fetchdata } = useAuthstore()
+  const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid,setshowedit,showedit } = useAuthstore()
   const [text, settext] = useState("")
   const [loading, setloading] = useState(false)
   const [blogs, setblogs] = useState([])
   const [l, setl] = useState(false)
   const location = useLocation()
 
-
+  console.log(blogid);
   const fb = async () => {
   
     try {
@@ -49,7 +49,7 @@ export default function Blogmanage() {
   const delblog = async () => {
     setl(true)
     try {
-      const res = api.delete(`/blogs/del-blog/${blogid}`, {
+      const res = api.delete(`/blogs/${blogid}/del-blog`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         }
@@ -83,7 +83,15 @@ export default function Blogmanage() {
       setl(false)
     }
   }
-
+  
+  const getexcerpt = (text,wordlimit=50) => {
+    const words = text?.trim().split(/\s+/)
+    if(words.length <= wordlimit){
+      return text
+    }else{
+      return words.slice(0,wordlimit).join(" ") + "..."
+    }
+  }
 
 
 
@@ -122,7 +130,7 @@ export default function Blogmanage() {
         {
           showedit && (
             <div className="absolute backdrop-blur-sm z-20 inset-0 flex justify-center items-center">
-              <Editblog blogs={blogs} />
+              <Editblog fb={fb} />
              </div>
           )
         }
@@ -139,7 +147,7 @@ export default function Blogmanage() {
                 </figure>
                 <div className="card-body">
                   <h2 className="card-title">{b?.title}</h2>
-                  <p></p>
+                  <p>{getexcerpt(b.blogtext)}</p>
                   <div className="card-actions justify-end">
                     <button className="btn btn-primary" onClick={() => setshowedit(b._id,b)}>Edit Blog</button>
                     <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
