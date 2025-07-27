@@ -10,7 +10,7 @@ import Alert from "../components/Alert";
 import toast from "react-hot-toast";
 import Loading2 from "../components/Loadin2";
 import Editblog from "../components/Editblog";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Blogmanage() {
   const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid,setshowedit,showedit } = useAuthstore()
@@ -19,8 +19,8 @@ export default function Blogmanage() {
   const [blogs, setblogs] = useState([])
   const [l, setl] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
-  console.log(blogid);
   const fb = async () => {
   
     try {
@@ -149,6 +149,9 @@ export default function Blogmanage() {
                   <h2 className="card-title">{b?.title}</h2>
                   <p>{getexcerpt(b.blogtext)}</p>
                   <div className="card-actions justify-end">
+                    <button className="btn btn-success" onClick={() => navigate(`/edit-content/${b._id}`,{
+                      state: {t: b.blogtext}
+                    })}>Edit Content</button>
                     <button className="btn btn-primary" onClick={() => setshowedit(b._id,b)}>Edit Blog</button>
                     <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
                   </div>

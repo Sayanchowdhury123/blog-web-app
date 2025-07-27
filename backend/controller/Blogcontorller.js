@@ -70,7 +70,7 @@ exports.fetchblogs = async (req, res) => {
 exports.editblog = async (req, res) => {
   const { blogid } = req.params;
   try {
-    const { title, blogtext } = req.body;
+    const { title } = req.body;
      const tags = JSON.parse(req.body.tags)
      
     const b = await Blogs.findById(blogid);
@@ -101,7 +101,7 @@ exports.editblog = async (req, res) => {
       }
     }
 
-    b.blogtext = blogtext || b.blogtext;
+ 
     b.title = title || b.title;
     b.tags = tags || b.tags;
     b.cid = result?.public_id || b.cid;

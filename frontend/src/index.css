@@ -2,4 +2,5 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake;
 }
-
+ @import './styles/_variables.scss';
+ @import './styles/_keyframe-animations.scss';

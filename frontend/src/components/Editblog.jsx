@@ -74,7 +74,6 @@ export default function Editblog({ fb }) {
         setl(true)
         const formdata = new FormData()
         formdata.append("title", title)
-        formdata.append("blogtext", result)
         formdata.append("tags", JSON.stringify(tags))
         formdata.append("coverimage", file)
 
@@ -150,14 +149,7 @@ export default function Editblog({ fb }) {
 
                     </div>
 
-                    <div className="relative">
-                        <label className="label mb-2" htmlFor="c">
-                            <span className="label-text font-semibold">Content</span>
-                        </label>
-                        <textarea name="" id="c" className="textarea  w-full min-h-[150px] " placeholder="write a blog with AI" onChange={(e) => setresult(e.target.value)} required value={result} style={{ scrollbarWidth: "none", scrollBehavior: "smooth" }}></textarea>
-
-                        <button className="btn mt-2 absolute bottom-4 z-20 right-6" onClick={generate} >{loading ? <span>Generating<span className="loading loading-spinner loading-sm ml-2"></span></span> : (<div className="flex items-center gap-1"><RiAiGenerate /><p>Generate Blog</p></div>)}</button>
-                    </div>
+                   
 
                     <div className="">
                         <label htmlFor="f" className="label mb-2 ">
