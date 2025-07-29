@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Blogs = require("../models/Blogs");
 const cloudinary = require("cloudinary").v2;
+const santizehtml = require("sanitize-html")
 
 exports.createblogs = async (req, res) => {
   try {
@@ -73,11 +74,8 @@ exports.editblog = async (req, res) => {
     const { title } = req.body;
      const tags = JSON.parse(req.body.tags)
      
-    const b = await Blogs.findById(blogid);
+   
     
-    if (!b) {
-      return res.status(400).json({ msg: "blog not found" });
-    }
 
     
     const file = req.files?.coverimage;
@@ -145,3 +143,55 @@ console.log(blogid);
     res.status(500).json({ msg: "internal server error" });
   }
 };
+
+exports.editcontent = async (req,res) => {
+    const { blogid } = req.params;
+  try {
+      const { blogtext } = req.body;
+      if(!blogtext){
+        return res.status(400).json("blogtext not found")
+      }
+     
+
+const sanitizedContent =  santizehtml(blogtext, {
+  allowedTags: [
+    'p', 'blockquote', 'strong', 'b', 'i', 'em', 'u', 's', 'strike', 'code',
+    'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'span',
+    'sub', 'sup', 'br'
+  ],
+  allowedAttributes: {
+    a: ['href', 'target', 'rel'],
+    span: ['style'],
+    '*': ['style'], 
+  },
+  allowedStyles: {
+    '*': {
+      
+      'color': [/^.*$/],
+      'background-color': [/^.*$/],
+      'text-align': [/^left$|^right$|^center$|^justify$/],
+      'font-size': [/^\d+(px|em|rem|%)$/],
+      'font-family': [/^.*$/],
+      'line-height': [/^.*$/],
+ },
+ },
+});
+
+     const b = await Blogs.findById(blogid);
+    
+    if (!b) {
+      return res.status(400).json({ msg: "blog not found" });
+    }
+    
+
+    b.blogtext = sanitizedContent || b.blogtext;
+    await b.save()
+     await b.populate("creator comments.user")
+
+     res.json(b.blogtext)
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}

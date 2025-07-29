@@ -3,7 +3,7 @@ import Sidebar from '@/components/Sidebar'
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor'
 import useAuthstore from '@/store/authstore'
 import { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import RichTextEditor from 'reactjs-tiptap-editor';
 import { BaseKit } from 'reactjs-tiptap-editor';
 import 'reactjs-tiptap-editor/style.css';
@@ -32,17 +32,24 @@ import { SlashCommand } from 'reactjs-tiptap-editor/slashcommand';
 import { TextUnderline } from 'reactjs-tiptap-editor/textunderline';
 import { OrderedList } from 'reactjs-tiptap-editor/orderedlist';
 import { LineHeight } from 'reactjs-tiptap-editor/lineheight';
+import Loading2 from '@/components/Loadin2'
+import api from '@/axios'
+import toast from 'react-hot-toast'
+
 
 const extensions = [
-  BaseKit, Blockquote, Bold, CodeBlock, BulletList, Color, Clear, Code, Document, Strike, Heading, Highlight, ListItem, Link, FontFamily, FontSize, Selection, Italic, TextAlign, SubAndSuperScript, SlashCommand, TextUnderline, OrderedList, LineHeight
-
+  BaseKit, Blockquote, Bold, CodeBlock, BulletList, Color, Clear, Code, Strike, Heading, Highlight,
+  Link, FontFamily, FontSize, Italic, TextAlign, SubAndSuperScript, SlashCommand, TextUnderline, OrderedList, LineHeight
 
 ]
 
 export default function Editcontent() {
+  const { user } = useAuthstore()
   const location = useLocation()
-  const [blogtext, setblogtext] = useState(location.state?.t || "")
-
+  const { t } = location.state || {};
+  const [blogtext, setblogtext] = useState(t?.blogtext || "")
+  const [l, setl] = useState(false)
+  const navigate = useNavigate()
   const { setshownav } = useAuthstore()
 
 
@@ -50,33 +57,83 @@ export default function Editcontent() {
 
 
 
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault()
+    setl(true)
 
-    const formdata = new FormData()
-    formdata.append("blogtext", blogtext)
-    console.log(blogtext);
+
+    try {
+
+      const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "multipart/form-data"
+
+        }
+      })
+
+
+    
+
+      toast('Content Updation successful',
+        {
+          icon: '🎉',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        })
+
+      navigate(`/yourblogs`)
+
+
+    } catch (error) {
+      console.log(error);
+      toast('Content updation failed',
+        {
+          icon: '❌',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        })
+    } finally {
+      setl(false)
+    }
+
+
+
 
 
   }
 
   return (
-    <div className="  relative  overflow-x-hidden">
+    <div className="  relative ">
+      {
+        l && (
+          <Loading2 />
+        )
+      }
+
+
       <Sidebar />
       <div className='p-4 space-y-4'>
-        <div className="flex items-center justify-between " >
+
+        <div className="flex items-center justify-between   sticky top-4" >
           <h1 className="text-4xl font-bold">  BlogApp</h1>
           <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
         </div>
 
-        <div>
+        <div className=''>
           <h1 className="text-3xl text-center font-semibold">Edit Content</h1>
         </div>
 
         <div className='flex justify-center items-center   '>
-          <form onSubmit={handlesubmit} className="w-[984px]" >
-            <RichTextEditor extensions={extensions} output='html' content={blogtext} onChangeContent={setblogtext}  />
-            <button type='submit' className='btn btn-neutral mt-2'>Submit</button>
+          <form onSubmit={handlesubmit} className="w-[984px] relative" >
+            <RichTextEditor extensions={extensions} output='html' content={blogtext} onChangeContent={setblogtext} />
+            <button type='submit' className='btn btn-neutral mt-2 sticky  bottom-[20px] left-[700px] z-30 '>Submit</button>
           </form>
 
         </div>

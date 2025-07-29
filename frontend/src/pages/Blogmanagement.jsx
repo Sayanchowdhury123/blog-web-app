@@ -147,10 +147,16 @@ export default function Blogmanage() {
                 </figure>
                 <div className="card-body">
                   <h2 className="card-title">{b?.title}</h2>
-                  <p>{getexcerpt(b.blogtext)}</p>
+                  
+                  <div dangerouslySetInnerHTML={{
+                    __html: getexcerpt(b.blogtext)
+                  }} className="prose max-w-none">
+                    
+                    </div>
+                    <p></p>
                   <div className="card-actions justify-end">
                     <button className="btn btn-success" onClick={() => navigate(`/edit-content/${b._id}`,{
-                      state: {t: b.blogtext}
+                      state: {t: b}
                     })}>Edit Content</button>
                     <button className="btn btn-primary" onClick={() => setshowedit(b._id,b)}>Edit Blog</button>
                     <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
