@@ -119,21 +119,21 @@ export default function Editcontent() {
 
 
       <Sidebar />
-      <div className='p-4 space-y-4'>
+      <div className=' space-y-4'>
 
-        <div className="flex items-center justify-between   sticky top-4" >
-          <h1 className="text-4xl font-bold">  BlogApp</h1>
-          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
-        </div>
+          <div className="flex items-center justify-between sticky top-0 py-4 shadow p-4 bg-white z-20 " onClick={setshownav}>
+                    <h1 className="text-4xl font-bold">  BlogApp</h1>
+                    <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full"  />
+                </div>
 
         <div className=''>
           <h1 className="text-3xl text-center font-semibold">Edit Content</h1>
         </div>
 
-        <div className='flex justify-center items-center   '>
+        <div className='flex justify-center items-center  p-4 '>
           <form onSubmit={handlesubmit} className="w-[984px] relative" >
             <RichTextEditor extensions={extensions} output='html' content={blogtext} onChangeContent={setblogtext} />
-            <button type='submit' className='btn btn-neutral mt-2 sticky  bottom-[20px] left-[700px] z-30 '>Submit</button>
+            <button type='submit' className='btn btn-neutral mt-2 sticky  bottom-[10px] left-[700px] z-30 '>Submit</button>
           </form>
 
         </div>

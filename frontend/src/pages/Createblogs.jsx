@@ -21,7 +21,7 @@ export default function Createblogs() {
     const [file, setfile] = useState("")
     const [title, settitle] = useState("")
     const navigate = useNavigate()
-    const [l,setl] = useState(false) 
+    const [l, setl] = useState(false)
 
 
     const typewritereffect = (text) => {
@@ -30,7 +30,7 @@ export default function Createblogs() {
         const interval = setInterval(() => {
             setresult((prev) => prev + text?.charAt(i))
             i++;
-            if(i >= text?.length){
+            if (i >= text?.length) {
                 clearInterval(interval)
             }
         }, 20);
@@ -123,22 +123,22 @@ export default function Createblogs() {
                         color: '#fff',
                     },
                 })
-        }finally{
+        } finally {
             setl(false)
         }
     }
 
-  if (l) return <Loadingscrenn/>
-  
+    if (l) return <Loadingscrenn />
+
     return (
         <div className=" overflow-x-hidden  relative  h-screen">
             <Sidebar />
 
 
- 
-            <div className="flex items-center justify-between px-6 pt-6 " >
-                <h1 className="text-4xl font-bold"> BlogApp</h1>
-                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
+
+            <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={setshownav}>
+                <h1 className="text-4xl font-bold">  BlogApp</h1>
+                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
             </div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
 
@@ -203,8 +203,9 @@ export default function Createblogs() {
                     </div>
 
 
-                    <div className="text-right">
+                    <div className=" flex justify-end gap-2">
                         <button className="btn btn-primary" onClick={createblogs}>Create Blog</button>
+                        <button className="btn btn-error" onClick={() => navigate("/yourblogs")}>Cancel</button>
                     </div>
 
                 </div>

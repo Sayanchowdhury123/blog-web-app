@@ -12,10 +12,10 @@ import { IoMdCreate } from "react-icons/io";
 export default function Sidebar() {
   const navigate = useNavigate()
   const { shownav, user, setshownav, logout } = useAuthstore()
-
+   console.log(shownav);
 
   return (
-    <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, ease: "easeInOut" }} className={`bg-base-200 p-4   w-[300px] h-screen z-100 absolute right-0 `}>
+    <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, type:"spring", stiffness:100 }} className={`bg-base-200 p-4   w-[300px] h-screen z-50 absolute right-0  `}>
       <div className=" flex   mb-6">
         <div className="flex items-center gap-2">
           <img src="ff" alt="jj" className="w-8 h-8 bg-black rounded-full" />

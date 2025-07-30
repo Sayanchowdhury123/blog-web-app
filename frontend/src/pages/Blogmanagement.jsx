@@ -109,11 +109,12 @@ export default function Blogmanage() {
       }
 
       <Sidebar />
-      <div className="p-4 space-y-6 ">
-        <div className="flex items-center justify-between " >
-          <h1 className="text-4xl font-bold">  BlogApp</h1>
-          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav} />
-        </div>
+      <div className=" space-y-6 ">
+       
+            <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={setshownav}>
+                <h1 className="text-4xl font-bold">  BlogApp</h1>
+                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+            </div>
 
 
 
@@ -136,10 +137,10 @@ export default function Blogmanage() {
         }
 
 
-        <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" >
+        <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4" >
           {
             blogs?.map((b, i) => (
-              <motion.div whileHover={{ scale: 1.03 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id}>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{scale:0.9}} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id} >
                 <figure>
                   <img
                     src={`${b.coverimage}`}
@@ -150,7 +151,9 @@ export default function Blogmanage() {
                   
                   <div dangerouslySetInnerHTML={{
                     __html: getexcerpt(b.blogtext)
-                  }} className="prose max-w-none">
+                  }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`,{
+                    state: {blogid: b._id}
+                  })}>
                     
                     </div>
                     <p></p>

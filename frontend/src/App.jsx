@@ -13,6 +13,8 @@ import Blogmanage from './pages/Blogmanagement';
 import Createblogs from './pages/Createblogs';
 import Loading from './pages/Loadings';
 import Editcontent from './pages/Editcontent';
+import Blog from './components/Blog';
+import Blogpage from './pages/Blogpage';
 function App() {
 
 
@@ -28,6 +30,7 @@ function App() {
           <Route path='/yourblogs' element={<Privateroute><Blogmanage/></Privateroute>} />
           <Route path='/create-blogs' element={<Privateroute><Createblogs/></Privateroute>} />
           <Route path='/edit-content/:blogid' element={<Privateroute><Editcontent/></Privateroute>} />
+          <Route path='/blog/:blogid' element={<Privateroute><Blogpage/></Privateroute>} />
         </Routes>
       </Router>
     </>

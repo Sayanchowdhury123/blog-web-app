@@ -118,7 +118,7 @@ exports.editblog = async (req, res) => {
 exports.deleteblog = async (req, res) => {
   const { blogid } = req.params;
   try {
-console.log(blogid);
+
     const b = await Blogs.findById(blogid)
       if (!b) {
       return res.status(400).json({ msg: "blog not found" });
@@ -192,6 +192,21 @@ const sanitizedContent =  santizehtml(blogtext, {
 
   } catch (error) {
     console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}
+
+exports.fetchblog = async (req,res) => {
+  const { blogid } = req.params;
+  try {
+     const b = await Blogs.findById(blogid).populate("creator comments.user")
+      if (!b) {
+      return res.status(400).json({ msg: "blog not found" });
+    }
+
+    res.json(b)
+  } catch (error) {
+     console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
 }

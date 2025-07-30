@@ -10,10 +10,10 @@ export default function Home(){
         <div className="h-screen  relative overflow-hidden">
             <Sidebar/>
             
-            <div className="flex items-center justify-between py-4 px-4" >
-                <h1 className="text-4xl font-semibold">Blogs</h1>
-                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" onClick={setshownav}  />
-            </div>
+              <div className="flex items-center justify-between sticky top-0 py-4 shadow p-4 bg-white z-20 " onClick={setshownav}>
+                    <h1 className="text-4xl font-bold">  BlogApp</h1>
+                    <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full"  />
+                </div>
 
          
             
