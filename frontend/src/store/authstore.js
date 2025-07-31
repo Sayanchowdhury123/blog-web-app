@@ -37,8 +37,6 @@ const useAuthstore = create((set) => ({
     set((state) => {
       return { showedit: !state.showedit, blogid: id, bloginfo: b };
     }),
-
-
 }));
 
 export default useAuthstore;

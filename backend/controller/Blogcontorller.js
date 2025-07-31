@@ -210,3 +210,4 @@ exports.fetchblog = async (req,res) => {
     res.status(500).json({ msg: "internal server error" });
   }
 }
+

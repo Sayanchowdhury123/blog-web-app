@@ -5,6 +5,7 @@ const cloudinary = require("cloudinary").v2;
 const authroutes = require("./routes/authroutes")
 const fileupload = require("express-fileupload")
 const blogroutes = require("./routes/blogroutes")
+const editorroutes = require("./routes/editorroutes")
 
 
 const app = express()
@@ -22,6 +23,7 @@ cloudinary.config({
 
 app.use("/api/auth", authroutes)
 app.use("/api/blogs", blogroutes)
+app.use("/api/editor",editorroutes)
 
 
 

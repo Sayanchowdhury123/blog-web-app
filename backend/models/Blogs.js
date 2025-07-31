@@ -21,6 +21,7 @@ const blogschema = new mogoose.Schema(
     likes: [{ type: mogoose.Schema.Types.ObjectId, ref: "User" },],
     dislikes: [{ type: mogoose.Schema.Types.ObjectId, ref: "User" },],
     cid: {type: String},
+    approval: {type: Boolean, default:false},
   },
   { timestamps: true }
 );
