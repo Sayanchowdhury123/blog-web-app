@@ -5,7 +5,7 @@ const Loading2 = () => {
 
     return (
 
-        <motion.div className="inset-0 flex absolute z-100 items-center justify-center text-base-content "
+        <motion.div className="inset-0 rounded-xl flex absolute z-100 items-center justify-center bg-black/80 "
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
         >
             <motion.div className="flex items-center justify-center gap-4"

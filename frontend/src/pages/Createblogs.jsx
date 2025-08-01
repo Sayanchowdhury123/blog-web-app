@@ -136,10 +136,16 @@ export default function Createblogs() {
 
 
 
-            <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={setshownav}>
-                <h1 className="text-4xl font-bold">  BlogApp</h1>
-                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
-            </div>
+             <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
+          e.stopPropagation()
+          setshownav
+        }}>
+          <h1 className="text-4xl font-bold" onClick={(e) => {
+            e.stopPropagation()
+            navigate("/home")
+          }}>  BlogApp</h1>
+          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+        </div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
 
 

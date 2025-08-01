@@ -12,6 +12,7 @@ import Loading2 from "../components/Loadin2";
 import Editblog from "../components/Editblog";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 export default function Blogmanage() {
   const { logout, setshownav, user, setshowalert, showalert, blogid, setblogid,setshowedit,showedit } = useAuthstore()
   const [text, settext] = useState("")
@@ -111,8 +112,14 @@ export default function Blogmanage() {
       <Sidebar />
       <div className=" space-y-6 ">
        
-            <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={setshownav}>
-                <h1 className="text-4xl font-bold">  BlogApp</h1>
+            <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
+              e.stopPropagation()
+              setshownav
+            }}>
+                <h1 className="text-4xl font-bold" onClick={(e) => {
+                  e.stopPropagation()
+                  navigate("/home")
+                }}>  BlogApp</h1>
                 <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
             </div>
 

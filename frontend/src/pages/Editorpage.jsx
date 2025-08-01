@@ -1,19 +1,65 @@
+import Card from "@/components/Card";
+import Loading2 from "@/components/Loadin2";
+import Loadingscrenn from "@/components/Loadingscreen";
+import Sidebar from "@/components/Sidebar";
+import useAuthstore from "@/store/authstore";
 import useEditorstore from "@/store/editorstore"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useActionData, useNavigate } from "react-router-dom";
 
 
-export default function Editorpage(){
-const {fetchall} = useEditorstore();
+export default function Editorpage() {
+  const { fetchall, blogs } = useEditorstore();
+  const { setshownav, user } = useAuthstore()
+  const [loading, setloading] = useState(false)
+  const navigate = useNavigate()
 
-useEffect(() => {
-  fetchall()
-},[])
+  const fetchl = async () => {
+    setloading(true)
+    try {
+      await fetchall()
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setloading(false)
+    }
+  }
+
+
+  useEffect(() => {
+
+    fetchl()
+  }, [])
 
 
 
-    return(
-        <div>
+  if (loading) return <Loadingscrenn />
 
+  return (
+    <div className="relative">
+      <Sidebar />
+
+      <div className=" space-y-6 ">
+
+        <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
+          e.stopPropagation()
+          setshownav
+        }}>
+          <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
+            e.stopPropagation()
+            navigate("/home")
+          }}>  BlogApp</h1>
+          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
         </div>
-    )
+
+
+
+        <div>
+          <h1 className="text-3xl text-center font-semibold">Blog Approval</h1>
+        </div>
+
+        <Card />
+      </div>
+    </div>
+  )
 }

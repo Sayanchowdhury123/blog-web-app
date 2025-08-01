@@ -7,6 +7,8 @@ const userschema = new mogoose.Schema({
     role: {type: String, enum: ["reader","writer","editor"], default:"reader"},
     provider: {type: String, default: 'local'},
     googleid: String,
+    profilepic: {type: String},
+    pid: {type: String},
 },{timestamps: true})
 
 module.exports = mogoose.model("User", userschema)
