@@ -6,7 +6,7 @@ const Blogs = require("../models/Blogs");
 
 exports.fetchblogall = async (req,res) => {
     try {
-        const blogs = await Blogs.find({}).populate("creator comments.user")
+        const blogs = await Blogs.find().sort({createdAt: -1}).populate("creator comments.user")
         if(!blogs){
             return res.status(400).json("no blogs found")
         }

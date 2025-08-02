@@ -57,21 +57,22 @@ export default function Editcontent() {
 
 
 
-  const handlesubmit = async (e) => {
+ const handlesubmit = async (e) => {
     e.preventDefault()
     setl(true)
 
+    console.log(blogtext);
 
+    
     try {
 
-      const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          "Content-Type": "multipart/form-data"
+    //  const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
+      //  headers: {
+       //   Authorization: `Bearer ${user.token}`,
+        //  "Content-Type": "multipart/form-data"
 
-        }
-      })
-
+       // }
+     // })
 
 
 
@@ -85,7 +86,7 @@ export default function Editcontent() {
           },
         })
 
-      navigate(`/yourblogs`)
+    //  navigate(`/yourblogs`)
 
 
     } catch (error) {
@@ -102,11 +103,6 @@ export default function Editcontent() {
     } finally {
       setl(false)
     }
-
-
-
-
-
   }
 
   return (
@@ -137,8 +133,8 @@ export default function Editcontent() {
 
         <div className='flex justify-center items-center  p-4 '>
           <form onSubmit={handlesubmit} className="w-[984px] relative" >
-            <RichTextEditor extensions={extensions} output='html' content={blogtext} onChangeContent={setblogtext} />
-            <button type='submit' className='btn btn-neutral mt-2 sticky  bottom-[10px] left-[700px] z-30 '>Submit</button>
+            <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
+            <button type='submit' className='btn btn-neutral'>Submit</button>
           </form>
 
         </div>

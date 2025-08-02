@@ -13,7 +13,7 @@ import { FaUserEdit } from "react-icons/fa";
 export default function Sidebar() {
   const navigate = useNavigate()
   const { shownav, user, setshownav, logout } = useAuthstore()
-   console.log(shownav);
+
 
   return (
     <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, type:"spring", stiffness:100 }} className={`bg-base-200 p-4   w-[300px] h-screen z-50 absolute right-0  `}>
