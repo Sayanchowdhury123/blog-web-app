@@ -37,6 +37,7 @@ import api from '@/axios'
 import toast from 'react-hot-toast'
 
 
+
 const extensions = [
   BaseKit, Blockquote, Bold, CodeBlock, BulletList, Color, Clear, Code, Strike, Heading, Highlight,
   Link, FontFamily, FontSize, Italic, TextAlign, SubAndSuperScript, SlashCommand, TextUnderline, OrderedList, LineHeight
@@ -46,7 +47,7 @@ const extensions = [
 export default function Editcontent() {
   const { user } = useAuthstore()
   const location = useLocation()
-  const { t } = location.state || {};
+  const { t ,editor} = location.state || {};
   const [blogtext, setblogtext] = useState(t?.blogtext || "")
   const [l, setl] = useState(false)
   const navigate = useNavigate()
@@ -61,18 +62,18 @@ export default function Editcontent() {
     e.preventDefault()
     setl(true)
 
-    console.log(blogtext);
+
 
     
     try {
 
-    //  const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
-      //  headers: {
-       //   Authorization: `Bearer ${user.token}`,
-        //  "Content-Type": "multipart/form-data"
+      const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "multipart/form-data"
 
-       // }
-     // })
+        }
+      })
 
 
 
@@ -86,7 +87,12 @@ export default function Editcontent() {
           },
         })
 
-    //  navigate(`/yourblogs`)
+      if(editor){
+      navigate(`/editor-page`)
+      }else{
+        navigate(`/yourblogs`)
+      }
+      
 
 
     } catch (error) {
@@ -105,13 +111,11 @@ export default function Editcontent() {
     }
   }
 
+  if(l) return <Loading2/>
+
   return (
     <div className="  relative ">
-      {
-        l && (
-          <Loading2 />
-        )
-      }
+     
 
 
       <Sidebar />
@@ -134,7 +138,7 @@ export default function Editcontent() {
         <div className='flex justify-center items-center  p-4 '>
           <form onSubmit={handlesubmit} className="w-[984px] relative" >
             <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
-            <button type='submit' className='btn btn-neutral'>Submit</button>
+            <button type='submit' className='btn btn-neutral mt-4'>Submit</button>
           </form>
 
         </div>

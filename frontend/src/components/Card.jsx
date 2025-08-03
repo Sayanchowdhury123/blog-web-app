@@ -9,6 +9,7 @@ import toast from "react-hot-toast"
 import { FcApprove } from "react-icons/fc";
 import { FcDisapprove } from "react-icons/fc";
 import { MdEdit } from "react-icons/md";
+import { MdOutlinePreview } from "react-icons/md";
 
 export default function Card() {
     const { fetchall, blogs, approveblog, bid, setbid ,bloginfo} = useEditorstore();
@@ -97,9 +98,9 @@ export default function Card() {
                             <div className="card-actions justify-end">
                                 <button className="btn btn-sm btn-secondary"  onClick={() => navigate(`/blog/${b._id}`, {
                                 state: { blogid: b._id }
-                            })}>Review Content</button>
+                            })}><MdOutlinePreview/>Review Content</button>
                                 <button className="btn btn-sm " onClick={() => navigate(`/edit-content/${b._id}`, {
-                                    state: { t: b }
+                                    state: { t: b , editor: "editcontent" }
                                 })}><MdEdit/>Edit Content</button>
 
                                 {b?.approval ? (
