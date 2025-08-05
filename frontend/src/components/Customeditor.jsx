@@ -191,52 +191,79 @@ export default function Customeditor({ intialContent = "", onContentChange }) {
           </select>
         </div>
 
-         <div className="tooltip" data-tip="Font Size">
-  <select name="" id="" onChange={(e) => editor.chain().focus().setFontSize(e.target.value).run()}
-          value={editor.getAttributes("textStyle").fontSize || "16px"}
-          className="select" >
-          <option value="12px">12px</option>
-          <option value="16px">16px</option>
-          <option value="20px">20px</option>
-          <option value="24px">24px</option>
-             <option value="28px">28px</option>
-                <option value="32px">32px</option>
-        </select>
-         </div>
+        <div className="tooltip" data-tip="Font Size">
+          <select name="" id="" onChange={(e) => editor.chain().focus().setFontSize(e.target.value).run()}
+            value={editor.getAttributes("textStyle").fontSize || "16px"}
+            className="select" >
+            <option value="12px">12px</option>
+            <option value="16px">16px</option>
+            <option value="20px">20px</option>
+            <option value="24px">24px</option>
+            <option value="28px">28px</option>
+            <option value="32px">32px</option>
+          </select>
+        </div>
 
-      
+
+        <div className="tooltip" data-tip="Font Weight">
+          <select onChange={(e) => {
+              const fontWeight = e.target.value;
+              if (fontWeight === "normal") {
+
+                editor.chain().focus().setMark("textStyle", { fontWeight: null }).run();
+              } else {
+                editor.chain().focus().setMark("textStyle", { fontWeight }).run();
+              }
+            }}
+            value={editor.getAttributes('textStyle').fontWeight || 'normal'}
+            className="select" >
+          
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+            <option value="600">600</option>
+            <option value="700">700</option>
+            <option value="800">800</option>
+            <option value="900">900</option>
+          </select>
+
+        </div>
+
+
 
 
         <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()} className="tooltip " data-tip="Align Left">
-          <AlignLeftIcon className={editor.isActive({textAlign: "left"}) ? "text-blue-500" : ""} />
+          <AlignLeftIcon className={editor.isActive({ textAlign: "left" }) ? "text-blue-500" : ""} />
         </button>
 
         <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()} className="tooltip " data-tip="Align Center">
-          <AlignCenterIcon className={editor.isActive({textAlign: "center"}) ? "text-blue-500" : ""} />
+          <AlignCenterIcon className={editor.isActive({ textAlign: "center" }) ? "text-blue-500" : ""} />
         </button>
 
         <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()} className="tooltip " data-tip="Align Right">
-          <AlignRightIcon className={editor.isActive({textAlign: "right"}) ? "text-blue-500" : ""} />
+          <AlignRightIcon className={editor.isActive({ textAlign: "right" }) ? "text-blue-500" : ""} />
         </button>
 
 
- <div className="tooltip" data-tip="Highlight">
+        <div className="tooltip" data-tip="Highlight">
           <select onChange={(e) => {
-          const color = e.target.value;
-          if (color === "none") {
-            editor.chain().focus().unsetHighlight().run()
-          } else {
-            editor.chain().focus().toggleHighlight({ color }).run()
-          }
-        }} value={editor.getAttributes("highlight").color || "none"} className="select ">
-          <option value="none">No Highlight</option>
-          <option value="#fff23f">Yellow</option>
-          <option value="#ffb7b7">Red</option>
-          <option value="#a0e7a0">Green</option>
-          <option value="#95e7ff">Blue</option>
-          <option value="fa6ff7">Pink</option>
-        </select>
- </div>
+            const color = e.target.value;
+            if (color === "none") {
+              editor.chain().focus().unsetHighlight().run()
+            } else {
+              editor.chain().focus().toggleHighlight({ color }).run()
+            }
+          }} value={editor.getAttributes("highlight").color || "none"} className="select ">
+            <option value="none">No Highlight</option>
+            <option value="#fff23f">Yellow</option>
+            <option value="#ffb7b7">Red</option>
+            <option value="#a0e7a0">Green</option>
+            <option value="#95e7ff">Blue</option>
+            <option value="fa6ff7">Pink</option>
+          </select>
+        </div>
 
 
 

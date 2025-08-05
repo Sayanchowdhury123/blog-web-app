@@ -68,10 +68,7 @@ export default function Sidebar() {
           <p>Saved blogs</p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <IoLogOutSharp/>
-          <button onClick={logout}>logout</button>
-        </div>
+       
 
         { user.role === "editor" ? (
           <div className="flex items-center gap-2" onClick={(e) => {
@@ -80,9 +77,15 @@ export default function Sidebar() {
             setshownav()
           }} >
             <FaUserEdit/>
-            <p>Editor</p>
+            <p>Blog Approval</p>
           </div>
         ) : ""}
+
+
+         <div className="flex items-center gap-2">
+          <IoLogOutSharp/>
+          <button onClick={logout}>logout</button>
+        </div>
 
       </div>
     </motion.div>

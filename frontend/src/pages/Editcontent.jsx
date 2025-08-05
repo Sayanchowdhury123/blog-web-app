@@ -136,7 +136,7 @@ export default function Editcontent() {
         </div>
 
         <div className='flex justify-center items-center  p-4 '>
-          <form onSubmit={handlesubmit} className="w-[984px] relative" >
+          <form onSubmit={handlesubmit} className=" relative" >
             <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
             <button type='submit' className='btn btn-neutral mt-4'>Submit</button>
           </form>
