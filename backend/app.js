@@ -7,7 +7,7 @@ const fileupload = require("express-fileupload")
 const blogroutes = require("./routes/blogroutes")
 const editorroutes = require("./routes/editorroutes")
 const profileroutes = require("./routes/userroutes")
-
+const homeroutes = require("./routes/homeroutes")
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -25,7 +25,7 @@ app.use("/api/auth", authroutes)
 app.use("/api/blogs", blogroutes)
 app.use("/api/editor",editorroutes)
 app.use("/api/profile", profileroutes)
-
+app.use("/api/home",homeroutes)
 
 
 module.exports = app;

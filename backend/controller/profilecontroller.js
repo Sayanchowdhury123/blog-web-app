@@ -4,6 +4,7 @@ const bcrypts = require("bcryptjs");
 
 exports.getprofile = async (req, res) => {
   const { id } = req.params;
+  
   try {
     if (req.user.id !== id) {
       return res.status(400).json({ msg: "unauthorized" });
@@ -12,8 +13,9 @@ exports.getprofile = async (req, res) => {
     if (!user) {
       return res.status(400).json({ msg: "user not found" });
     }
-
+     
     res.status(200).json(user);
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
@@ -27,14 +29,14 @@ exports.updateprofile = async (req, res) => {
       return res.status(400).json({ msg: "unauthorized" });
     }
 
-    const { name, email } = req.body;
+    const { name } = req.body;
     const user = await User.findById(id);
     if (!user) {
       return res.status(400).json({ msg: "user not found" });
     }
-
+    
     if (name) user.name = name;
-    if (email) user.email = email;
+
 
     const file = req.files?.profilepic;
 
@@ -55,12 +57,14 @@ exports.updateprofile = async (req, res) => {
         return res.status(500).json({ msg: "image upload error" });
       }
     }
-    user.profilepic = result.secure_url;
-    user.pid = result.public_id;
+    user.profilepic = result?.secure_url || user.profilepic;
+    user.pid = result?.public_id || user.pid;
 
-    const updateduser = await user.save();
+     await user.save();
 
-    res.status(200).json(updateduser);
+     console.log(user);
+  
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });

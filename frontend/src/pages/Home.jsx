@@ -4,6 +4,7 @@ import useAuthstore from "../store/authstore"
 import useEditorstore from "@/store/editorstore"
 import { useEffect, useState } from "react"
 import Card from "@/components/Card"
+import Homecards from "@/components/Homecards"
 
 
 export default function Home() {
@@ -50,7 +51,8 @@ export default function Home() {
                      <h1 className="text-3xl text-center font-semibold">Explore Blogs</h1>
                 </div>
 
-
+               
+               <Homecards/>
                
 
             </div>

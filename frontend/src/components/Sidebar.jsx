@@ -9,17 +9,18 @@ import { useNavigate } from "react-router-dom";
 import { IoMdCreate } from "react-icons/io";
 import { IoLogOutSharp } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
+import useProfilestore from "@/store/profilestore";
 
 export default function Sidebar() {
   const navigate = useNavigate()
   const { shownav, user, setshownav, logout } = useAuthstore()
-
-
+  const {userinfo} = useProfilestore()
+  
   return (
     <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, type:"spring", stiffness:100 }} className={`bg-base-200 p-4   w-[300px] h-screen z-50 absolute right-0  `}>
       <div className=" flex justify-between   mb-6">
         <div className="flex  items-center gap-2">
-          <img src="ff" alt="jj" className="w-8 h-8 bg-black rounded-full" />
+          <img src={userinfo.profilepic} alt="profile picture" className="w-8 h-8  rounded-full" />
           <div>
             <p className="font-bold">{user.name}</p>
             <p className="font-semibold text-sm">{user.email}</p>
@@ -58,7 +59,11 @@ export default function Sidebar() {
         ) : ""}
 
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2"  onClick={(e) => {
+               e.stopPropagation()
+            navigate("/profile")
+            setshownav()
+          }}>
           <FaUserCircle />
           <p>Profile</p>
         </div>

@@ -16,6 +16,7 @@ import Editcontent from './pages/Editcontent';
 import Blog from './components/Blog';
 import Blogpage from './pages/Blogpage';
 import Editorpage from './pages/Editorpage';
+import Userprofile from './pages/userprofile';
 function App() {
 
 
@@ -33,6 +34,7 @@ function App() {
           <Route path='/edit-content/:blogid' element={<Privateroute><Editcontent/></Privateroute>} />
           <Route path='/blog/:blogid' element={<Privateroute><Blogpage/></Privateroute>} />
           <Route path='/editor-page' element={<Privateroute><Editorpage/></Privateroute>} />
+          <Route path='/profile' element={<Privateroute><Userprofile/></Privateroute>} />
         </Routes>
       </Router>
     </>
