@@ -5,33 +5,39 @@ import useEditorstore from "@/store/editorstore"
 import { useEffect, useState } from "react"
 import Card from "@/components/Card"
 import Homecards from "@/components/Homecards"
+import useHomestore from "@/store/homestore"
+import Loadingscrenn from "@/components/Loadingscreen"
+import useProfilestore from "@/store/profilestore"
 
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
+    const{fetchinfo} = useHomestore();
+     const {userinfo} = useProfilestore()
     
     const {fetchall} = useEditorstore()
      const [loading, setloading] = useState(false)
       const navigate = useNavigate()
     
-      const fetchl = async () => {
+        const fetchl = async () => {
         setloading(true)
         try {
-          await fetchall()
+            await fetchinfo()
         } catch (error) {
-          console.log(error);
+            console.log(error);
         } finally {
-          setloading(false)
+            setloading(false)
         }
-      }
+    }
 
-      useEffect(() => {
+    useEffect(() => {
         fetchl()
-      },[])
+    }, [])
 
+if(loading) return <Loadingscrenn/>
     return (
 
-        <div className="h-screen  relative ">
+        <div className="  relative bg-base-100 ">
             <Sidebar />
 
             <div className="space-y-6">
@@ -43,12 +49,12 @@ export default function Home() {
                         e.stopPropagation()
                         navigate("/home")
                     }}>  BlogApp</h1>
-                    <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+                         <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
                 </div>
 
 
                 <div>
-                     <h1 className="text-3xl text-center font-semibold">Explore Blogs</h1>
+                     <h1 className="text-3xl text-center font-semibold ">Explore Blogs</h1>
                 </div>
 
                

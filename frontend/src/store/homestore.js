@@ -7,15 +7,11 @@ const localuser = JSON.parse(ls);
 
 
 const useHomestore = create((set) => ({
-  allblogs: [],
+  blogs: [],
   fetchinfo: async () => {
-    const res = await api.get(`/home/allblogs`, {
-      headers: {
-        Authorization: `Bearer ${localuser.token}`,
-      },
-    });
+    const res = await api.get(`/home/allblogs`);
 
-    set({ allblogs: res.data });
+    set({ blogs: res.data });
   },
   showedit: false,
   setshowedit: () => {

@@ -7,6 +7,6 @@ const { authmiddleware } = require("../middleware/auth");
 const cloudinary = require("cloudinary").v2;
 
 
-router.get("/allblogs",authmiddleware,getallblogs)
+router.get("/allblogs",getallblogs)
 
 module.exports = router;
