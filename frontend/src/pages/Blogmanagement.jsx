@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import Loading2 from "../components/Loadin2";
 import Editblog from "../components/Editblog";
 import { useLocation, useNavigate } from "react-router-dom";
+import useProfilestore from "@/store/profilestore";
 
 
 export default function Blogmanage() {
@@ -21,6 +22,7 @@ export default function Blogmanage() {
   const [l, setl] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+  const {fetchuser,userinfo} = useProfilestore()
 
   const fb = async () => {
   
@@ -42,6 +44,7 @@ export default function Blogmanage() {
 
   useEffect(() => {
     fb()
+    fetchuser()
   
   }, [])
 
@@ -120,7 +123,7 @@ export default function Blogmanage() {
                   e.stopPropagation()
                   navigate("/home")
                 }}>  BlogApp</h1>
-                <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+                <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
             </div>
 
 

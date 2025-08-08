@@ -9,12 +9,12 @@ import { useEffect, useState } from "react"
 
 export default function Userprofile() {
     const [loading, setloading] = useState(false)
-    const { fetchinfo, userinfo, setshowedit, showedit } = useProfilestore()
+    const { fetchuser, userinfo, setshowedit, showedit } = useProfilestore()
 
     const fetchl = async () => {
         setloading(true)
         try {
-            await fetchinfo()
+            await fetchuser()
         } catch (error) {
             console.log(error);
         } finally {

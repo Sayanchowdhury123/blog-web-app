@@ -13,7 +13,7 @@ import useProfilestore from "@/store/profilestore"
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
     const{fetchinfo} = useHomestore();
-     const {userinfo} = useProfilestore()
+     const {userinfo,fetchuser} = useProfilestore()
     
     const {fetchall} = useEditorstore()
      const [loading, setloading] = useState(false)
@@ -32,6 +32,7 @@ export default function Home() {
 
     useEffect(() => {
         fetchl()
+        fetchuser()
     }, [])
 
 if(loading) return <Loadingscrenn/>

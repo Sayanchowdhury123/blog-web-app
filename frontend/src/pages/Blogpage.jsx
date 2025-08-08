@@ -3,6 +3,7 @@ import Blog from "@/components/Blog";
 import Loadingscrenn from "@/components/Loadingscreen";
 import Sidebar from "@/components/Sidebar";
 import useAuthstore from "@/store/authstore";
+import useProfilestore from "@/store/profilestore";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -15,7 +16,7 @@ export default function Blogpage() {
   const { blogid } = location.state || {};
   const { user } = useAuthstore()
   const navigate = useNavigate()
-
+   const {fetchuser,userinfo} = useProfilestore()
   const fb = async () => {
 
     try {
@@ -37,6 +38,7 @@ export default function Blogpage() {
 
   useEffect(() => {
     fb()
+    fetchuser()
   }, [])
 
 
@@ -55,7 +57,7 @@ export default function Blogpage() {
             e.stopPropagation()
             navigate("/home")
           }}>  BlogApp</h1>
-          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+          <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
         </div>
 
         <Blog blog={blog} />

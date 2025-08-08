@@ -8,7 +8,7 @@ const localuser = JSON.parse(ls);
 
 const useProfilestore = create((set) => ({
   userinfo: {},
-  fetchinfo: async () => {
+  fetchuser: async () => {
     const res = await api.get(`/profile/${localuser.id}`, {
       headers: {
         Authorization: `Bearer ${localuser.token}`,

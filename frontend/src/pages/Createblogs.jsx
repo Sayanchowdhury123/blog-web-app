@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import useAuthstore from "../store/authstore";
 import { generatebog } from "../services/openrouter";
@@ -11,6 +11,7 @@ import api from "../axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loadingscrenn from "../components/Loadingscreen";
+import useProfilestore from "@/store/profilestore";
 
 export default function Createblogs() {
     const { logout, setshownav, user } = useAuthstore()
@@ -22,7 +23,7 @@ export default function Createblogs() {
     const [title, settitle] = useState("")
     const navigate = useNavigate()
     const [l, setl] = useState(false)
-
+ const {fetchuser,userinfo} = useProfilestore()
 
     const typewritereffect = (text) => {
         let i = 0;
@@ -128,6 +129,10 @@ export default function Createblogs() {
         }
     }
 
+    useEffect(() => {
+   fetchuser()
+    },[])
+
     if (l) return <Loadingscrenn />
 
     return (
@@ -144,7 +149,7 @@ export default function Createblogs() {
             e.stopPropagation()
             navigate("/home")
           }}>  BlogApp</h1>
-          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+          <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
         </div>
         
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">

@@ -4,6 +4,7 @@ import Loadingscrenn from "@/components/Loadingscreen";
 import Sidebar from "@/components/Sidebar";
 import useAuthstore from "@/store/authstore";
 import useEditorstore from "@/store/editorstore"
+import useProfilestore from "@/store/profilestore";
 import { useEffect, useState } from "react";
 import { useActionData, useNavigate } from "react-router-dom";
 
@@ -13,6 +14,7 @@ export default function Editorpage() {
   const { setshownav, user } = useAuthstore()
   const [loading, setloading] = useState(false)
   const navigate = useNavigate()
+   const {fetchuser,userinfo} = useProfilestore()
 
   const fetchl = async () => {
     setloading(true)
@@ -29,6 +31,7 @@ export default function Editorpage() {
   useEffect(() => {
 
     fetchl()
+    fetchuser()
   }, [])
 
 
@@ -49,7 +52,7 @@ export default function Editorpage() {
             e.stopPropagation()
             navigate("/home")
           }}>  BlogApp</h1>
-          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+          <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
         </div>
 
 

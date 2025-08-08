@@ -35,6 +35,7 @@ import { LineHeight } from 'reactjs-tiptap-editor/lineheight';
 import Loading2 from '@/components/Loadin2'
 import api from '@/axios'
 import toast from 'react-hot-toast'
+import useProfilestore from '@/store/profilestore'
 
 
 
@@ -52,7 +53,7 @@ export default function Editcontent() {
   const [l, setl] = useState(false)
   const navigate = useNavigate()
   const { setshownav } = useAuthstore()
-
+ const {fetchuser,userinfo} = useProfilestore()
 
 
 
@@ -111,6 +112,10 @@ export default function Editcontent() {
     }
   }
 
+  useEffect(() => {
+  fetchuser()
+  },[])
+
   if(l) return <Loading2/>
 
   return (
@@ -129,7 +134,7 @@ export default function Editcontent() {
             e.stopPropagation()
             navigate("/home")
           }}>  BlogApp</h1>
-          <img src="jj" alt="img" className="w-8 h-8 bg-black rounded-full" />
+          <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
         </div>
         <div className=''>
           <h1 className="text-3xl text-center font-semibold">Edit Content</h1>
