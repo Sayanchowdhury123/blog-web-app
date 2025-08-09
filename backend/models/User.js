@@ -9,6 +9,8 @@ const userschema = new mogoose.Schema({
     googleid: String,
     profilepic: {type: String},
     pid: {type: String},
+    savedblogs:[{ type: mogoose.Schema.Types.ObjectId,ref:"Blog"},],
+    
 },{timestamps: true})
 
 module.exports = mogoose.model("User", userschema)

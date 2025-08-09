@@ -68,7 +68,11 @@ export default function Sidebar() {
           <p>Profile</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" onClick={(e) => {
+               e.stopPropagation()
+            navigate("/saved-blogs")
+            setshownav()
+          }}> 
           <IoSaveSharp />
           <p>Saved blogs</p>
         </div>

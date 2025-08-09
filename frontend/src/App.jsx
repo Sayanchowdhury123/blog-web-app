@@ -17,6 +17,7 @@ import Blog from './components/Blog';
 import Blogpage from './pages/Blogpage';
 import Editorpage from './pages/Editorpage';
 import Userprofile from './pages/userprofile';
+import Saved from './pages/Saved';
 function App() {
 
 
@@ -35,6 +36,7 @@ function App() {
           <Route path='/blog/:blogid' element={<Privateroute><Blogpage/></Privateroute>} />
           <Route path='/editor-page' element={<Privateroute><Editorpage/></Privateroute>} />
           <Route path='/profile' element={<Privateroute><Userprofile/></Privateroute>} />
+          <Route path='/saved-blogs' element={<Privateroute><Saved/></Privateroute>} />
         </Routes>
       </Router>
     </>

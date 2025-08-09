@@ -20,6 +20,7 @@ import { FaRegShareSquare } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
 import Loadingscrenn from "./Loadingscreen";
 import useAuthstore from "@/store/authstore";
+import useProfilestore from "@/store/profilestore";
 
 
 
@@ -29,6 +30,8 @@ export default function Homecards() {
     const navigate = useNavigate()
     const { togglelike,removelike } = useHomestore()
     const { user } = useAuthstore()
+    const {userinfo,tblog} = useProfilestore()
+    
     
     const getlike = async (id) => {
         setloading(true)
@@ -54,6 +57,17 @@ export default function Homecards() {
         }
     }
 
+      const toggleblog = async (blogid) => {
+        
+        try {
+            await tblog(blogid)
+           
+            
+        } catch (error) {
+            console.log(error);
+        } 
+    }
+
 
 
     return (
@@ -65,7 +79,8 @@ export default function Homecards() {
 
                         const approved = b.approval;
                         const isliked = b?.likes?.includes(user.id)
-                        console.log(isliked);
+                        const issaved = userinfo?.savedblogs?.includes(b._id)
+                    
                         return (
                             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} >
                                 {
@@ -132,10 +147,20 @@ export default function Homecards() {
                                                 <div>
                                                     <button><FaRegShareSquare className="text-2xl" /></button>
                                                 </div>
-                                                <div>
-                                                    <button><FaRegBookmark className="text-2xl" /></button>
-
-                                                </div>
+                                                <motion.div   
+                                                key={issaved}
+                                                initial={{scale:0.5}}
+                                                animate={{scale:1}} 
+                                                transition={{type:"spring",stiffness:300}}
+                                                >
+                                                  {userinfo?.savedblogs?.includes(b._id) ? (
+                                                     <motion.button whileTap={{scale:1.3}} whileHover={{scale:1.2}} animate={{color: "#A9A9A9"}} transition={{type:"spring",stiffness:300}} onClick={() => toggleblog(b._id)} ><FaBookmark className="text-2xl"  /></motion.button>
+                                                  ) : (
+                                                      <motion.button whileTap={{scale:1.2}} whileHover={{scale:1.1}} animate={{color:"#555"}} transition={{type:"spring",stiffness:300}} onClick={() => toggleblog(b._id)} ><FaRegBookmark className="text-2xl"   /></motion.button>
+                                                  )}
+                                                  
+                        
+                                                </motion.div>
 
                                             </div>
 
