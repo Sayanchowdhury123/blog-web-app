@@ -55,7 +55,7 @@ export default function Editcontent() {
   const { setshownav } = useAuthstore()
  const {fetchuser,userinfo} = useProfilestore()
 
-
+   console.log(blogtext);
 
 
 
@@ -63,7 +63,7 @@ export default function Editcontent() {
     e.preventDefault()
     setl(true)
 
-
+    console.log(blogtext);
 
     
     try {
@@ -143,7 +143,10 @@ export default function Editcontent() {
         <div className='flex justify-center items-center  p-4 '>
           <form onSubmit={handlesubmit} className=" relative" >
             <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
-            <button type='submit' className='btn btn-neutral mt-4'>Submit</button>
+            <div className='text-center'>
+                 <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
+            </div>
+         
           </form>
 
         </div>

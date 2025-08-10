@@ -143,10 +143,15 @@ export default function Card({ type }) {
 
                                 </div>
                             )}
-
-                            <div className="card-actions justify-end">
+                         
+                         {
+                            savedpage && (
+                                  <div className="card-actions justify-end">
                                 <button className="btn btn-error" onClick={() => tblog(b._id)}><IoMdRemoveCircle/>Remove</button>
                             </div>
+                            )
+                         }
+                           
 
                         
 

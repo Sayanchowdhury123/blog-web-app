@@ -38,7 +38,7 @@ export default function Blog({ blog }) {
 
           <div dangerouslySetInnerHTML={{
             __html: blog?.blogtext
-          }} className="prose max-w-none cursor-pointer" >
+          }} className=" prose max-w-none cursor-pointer" >
 
 
           </div>

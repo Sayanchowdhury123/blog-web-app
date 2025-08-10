@@ -74,12 +74,13 @@ exports.editblog = async (req, res) => {
     const { title } = req.body;
      const tags = JSON.parse(req.body.tags)
      
-   
-    
-
+      const b = await Blogs.findById(blogid)
+      if (!b) {
+      return res.status(400).json({ msg: "blog not found" });
+    }
     
     const file = req.files?.coverimage;
-
+  
 
     let result;
     if (file) {
@@ -157,12 +158,13 @@ const sanitizedContent =  santizehtml(blogtext, {
   allowedTags: [
     'p', 'blockquote', 'strong', 'b', 'i', 'em', 'u', 's', 'strike', 'code',
     'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'span',
-    'sub', 'sup', 'br'
+    'sub', 'sup', 'br','mark'
   ],
   allowedAttributes: {
     a: ['href', 'target', 'rel'],
     span: ['style'],
     '*': ['style'], 
+    mark: ['data-color','style'],
   },
   allowedStyles: {
     '*': {

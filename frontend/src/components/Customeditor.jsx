@@ -74,7 +74,7 @@ export default function Customeditor({ intialContent = "", onContentChange }) {
   function Toolbar1() {
     if (!editor) return null;
     return (
-      <div className="flex gap-3 p-4 items-center">
+      <div className="flex gap-3 justify-between p-4 items-center">
         <button type="button" onClick={() => {
           editor.chain().focus().toggleBold().run()
         }} className="tooltip" data-tip="Bold"  >
@@ -205,31 +205,7 @@ export default function Customeditor({ intialContent = "", onContentChange }) {
         </div>
 
 
-        <div className="tooltip" data-tip="Font Weight">
-          <select onChange={(e) => {
-              const fontWeight = e.target.value;
-              if (fontWeight === "normal") {
-
-                editor.chain().focus().setMark("textStyle", { fontWeight: null }).run();
-              } else {
-                editor.chain().focus().setMark("textStyle", { fontWeight }).run();
-              }
-            }}
-            value={editor.getAttributes('textStyle').fontWeight || 'normal'}
-            className="select" >
-          
-            <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="300">300</option>
-            <option value="400">400</option>
-            <option value="500">500</option>
-            <option value="600">600</option>
-            <option value="700">700</option>
-            <option value="800">800</option>
-            <option value="900">900</option>
-          </select>
-
-        </div>
+     
 
 
 
@@ -279,7 +255,7 @@ export default function Customeditor({ intialContent = "", onContentChange }) {
           <Toolbar1 />
         </div>
 
-        <EditorContent editor={editor} className="p-4 h-[60vh] overflow-y-hidden" />
+        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-y-hidden" />
 
       </div>
 

@@ -4,3 +4,13 @@
 }
  @import './styles/_variables.scss';
  @import './styles/_keyframe-animations.scss';
+
+ .prose li{
+  list-style-type: disc;
+  margin-left: 1rem;
+ }
+
+ .prose ol{
+  list-style-type:decimal;
+  margin-left: 1rem;
+ }
