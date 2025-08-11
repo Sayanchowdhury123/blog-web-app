@@ -213,3 +213,44 @@ exports.fetchblog = async (req,res) => {
   }
 }
 
+
+exports.addview = async (req,res) => {
+   const { blogid,userid } = req.params;
+   try {
+    
+    if(!userid){
+        return res.status(400).json({ msg: "invalid id" });
+    }
+
+      if (req.user.id !== userid) {
+      return res.status(400).json({ msg: "unauthorized" });
+    }
+
+         const b = await Blogs.findById(blogid)
+      if (!b) {
+      return res.status(400).json({ msg: "blog not found" });
+    }
+
+     const alreadyviewed = b.views.some(
+      (id) => id.toString() === userid.toString()
+    );
+ 
+
+    if(alreadyviewed){
+      return res.status(200).json("already viewed")
+    }
+     
+    b.views.push(userid)
+    
+
+    await b.save()
+    await b.populate("views")
+
+    res.status(200).json("view added")
+
+   } catch (error) {
+     console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+   }
+}
+

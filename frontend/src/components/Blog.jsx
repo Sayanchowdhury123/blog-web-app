@@ -5,10 +5,44 @@ import { useLocation } from "react-router-dom"
 import { motion } from "framer-motion";
 import Loadingscrenn from "./Loadingscreen";
 import Loading2 from "./Loadin2";
+import useProfilestore from "@/store/profilestore";
 
 
 
 export default function Blog({ blog }) {
+const {user} = useAuthstore()
+ const {fetchuser,userinfo} = useProfilestore()
+
+ 
+
+   const addview = async () => {
+    try {
+      if(blog._id && user){
+        const res = await api.patch(`/blogs/${blog?._id}/add-view/${user.id}`,{},{
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        }
+      })
+      }
+      
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+  
+    if(user?.id && blog?._id){
+        addview()   
+    }
+
+  },[blog._id,user?._id])
+
+
+
+
+  console.log(blog?.views);
 
 
   return (

@@ -85,13 +85,15 @@ export default function Homecards() {
                             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} >
                                 {
                                     approved && (
-                                        <div className="">
+                                        <div className="" onClick={() => navigate(`/blog/${b._id}`, {
+                                        state: { blogid: b._id }
+                                    })}>
 
                                             <div className="flex items-center gap-4 p-2 mt-2">
                                                 <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
                                                 <div>
                                                     <h1 className="text-xl font-semibold">{b?.creator.name}</h1>
-                                                    <p className="text-sm text-gray-600">{b?.creator?.role}</p>
+                                                     <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>
                                                 </div>
 
                                             </div>
@@ -107,8 +109,9 @@ export default function Homecards() {
 
 
                                             <div className="px-4 mt-2  flex justify-between">
-                                                <div>
+                                                <div className="flex items-center gap-2">
                                                     <p>{b?.likes?.length} Likes</p>
+                                                    <p>{b?.views?.length || 0} Views</p>
                                                 </div>
 
                                                 <div>
@@ -133,10 +136,16 @@ export default function Homecards() {
                                                 >
                                                     {isliked ? (
                                                         <motion.button whileTap={{scale:1.3}} whileHover={{scale:1.2}} animate={{color: "#e0245e"}} transition={{type:"spring",stiffness:300}}
-                                                         onClick={() => rlike(b._id)}><FaHeart className="text-2xl" /></motion.button>
+                                                         onClick={(e) =>{
+                                                            e.stopPropagation()
+                                                        rlike(b._id)
+                                                         } }><FaHeart className="text-2xl" /></motion.button>
                                                     ) : (
                                                         <motion.button whileTap={{scale:1.2}} whileHover={{scale:1.1}} animate={{color:"#555"}} transition={{type:"spring",stiffness:300}}
-                                                         onClick={() => getlike(b._id)}><FaRegHeart className="text-2xl" /></motion.button>
+                                                         onClick={(e) => {
+                                                            e.stopPropagation()
+                                                          getlike(b._id)
+                                                         } }><FaRegHeart className="text-2xl" /></motion.button>
                                                     )}
 
                                                 </motion.div>
@@ -147,20 +156,24 @@ export default function Homecards() {
                                                 <div>
                                                     <button><FaRegShareSquare className="text-2xl" /></button>
                                                 </div>
-                                                <motion.div   
-                                                key={issaved}
-                                                initial={{scale:0.5}}
-                                                animate={{scale:1}} 
-                                                transition={{type:"spring",stiffness:300}}
-                                                >
-                                                  {userinfo?.savedblogs?.includes(b._id) ? (
-                                                     <motion.button whileTap={{scale:1.3}} whileHover={{scale:1.2}} animate={{color: "#A9A9A9"}} transition={{type:"spring",stiffness:300}} onClick={() => toggleblog(b._id)} ><FaBookmark className="text-2xl"  /></motion.button>
+                                                
+                                                 <div>
+                                                          {userinfo?.savedblogs?.includes(b._id) ? (
+                                                     <motion.button whileTap={{scale:1.3}} whileHover={{scale:1.2}} animate={{color: "#A9A9A9"}} transition={{type:"spring",stiffness:300}} onClick={(e) =>{
+                                                        e.stopPropagation()
+                                                    toggleblog(b._id)
+                                                     } } ><FaBookmark className="text-2xl"  /></motion.button>
                                                   ) : (
-                                                      <motion.button whileTap={{scale:1.2}} whileHover={{scale:1.1}} animate={{color:"#555"}} transition={{type:"spring",stiffness:300}} onClick={() => toggleblog(b._id)} ><FaRegBookmark className="text-2xl"   /></motion.button>
+                                                      <motion.button whileTap={{scale:1.2}} whileHover={{scale:1.1}} animate={{color:"#555"}} transition={{type:"spring",stiffness:300}} onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        toggleblog(b._id)
+                                                      } } ><FaRegBookmark className="text-2xl"   /></motion.button>
                                                   )}
+                                                 </div>
+                                                 
                                                   
                         
-                                                </motion.div>
+                                                
 
                                             </div>
 

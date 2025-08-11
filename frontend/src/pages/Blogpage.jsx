@@ -16,6 +16,7 @@ export default function Blogpage() {
   const { blogid } = location.state || {};
   const { user } = useAuthstore()
   const navigate = useNavigate()
+  const[viewed,setviewed] = useState(false)
    const {fetchuser,userinfo} = useProfilestore()
   const fb = async () => {
 
@@ -27,7 +28,7 @@ export default function Blogpage() {
         }
       })
       setblog(res.data)
-      console.log(res.data);
+     
     } catch (error) {
       console.log(error);
     } finally {
@@ -35,11 +36,15 @@ export default function Blogpage() {
     }
   }
 
+ 
+
 
   useEffect(() => {
     fb()
     fetchuser()
   }, [])
+
+
 
 
   if (loading) return <Loadingscrenn />
