@@ -21,6 +21,7 @@ import { FaRegBookmark } from "react-icons/fa";
 import Loadingscrenn from "./Loadingscreen";
 import useAuthstore from "@/store/authstore";
 import useProfilestore from "@/store/profilestore";
+import Comments from "./Comments";
 
 
 
@@ -28,16 +29,16 @@ export default function Homecards() {
     const [loading, setloading] = useState(false)
     const { blogs, fetchinfo } = useHomestore()
     const navigate = useNavigate()
-    const { togglelike,removelike } = useHomestore()
+    const { togglelike, removelike, setcomid, comid } = useHomestore()
     const { user } = useAuthstore()
-    const {userinfo,tblog} = useProfilestore()
-    
-    
+    const { userinfo, tblog } = useProfilestore()
+
+
     const getlike = async (id) => {
         setloading(true)
         try {
             await togglelike(id)
-           
+
         } catch (error) {
             console.log(error);
         } finally {
@@ -49,7 +50,7 @@ export default function Homecards() {
         setloading(true)
         try {
             await removelike(id)
-            
+
         } catch (error) {
             console.log(error);
         } finally {
@@ -57,18 +58,19 @@ export default function Homecards() {
         }
     }
 
-      const toggleblog = async (blogid) => {
-        
+    const toggleblog = async (blogid) => {
+
         try {
             await tblog(blogid)
-           
-            
+
+
         } catch (error) {
             console.log(error);
-        } 
+        }
     }
 
 
+   // console.log(comid);
 
     return (
 
@@ -80,20 +82,19 @@ export default function Homecards() {
                         const approved = b.approval;
                         const isliked = b?.likes?.includes(user.id)
                         const issaved = userinfo?.savedblogs?.includes(b._id)
-                    
+
                         return (
                             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} >
                                 {
                                     approved && (
-                                        <div className="" onClick={() => navigate(`/blog/${b._id}`, {
-                                        state: { blogid: b._id }
-                                    })}>
+                                        <div className="">
+
 
                                             <div className="flex items-center gap-4 p-2 mt-2">
                                                 <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
                                                 <div>
                                                     <h1 className="text-xl font-semibold">{b?.creator.name}</h1>
-                                                     <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>
+                                                    <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>
                                                 </div>
 
                                             </div>
@@ -104,7 +105,11 @@ export default function Homecards() {
                                             <figure>
                                                 <img
                                                     src={b?.coverimage}
-                                                    alt="Shoes" />
+                                                    alt="Shoes"
+                                                    onClick={() => navigate(`/blog/${b._id}`, {
+                                                        state: { blogid: b._id }
+                                                    })}
+                                                />
                                             </figure>
 
 
@@ -129,57 +134,70 @@ export default function Homecards() {
                                             <div className="flex justify-between p-4">
 
                                                 <motion.div
-                                                key={isliked}
-                                                initial={{scale:0.5}}
-                                                animate={{scale:1}} 
-                                                transition={{type:"spring",stiffness:300}}
+                                                    key={isliked}
+                                                    initial={{ scale: 0.5 }}
+                                                    animate={{ scale: 1 }}
+                                                    transition={{ type: "spring", stiffness: 300 }}
                                                 >
                                                     {isliked ? (
-                                                        <motion.button whileTap={{scale:1.3}} whileHover={{scale:1.2}} animate={{color: "#e0245e"}} transition={{type:"spring",stiffness:300}}
-                                                         onClick={(e) =>{
-                                                            e.stopPropagation()
-                                                        rlike(b._id)
-                                                         } }><FaHeart className="text-2xl" /></motion.button>
+                                                        <motion.button whileTap={{ scale: 1.3 }} whileHover={{ scale: 1.2 }} animate={{ color: "#e0245e" }} transition={{ type: "spring", stiffness: 300 }}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                rlike(b._id)
+                                                            }}><FaHeart className="text-2xl" /></motion.button>
                                                     ) : (
-                                                        <motion.button whileTap={{scale:1.2}} whileHover={{scale:1.1}} animate={{color:"#555"}} transition={{type:"spring",stiffness:300}}
-                                                         onClick={(e) => {
-                                                            e.stopPropagation()
-                                                          getlike(b._id)
-                                                         } }><FaRegHeart className="text-2xl" /></motion.button>
+                                                        <motion.button whileTap={{ scale: 1.2 }} whileHover={{ scale: 1.1 }} animate={{ color: "#555" }} transition={{ type: "spring", stiffness: 300 }}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                getlike(b._id)
+                                                            }}><FaRegHeart className="text-2xl" /></motion.button>
                                                     )}
 
                                                 </motion.div>
 
                                                 <div>
-                                                    <button><FaRegComment className="text-2xl" /></button>
+                                                    <button onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setcomid(b._id)
+                                                    }}><FaRegComment className="text-2xl" /></button>
                                                 </div>
                                                 <div>
                                                     <button><FaRegShareSquare className="text-2xl" /></button>
                                                 </div>
-                                                
-                                                 <div>
-                                                          {userinfo?.savedblogs?.includes(b._id) ? (
-                                                     <motion.button whileTap={{scale:1.3}} whileHover={{scale:1.2}} animate={{color: "#A9A9A9"}} transition={{type:"spring",stiffness:300}} onClick={(e) =>{
-                                                        e.stopPropagation()
-                                                    toggleblog(b._id)
-                                                     } } ><FaBookmark className="text-2xl"  /></motion.button>
-                                                  ) : (
-                                                      <motion.button whileTap={{scale:1.2}} whileHover={{scale:1.1}} animate={{color:"#555"}} transition={{type:"spring",stiffness:300}} onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        toggleblog(b._id)
-                                                      } } ><FaRegBookmark className="text-2xl"   /></motion.button>
-                                                  )}
-                                                 </div>
-                                                 
-                                                  
-                        
-                                                
+
+                                                <div>
+                                                    {userinfo?.savedblogs?.includes(b._id) ? (
+                                                        <motion.button whileTap={{ scale: 1.3 }} whileHover={{ scale: 1.2 }} animate={{ color: "#A9A9A9" }} transition={{ type: "spring", stiffness: 300 }} onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            toggleblog(b._id)
+                                                        }} ><FaBookmark className="text-2xl" /></motion.button>
+                                                    ) : (
+                                                        <motion.button whileTap={{ scale: 1.2 }} whileHover={{ scale: 1.1 }} animate={{ color: "#555" }} transition={{ type: "spring", stiffness: 300 }} onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            toggleblog(b._id)
+                                                        }} ><FaRegBookmark className="text-2xl" /></motion.button>
+                                                    )}
+                                                </div>
+
+
+
+
 
                                             </div>
+
+                                            {
+                                                comid === b._id && (
+                                                    <Comments id={b._id} />
+                                                )
+                                            }
+
+
 
                                         </div>
                                     )
                                 }
+
+
 
                             </motion.div>
                         )
