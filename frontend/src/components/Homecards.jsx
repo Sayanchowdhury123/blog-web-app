@@ -29,9 +29,11 @@ export default function Homecards() {
     const [loading, setloading] = useState(false)
     const { blogs, fetchinfo } = useHomestore()
     const navigate = useNavigate()
-    const { togglelike, removelike, setcomid, comid } = useHomestore()
+    const { togglelike, removelike, commentsByBlog } = useHomestore()
     const { user } = useAuthstore()
     const { userinfo, tblog } = useProfilestore()
+    const [openBlogId, setOpenBlogId] = useState(null);
+    const[option,setoption] = useState(null)
 
 
     const getlike = async (id) => {
@@ -70,7 +72,7 @@ export default function Homecards() {
     }
 
 
-   // console.log(comid);
+    // console.log(comid);
 
     return (
 
@@ -120,7 +122,7 @@ export default function Homecards() {
                                                 </div>
 
                                                 <div>
-                                                    <p>9 comments</p>
+                                                    <p>{b?.comments?.length} Comments</p>
                                                 </div>
 
 
@@ -156,10 +158,7 @@ export default function Homecards() {
                                                 </motion.div>
 
                                                 <div>
-                                                    <button onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        setcomid(b._id)
-                                                    }}><FaRegComment className="text-2xl" /></button>
+                                                    <button onClick={() => setOpenBlogId(openBlogId === b._id ? null : b._id)}><FaRegComment className="text-2xl" /></button>
                                                 </div>
                                                 <div>
                                                     <button><FaRegShareSquare className="text-2xl" /></button>
@@ -182,15 +181,12 @@ export default function Homecards() {
 
 
 
-
                                             </div>
 
-                                            {
-                                                comid === b._id && (
-                                                    <Comments id={b._id} />
-                                                )
-                                            }
 
+                                            {openBlogId === b._id && (
+                                                <Comments blogId={b._id} />
+                                            )}
 
 
                                         </div>

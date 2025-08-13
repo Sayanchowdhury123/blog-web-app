@@ -44,44 +44,68 @@ const useHomestore = create((set,get) => ({
     });
  
   },
-  comments:[],
-  addcomment: async (id,text) => {
-    console.log(id,text);
-     const res = await api.patch(`/home/${id}/add-comment/${localuser.id}`,{text:text},{
-       headers: {
-        Authorization: `Bearer ${localuser.token}`,
-      },
-    })
 
  
+ 
+
+  commentsByBlog: {},
+    fetchComments: async (blogId) => {
+    const blogState = get().commentsByBlog[blogId] || {
+      comments: [],
+      skip: 0,
+      limit: 3,
+      hasMore: true
+    };
+
+    if (!blogState.hasMore) return;
+
+    const res = await api.get(`/home/${blogId}/comments?skip=${blogState.skip}&limit=${blogState.limit}`, {
+      headers: { Authorization: `Bearer ${localuser.token}` }
+    });
+
+    set((state) => ({
+      commentsByBlog: {
+        ...state.commentsByBlog,
+        [blogId]: {
+          comments: [...blogState.comments, ...res.data.comments],
+          skip: blogState.skip + blogState.limit,
+          limit: blogState.limit,
+          hasMore: res.data.hasmore
+        }
+      }
+    }));
+  },
+
+  addComment: async (blogId, text) => {
+    const res = await api.patch(`/home/${blogId}/add-comment/${localuser.id}`, { text }, {
+      headers: { Authorization: `Bearer ${localuser.token}` }
+    });
 
     set((state) => {
+      const blogState = state.commentsByBlog[blogId] || {
+        comments: [],
+        skip: 0,
+        limit: 3,
+        hasMore: true
+      };
+
       return {
-        comments: [res.data,...state.comments]
-      }
-    })
-  },
-  skip:0,
-  limit:3,
-  hasmore: true,
-  rendercomment: async (id) => {
-    const {skip,limit} = get()
- 
-    const res = await api.get(`/home/${id}/comments?skip=${skip}&limit=${limit}`,{
-       headers: {
-        Authorization: `Bearer ${localuser.token}`,
-      },
-    })
-   
-    set((state) => ({
-      comments: [...state.comments,...res.data.comments],
-    skip: state.skip + state.limit,
-    hasmore: res.data.hasmore
-    }))
+        commentsByBlog: {
+          ...state.commentsByBlog,
+          [blogId]: {
+            ...blogState,
+            comments: [res.data, ...blogState.comments] 
+          }
+        }
+      };
+    });
   }
 
+}));
+
+
+
  
 
-}));
 
 export default useHomestore;
