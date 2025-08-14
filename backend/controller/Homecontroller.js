@@ -6,13 +6,25 @@ const cloudinary = require("cloudinary").v2;
 
 exports.getallblogs = async (req, res) => {
   try {
+     
+  const l = parseInt(req.query.l) || 2;
+  const s = parseInt(req.query.s) || 0;
+
+
+
     const blogs = await Blogs.find()
       .sort({ createdAt: -1 })
       .populate("creator comments.user");
     if (!blogs) {
       return res.status(400).json({ msg: "Blogs not found" });
     }
-    res.status(200).json(blogs);
+
+    const pag = blogs.slice(s, l + s)
+
+    res.status(200).json({
+      blogs: pag,
+      h: s + l < blogs.length
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
@@ -97,7 +109,7 @@ exports.addcomment = async (req, res) => {
     const latestcom = blog.comments[blog.comments.length - 1];
 
     res.status(200).json(latestcom);
-    console.log(latestcom);
+  
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
@@ -137,6 +149,7 @@ exports.editcomments = async (req, res) => {
     try {
       const { text } = req.body;
       const { id, userid, commentid } = req.params;
+     
 
       if (req.user.id !== userid) {
         return res.status(403).json({ msg: "unauthorized" });
@@ -151,7 +164,7 @@ exports.editcomments = async (req, res) => {
         return res.status(404).json({ msg: "Blog not found" });
       }
 
-      const comment = blog.comments.some(
+      const comment = blog.comments.find(
         (c) => c._id.toString() === commentid.toString()
       );
 

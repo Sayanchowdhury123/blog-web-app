@@ -8,10 +8,27 @@ const localuser = JSON.parse(ls);
 
 const useHomestore = create((set,get) => ({
   blogs: [],
-  fetchinfo: async () => {
-    const res = await api.get(`/home/allblogs`);
+  s:0,
+  l:2,
+  h:true,
 
-    set({ blogs: res.data });
+  fetchinfo: async () => {
+    const {s,l} = get()
+    const res = await api.get(`/home/allblogs?s=${s}&l=${l}`);
+    const newblogs = res.data.blogs?.filter(blog => blog.approval === true)
+  
+   set((state) => {
+    const merged = [...state.blogs,...newblogs]
+    const unique = merged.filter((b,index,self) => index === self.findIndex(other => other._id === b._id))
+    return {
+      s: s+l,
+      l: l,
+      h: res.data.h,
+      blogs: unique,
+    }
+   })
+
+   
   },
   comid: "",
   setcomid: (id) => {
@@ -99,6 +116,50 @@ const useHomestore = create((set,get) => ({
         }
       };
     });
+  },
+
+  delcom: async (blogid,commentid) => {
+     const res = await api.delete(`/home/${blogid}/comments/${localuser.id}/del/${commentid}`,  {
+      headers: { Authorization: `Bearer ${localuser.token}` }
+    });
+
+    set((state) => {
+       const blogState = state.commentsByBlog[blogid] 
+
+      return {
+        commentsByBlog: {
+          ...state.commentsByBlog,
+          [blogid]: {
+            ...blogState,
+            comments: blogState.comments.filter((c) => c._id !== commentid)
+          }
+        }
+      }
+    })
+    
+  },
+
+
+  editcom: async (blogid,editid,newComment) => {
+        const res = await api.patch(`/home/${blogid}/comments/${localuser.id}/edit/${editid}`, { text: newComment }, {
+      headers: { Authorization: `Bearer ${localuser.token}` }
+    });
+
+    set((state) => {
+       const blogState = state.commentsByBlog[blogid] 
+
+      return {
+        commentsByBlog: {
+          ...state.commentsByBlog,
+          [blogid]: {
+            ...blogState,
+            comments: blogState.comments.map((c) => c._id === editid ? {...c,text:newComment} : c)
+          }
+        }
+      }
+    })
+
+
   }
 
 }));

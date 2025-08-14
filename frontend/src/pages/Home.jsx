@@ -12,10 +12,10 @@ import useProfilestore from "@/store/profilestore"
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const{fetchinfo} = useHomestore();
+    const{fetchinfo,h} = useHomestore();
      const {userinfo,fetchuser} = useProfilestore()
     
-    const {fetchall} = useEditorstore()
+
      const [loading, setloading] = useState(false)
       const navigate = useNavigate()
     
@@ -61,6 +61,7 @@ if(loading) return <Loadingscrenn/>
                
                <Homecards/>
                
+             
 
             </div>
 

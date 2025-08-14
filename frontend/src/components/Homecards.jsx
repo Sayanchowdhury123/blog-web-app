@@ -1,6 +1,6 @@
 import useHomestore from "@/store/homestore"
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Loading2 from "./Loadin2";
 import toast from "react-hot-toast"
@@ -27,14 +27,33 @@ import Comments from "./Comments";
 
 export default function Homecards() {
     const [loading, setloading] = useState(false)
-    const { blogs, fetchinfo } = useHomestore()
+    const { blogs, fetchinfo ,h} = useHomestore()
     const navigate = useNavigate()
     const { togglelike, removelike, commentsByBlog } = useHomestore()
     const { user } = useAuthstore()
     const { userinfo, tblog } = useProfilestore()
     const [openBlogId, setOpenBlogId] = useState(null);
     const[option,setoption] = useState(null)
+    const bottomref = useRef(null)
 
+    useEffect(() => {
+    if(loading) return;
+    const observer = new IntersectionObserver((entries) => {
+        if(entries[0].isIntersecting && h){
+            fetchblogs()
+        }
+    },{
+        threshold:1.0
+    })
+
+    if(bottomref.current){
+        observer.observe(bottomref.current)
+    }
+
+    return () => {
+        if(bottomref.current) observer.unobserve(bottomref.current)
+    }
+    },[loading,h,fetchinfo])
 
     const getlike = async (id) => {
         setloading(true)
@@ -71,9 +90,19 @@ export default function Homecards() {
         }
     }
 
+    const fetchblogs = async () => {
+        setloading(true)
+        try {
+          await fetchinfo()
+        } catch (error) {
+            console.log(error);
+        }finally{
+            setloading(false)
+        }
+    }
 
-    // console.log(comid);
 
+   
     return (
 
         <motion.div className="grid  sm:grid-cols-[450px] md:grid-cols-[600px] xl:grid-cols-[684px] justify-center gap-6 p-4 bg-base-100" >
@@ -87,8 +116,8 @@ export default function Homecards() {
 
                         return (
                             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} >
-                                {
-                                    approved && (
+                                
+                                    
                                         <div className="">
 
 
@@ -190,17 +219,30 @@ export default function Homecards() {
 
 
                                         </div>
-                                    )
-                                }
+                                    
+                                
 
 
 
                             </motion.div>
+
+                            
                         )
 
                     })
                 }
+
+                <div ref={bottomref} className="h-[20px]" />
+                <div className="text-center">
+                        {loading && (<span className="loading loading-xl  loading-spinner"></span>)}
+                        {!h && (<p className="font-sans text-xl font-semibold">No more blogs</p>)}
+                </div>
+          
+
+                        
             </div>
+
+       
 
         </motion.div>
 
