@@ -5,19 +5,21 @@ import Sidebar from "@/components/Sidebar";
 import useAuthstore from "@/store/authstore";
 import useProfilestore from "@/store/profilestore";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
 export default function Blogpage() {
   const { setshownav } = useAuthstore()
   const [loading, setloading] = useState(false)
   const [blog, setblog] = useState([])
-  const location = useLocation()
-  const { blogid } = location.state || {};
+
+  const {blogid} = useParams();
   const { user } = useAuthstore()
   const navigate = useNavigate()
   const[viewed,setviewed] = useState(false)
    const {fetchuser,userinfo} = useProfilestore()
+
+
   const fb = async () => {
 
     try {
