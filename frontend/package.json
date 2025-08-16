@@ -32,6 +32,7 @@
     "@tiptap/starter-kit": "^3.0.7",
     "axios": "^1.10.0",
     "daisyui": "^5.0.46",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.6",
     "react": "^19.1.0",

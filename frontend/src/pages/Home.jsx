@@ -8,13 +8,22 @@ import Homecards from "@/components/Homecards"
 import useHomestore from "@/store/homestore"
 import Loadingscrenn from "@/components/Loadingscreen"
 import useProfilestore from "@/store/profilestore"
+import Trending from "@/components/Trending"
 
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const{fetchinfo,h} = useHomestore();
+    const{fetchinfo,h,fetcht, trendingblogs} = useHomestore();
      const {userinfo,fetchuser} = useProfilestore()
-    
+    const[width,setwidth] = useState(window.innerWidth)
+
+    useEffect(() => {
+     const handlesize = () => setwidth(window.innerWidth)
+     window.addEventListener("resize",handlesize)
+
+     return () => window.removeEventListener("resize",handlesize)
+    },[])
+
 
      const [loading, setloading] = useState(false)
       const navigate = useNavigate()
@@ -33,7 +42,10 @@ export default function Home() {
     useEffect(() => {
         fetchl()
         fetchuser()
+        fetcht()
     }, [])
+
+    console.log(trendingblogs);
 
 if(loading) return <Loadingscrenn/>
     return (
@@ -54,12 +66,23 @@ if(loading) return <Loadingscrenn/>
                 </div>
 
 
-                <div>
-                     <h1 className="text-3xl text-center font-semibold ">Explore Blogs</h1>
-                </div>
+             
 
+              
+                 <div className="relative">
+                    {
+                        width >= 1528 && (
+                           <Trending/>
+                        )
+                    }
+                  
+                    <Homecards/>
+                </div>
                
-               <Homecards/>
+              
+                
+               
+            
                
              
 
