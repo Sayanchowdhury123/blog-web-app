@@ -10,6 +10,13 @@ const userschema = new mogoose.Schema({
     profilepic: {type: String},
     pid: {type: String},
     savedblogs:[{ type: mogoose.Schema.Types.ObjectId,ref:"Blog"},],
+    readinghistory:[
+        {
+          blogid: {type: mogoose.Schema.Types.ObjectId,ref:"Blog"},
+          tags:[String],
+          readAt: {type: Date, default: Date.now}
+        },
+    ],
     
 },{timestamps: true})
 

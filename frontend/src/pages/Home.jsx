@@ -9,11 +9,12 @@ import useHomestore from "@/store/homestore"
 import Loadingscrenn from "@/components/Loadingscreen"
 import useProfilestore from "@/store/profilestore"
 import Trending from "@/components/Trending"
+import Pa from "@/components/Pa"
 
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const{fetchinfo,h,fetcht, trendingblogs} = useHomestore();
+    const{fetchinfo,h,fetcht, trendingblogs,fetchpa,pa} = useHomestore();
      const {userinfo,fetchuser} = useProfilestore()
     const[width,setwidth] = useState(window.innerWidth)
 
@@ -43,9 +44,9 @@ export default function Home() {
         fetchl()
         fetchuser()
         fetcht()
+        fetchpa()
     }, [])
 
-    console.log(trendingblogs);
 
 if(loading) return <Loadingscrenn/>
     return (
@@ -73,6 +74,12 @@ if(loading) return <Loadingscrenn/>
                     {
                         width >= 1528 && (
                            <Trending/>
+                        )
+                    }
+
+                    {
+                        width >= 1528 && (
+                            <Pa/>
                         )
                     }
                   

@@ -39,10 +39,31 @@ const {user} = useAuthstore()
 
   },[blog._id,user?._id])
 
+  const readhistory = async () => {
+    try {
+
+      if (blog?.tags) {
+        const res = await api.patch(`/profile/${user.id}/readh`, { blogid: blog?._id, tags: blog?.tags }, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          }
+        })
+        
+      }
 
 
 
-  console.log(blog?.views);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+   readhistory()
+  },[])
+
+ 
+
 
 
   return (

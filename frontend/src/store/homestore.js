@@ -165,7 +165,14 @@ const useHomestore = create((set,get) => ({
   fetcht: async () => {
      const res = await api.get(`/home/trnding`);
      set({ trendingblogs: res.data})
+  },
+  pa:[],
+   fetchpa: async () => {
+     const res = await api.get(`/home/pa`);
+    
+     set({pa: res.data})
   }
+
 
 
 }));

@@ -240,4 +240,35 @@ exports.editcomments = async (req, res) => {
   }
 
 
+exports.popularaauthors = async (req,res) => {
+    try {
+      const blogs = await Blogs.find().populate("creator")
+ 
+    
+    if (blogs.length === 0) {
+      return res.status(400).json({ msg: "Blogs not found" });
+    }
+  const approved = blogs.filter((h) => h.approval === true).slice(0,5)
+
+  const tscore = (b) => {
+    const now =  Date.now();
+    const ageindays = (now - new Date(b.createdAt)) / (1000 * 60 * 60 * 24);
+   const receny = 1 / (1 + ageindays)
+   const enagement = b.views?.length + b.views?.length * 2 + b.views?.length * 3;
+
+   return enagement * receny;
+  }
+
+  const trending = approved.sort((a,b) => tscore(b) - tscore(a))
+
+        res.status(200).json(trending)
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ msg: "internal server error" });
+    }
+       
+  }
+
+
 

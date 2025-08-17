@@ -13,11 +13,11 @@ export default function Blogpage() {
   const [loading, setloading] = useState(false)
   const [blog, setblog] = useState([])
 
-  const {blogid} = useParams();
+  const { blogid } = useParams();
   const { user } = useAuthstore()
   const navigate = useNavigate()
-  const[viewed,setviewed] = useState(false)
-   const {fetchuser,userinfo} = useProfilestore()
+  const [viewed, setviewed] = useState(false)
+  const { fetchuser, userinfo } = useProfilestore()
 
 
   const fb = async () => {
@@ -30,7 +30,8 @@ export default function Blogpage() {
         }
       })
       setblog(res.data)
-     
+
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -38,12 +39,17 @@ export default function Blogpage() {
     }
   }
 
- 
+
+
+
 
 
   useEffect(() => {
     fb()
     fetchuser()
+    
+
+
   }, [])
 
 
