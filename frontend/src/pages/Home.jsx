@@ -10,6 +10,7 @@ import Loadingscrenn from "@/components/Loadingscreen"
 import useProfilestore from "@/store/profilestore"
 import Trending from "@/components/Trending"
 import Pa from "@/components/Pa"
+import Recom from "@/components/Recom"
 
 
 export default function Home() {
@@ -80,6 +81,12 @@ if(loading) return <Loadingscrenn/>
                     {
                         width >= 1528 && (
                             <Pa/>
+                        )
+                    }
+
+                    {
+                        width >= 1528 && (
+                            <Recom/>
                         )
                     }
                   

@@ -25,7 +25,7 @@ export default function Pa() {
 
     return (
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white w-[320px]  rounded-xl absolute top-[440px] left-[70px] cursor-pointer shadow-lg">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white w-[320px]  rounded-xl absolute top-[380px] left-[70px] cursor-pointer shadow-lg">
             <div>
                 <h1 className="text-xl font-bold  mt-3 px-5 flex items-center gap-2">Popular Authors<CgProfile className=" text-xl" /> </h1>
             </div>

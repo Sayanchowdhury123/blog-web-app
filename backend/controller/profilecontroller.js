@@ -153,6 +153,7 @@ exports.trackhistory = async (req, res) => {
   const { blogid, tags } = req.body;
   const { userid } = req.params;
   try {
+  
     const user = await User.findById(userid);
     if (!user) {
       return res.status(400).json({ msg: "user not found" });
@@ -178,6 +179,7 @@ exports.trackhistory = async (req, res) => {
 
     await user.save();
     res.status(200).json(user);
+  
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
@@ -191,6 +193,7 @@ exports.getrecommdations = async (req, res) => {
     if (!user) {
       return res.status(400).json({ msg: "user not found" });
     }
+   
 
     let tagcount = {};
     user.readinghistory.forEach((r) => {
@@ -198,17 +201,22 @@ exports.getrecommdations = async (req, res) => {
         tagcount[t] = (tagcount[t] || 0) + 1;
       });
     });
+  
 
     const topTags = Object.keys(tagcount)
       .sort((a, b) => tagcount[b] - tagcount[a])
       .slice(0, 3);
 
-    const alreadyReadIds = user.readinghistory.map((r) => r.blogid._id);
+    
+   
 
+    const alreadyReadIds = user.readinghistory.map((r) => r.blogid._id);
+  
+   
     const recommended = await Blogs.find({
       tags: { $in: topTags },
       _id: { $nin: alreadyReadIds },
-    }).limit(10);
+    }).limit(10).populate("creator")
 
     res.status(200).json(recommended);
   } catch (error) {

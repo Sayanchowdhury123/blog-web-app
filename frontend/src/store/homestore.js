@@ -171,7 +171,16 @@ const useHomestore = create((set,get) => ({
      const res = await api.get(`/home/pa`);
     
      set({pa: res.data})
-  }
+  },
+  recomdations: [],
+  fetchr: async () => {
+     const res = await api.get(`/profile/${localuser.id}/recom`,{
+       headers: { Authorization: `Bearer ${localuser.token}` }
+     });
+    
+     set({recomdations: res.data})
+  },
+
 
 
 
