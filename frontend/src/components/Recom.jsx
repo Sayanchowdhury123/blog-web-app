@@ -15,7 +15,7 @@ export default function Recom() {
   fetchr()
  },[])
 
- console.log(recomdations);
+
     return (
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white  rounded-xl  absolute top-[22px] left-[1130px] cursor-pointer shadow-lg">

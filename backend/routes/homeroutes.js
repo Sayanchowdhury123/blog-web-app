@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Blogs = require("../models/Blogs");
-const { getallblogs, togglelikes, removelikes, rendercomments, addcomment, editcomments, delcomments, trending, popularaauthors } = require("../controller/Homecontroller");
+const { getallblogs, togglelikes, removelikes, rendercomments, addcomment, editcomments, delcomments, trending, popularaauthors, searching } = require("../controller/Homecontroller");
 const { authmiddleware } = require("../middleware/auth");
 const { trackhistory } = require("../controller/profilecontroller");
 const cloudinary = require("cloudinary").v2;
@@ -11,8 +11,8 @@ const cloudinary = require("cloudinary").v2;
 router.get("/allblogs",getallblogs)
 router.get("/trnding",trending)
 router.get("/pa",popularaauthors)
+router.post("/search",searching)
 router.get("/:id/comments",authmiddleware,rendercomments)
-
 router.patch("/:id/add-comment/:userid",authmiddleware,addcomment)
 router.patch("/:id/likes/:userid",authmiddleware,togglelikes)
 router.patch("/:id/rlikes/:userid",authmiddleware,removelikes)

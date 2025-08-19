@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Blogs = require("../models/Blogs");
+const { options } = require("../routes/authroutes");
 const cloudinary = require("cloudinary").v2;
 
 exports.getallblogs = async (req, res) => {
@@ -269,6 +270,39 @@ exports.popularaauthors = async (req,res) => {
     }
        
   }
+
+exports.searching = async (req,res) => {
+  const {searchtext} = req.body;
+  console.log(searchtext);
+  
+  try {
+    
+    if (!searchtext) {
+        return res.status(404).json({ msg: "please provide search text" });
+      }
+
+    const blogs = await Blogs.find({
+      $or:[
+        {title: {$regex: searchtext,$options:"i"}  },
+        {tags: {$in: [searchtext]}}
+       
+      ]
+    }).populate({
+      path: "creator",
+      match: {name: {$regex: searchtext, $options: "i"}}
+
+    }).populate("comments.user")
+
+     const filterblogs = blogs.filter(b => b.creator !== null)
+    
+   
+   res.status(200).json(filterblogs)
+
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ msg: "internal server error" });
+  }
+}
 
 
 

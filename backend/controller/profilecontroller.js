@@ -202,21 +202,23 @@ exports.getrecommdations = async (req, res) => {
       });
     });
   
+ 
 
     const topTags = Object.keys(tagcount)
       .sort((a, b) => tagcount[b] - tagcount[a])
       .slice(0, 3);
-
-    
-   
+  
+   //  console.log(topTags);
+  
 
     const alreadyReadIds = user.readinghistory.map((r) => r.blogid._id);
-  
-   
+
     const recommended = await Blogs.find({
       tags: { $in: topTags },
       _id: { $nin: alreadyReadIds },
     }).limit(10).populate("creator")
+
+ 
 
     res.status(200).json(recommended);
   } catch (error) {
