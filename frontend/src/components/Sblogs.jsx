@@ -27,13 +27,15 @@ import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import Trending from "./Trending";
+import useSearchstore from "@/store/searchstore";
 
 
 
 export default function Sblogs() {
     const [loading, setloading] = useState(false)
-    const { blogs, fetchinfo, h,  searchedblog,search} = useHomestore()
+    const {   searchedblog,search} = useHomestore()
     const navigate = useNavigate()
+    const {blogs,fetchinfo,h} = useSearchstore()
     const { togglelike, removelike, commentsByBlog } = useHomestore()
     const { user } = useAuthstore()
     const { userinfo, tblog } = useProfilestore()
@@ -43,8 +45,6 @@ export default function Sblogs() {
     const [showlink, setshowlink] = useState(null)
 
   
-
-   
   
    
     const getlike = async (id) => {
@@ -82,16 +82,7 @@ export default function Sblogs() {
         }
     }
 
-    const fetchblogs = async () => {
-        setloading(true)
-        try {
-            await fetchinfo()
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setloading(false)
-        }
-    }
+  
 
     const copylink = (blogid) => {
 
@@ -150,7 +141,7 @@ export default function Sblogs() {
             <motion.div className="grid sm:grid-cols-[500px]  md:grid-cols-[600px] lg:grid-cols-[684px]  gap-6 p-4 bg-base-100 justify-center" >
                 <div className=" ">
                     {
-                        searchedblog?.map((b, i) => {
+                        blogs?.map((b, i) => {
 
                             const approved = b.approval;
                             const isliked = b?.likes?.includes(user.id)
@@ -303,10 +294,7 @@ export default function Sblogs() {
                     }
 
                     <div ref={bottomref} className="h-[20px]" />
-                    <div className="text-center">
-                        {loading && (<span className="loading loading-xl  loading-spinner"></span>)}
-                        {!h && (<p className="font-sans text-xl font-semibold">No more blogs</p>)}
-                    </div>
+                  
 
 
 

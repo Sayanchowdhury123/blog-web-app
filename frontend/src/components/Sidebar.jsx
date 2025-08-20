@@ -10,6 +10,7 @@ import { IoMdCreate } from "react-icons/io";
 import { IoLogOutSharp } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
 import useProfilestore from "@/store/profilestore";
+import { FaSearch } from "react-icons/fa";
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -90,11 +91,21 @@ export default function Sidebar() {
           </div>
         ) : ""}
 
+        <div className="flex items-center gap-2" onClick={(e) => {
+               e.stopPropagation()
+            navigate("/search")
+            setshownav()}}>
+          <FaSearch/>
+        <p>Search Blog</p>
+        </div>
+
 
          <div className="flex items-center gap-2">
           <IoLogOutSharp/>
           <button onClick={logout}>logout</button>
         </div>
+
+          
 
       </div>
     </motion.div>

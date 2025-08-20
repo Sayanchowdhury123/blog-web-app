@@ -18,6 +18,7 @@ import Blogpage from './pages/Blogpage';
 import Editorpage from './pages/Editorpage';
 import Userprofile from './pages/userprofile';
 import Saved from './pages/Saved';
+import Search from './pages/Search';
 function App() {
 
 
@@ -29,6 +30,7 @@ function App() {
          
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
+           <Route path='/search' element={<Search/>} />
           <Route path='/home' element={<Privateroute><Home/></Privateroute> } />
           <Route path='/yourblogs' element={<Privateroute><Blogmanage/></Privateroute>} />
           <Route path='/create-blogs' element={<Privateroute><Createblogs/></Privateroute>} />
@@ -37,6 +39,7 @@ function App() {
           <Route path='/editor-page' element={<Privateroute><Editorpage/></Privateroute>} />
           <Route path='/profile' element={<Privateroute><Userprofile/></Privateroute>} />
           <Route path='/saved-blogs' element={<Privateroute><Saved/></Privateroute>} />
+         
         </Routes>
       </Router>
     </>
