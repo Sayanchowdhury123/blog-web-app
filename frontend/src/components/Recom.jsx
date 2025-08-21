@@ -16,9 +16,11 @@ export default function Recom() {
  },[])
 
 
+
+
     return (
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white  rounded-xl  absolute top-[22px] left-[1130px] cursor-pointer shadow-lg">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className={`bg-white  w-[320px]  rounded-xl  absolute top-[22px] left-[1130px] cursor-pointer shadow-lg `}>
             <div>
                 <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Recommanded Blogs<MdOutlineRecommend className=" text-xl" /> </h1>
             </div>

@@ -48,24 +48,24 @@ const extensions = [
 export default function Editcontent() {
   const { user } = useAuthstore()
   const location = useLocation()
-  const { t ,editor} = location.state || {};
+  const { t, editor } = location.state || {};
   const [blogtext, setblogtext] = useState(t?.blogtext || "")
   const [l, setl] = useState(false)
   const navigate = useNavigate()
   const { setshownav } = useAuthstore()
- const {fetchuser,userinfo} = useProfilestore()
-
-   console.log(blogtext);
+  const { fetchuser, userinfo } = useProfilestore()
 
 
 
- const handlesubmit = async (e) => {
+
+
+  const handlesubmit = async (e) => {
     e.preventDefault()
     setl(true)
 
-    console.log(blogtext);
 
-    
+
+
     try {
 
       const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
@@ -88,12 +88,22 @@ export default function Editcontent() {
           },
         })
 
-      if(editor){
-      navigate(`/editor-page`)
-      }else{
+      if (user.role === "editor") {
+        const res = await api.post(`/profile/${t._id}/ep/${user.id}`,{}, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          }
+        })
+
+   
+      }
+
+      if (editor) {
+        navigate(`/editor-page`)
+      } else {
         navigate(`/yourblogs`)
       }
-      
+
 
 
     } catch (error) {
@@ -113,14 +123,14 @@ export default function Editcontent() {
   }
 
   useEffect(() => {
-  fetchuser()
-  },[])
+    fetchuser()
+  }, [])
 
-  if(l) return <Loading2/>
+  if (l) return <Loading2 />
 
   return (
     <div className="  relative ">
-     
+
 
 
       <Sidebar />
@@ -144,9 +154,9 @@ export default function Editcontent() {
           <form onSubmit={handlesubmit} className=" relative" >
             <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
             <div className='text-center'>
-                 <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
+              <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
             </div>
-         
+
           </form>
 
         </div>

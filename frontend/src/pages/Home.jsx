@@ -12,18 +12,19 @@ import Trending from "@/components/Trending"
 import Pa from "@/components/Pa"
 import Recom from "@/components/Recom"
 import Sblogs from "@/components/Sblogs"
+import Editorpicks from "@/components/Editorpicks"
 
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations,search } = useHomestore();
+    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations,search, fetchep } = useHomestore();
     const { userinfo, fetchuser } = useProfilestore()
     const [width, setwidth] = useState(window.innerWidth)
     const [searchtext, setsearchtext] = useState("")
 
  
 
-
+console.log(recomdations);
      const searchb = async () => {
         setloading(true)
         try {
@@ -69,6 +70,7 @@ export default function Home() {
         fetchuser()
         fetcht()
         fetchpa()
+        fetchep()
     }, [])
 
 
@@ -127,6 +129,12 @@ export default function Home() {
                             <Recom />
                         )
                     }
+
+                    {
+                         width >= 1528 &&   (
+                            <Editorpicks/>
+                        )
+                     }
 
                      <Homecards />
 

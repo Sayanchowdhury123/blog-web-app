@@ -210,6 +210,14 @@ const useHomestore = create((set, get) => ({
     console.log(res.data);
    
   },
+  editorpicks: [],
+  fetchep: async () => {
+    const res = await api.get(`/profile/editorpicks`);
+ 
+    set({ editorpicks: res.data[0].editorpicks });
+  },
+
+
 }));
 
 export default useHomestore;

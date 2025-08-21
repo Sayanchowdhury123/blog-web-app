@@ -177,7 +177,7 @@ export default function Homecards() {
 
                                     <div className="">
 
-
+                                      
                                         <div className="flex items-center gap-4 p-2 mt-2">
                                             <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
                                             <div>

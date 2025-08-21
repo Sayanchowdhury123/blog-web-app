@@ -23,6 +23,7 @@ const blogschema = new mogoose.Schema(
     cid: {type: String},
     approval: {type: Boolean, default:false},
     views: [{ type: mogoose.Schema.Types.ObjectId, ref: "User" },],
+    
   },
   { timestamps: true }
 );
