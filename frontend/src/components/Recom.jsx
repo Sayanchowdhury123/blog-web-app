@@ -11,16 +11,14 @@ export default function Recom() {
     const { trendingblogs,recomdations,fetchr } = useHomestore()
     const navigate = useNavigate()
 
- useEffect(() => {
-  fetchr()
- },[])
 
 
 
+  console.log(recomdations);
 
     return (
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className={`bg-white  w-[320px]  rounded-xl  absolute top-[22px] left-[1130px] cursor-pointer shadow-lg `}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className={`bg-white w-[328px]  rounded-xl  absolute top-[310px] left-[1130px] cursor-pointer shadow-lg `}>
             <div>
                 <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Recommanded Blogs<MdOutlineRecommend className=" text-xl" /> </h1>
             </div>
@@ -31,7 +29,7 @@ export default function Recom() {
                                 state: { blogid: t._id }
                             })} className="hover:bg-base-200 py-2 px-4 transition-all transition-300" >
 
-                            <p className="font-semibold flex items-center  truncate" >{t.title}</p>
+                            <p className="font-semibold flex items-center  whitespace-wrap" >{t.title}</p>
                             <div className="flex items-center  text-sm text-gray-400 gap-4">
                                 <p>{t?.creator?.name}</p>
                               

@@ -201,10 +201,13 @@ exports.getrecommdations = async (req, res) => {
       });
     });
 
+   
+
     const topTags = Object.keys(tagcount)
       .sort((a, b) => tagcount[b] - tagcount[a])
-      .slice(0, 3);
+      .slice(0, 4);
 
+      
    
 
     const alreadyReadIds = user.readinghistory.map((r) => new mongoose.Types.ObjectId(r.blogid._id));
@@ -215,6 +218,7 @@ exports.getrecommdations = async (req, res) => {
     })
       .limit(10)
       .populate("creator");
+
 
      
 

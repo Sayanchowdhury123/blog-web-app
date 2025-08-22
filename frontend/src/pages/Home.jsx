@@ -17,7 +17,7 @@ import Editorpicks from "@/components/Editorpicks"
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations,search, fetchep } = useHomestore();
+    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations,search, fetchep ,fetchr} = useHomestore();
     const { userinfo, fetchuser } = useProfilestore()
     const [width, setwidth] = useState(window.innerWidth)
     const [searchtext, setsearchtext] = useState("")
@@ -58,6 +58,11 @@ console.log(recomdations);
         setloading(true)
         try {
             await fetchinfo()
+           await  fetchuser()
+         await  fetcht()
+        await fetchpa()
+       await fetchr()
+       await  fetchep()
         } catch (error) {
             console.log(error);
         } finally {
@@ -67,10 +72,7 @@ console.log(recomdations);
 
     useEffect(() => {
         fetchl()
-        fetchuser()
-        fetcht()
-        fetchpa()
-        fetchep()
+       
     }, [])
 
 
@@ -131,7 +133,7 @@ console.log(recomdations);
                     }
 
                     {
-                         width >= 1528 &&   (
+                         width >= 1528 && recomdations?.length > 0 &&  (
                             <Editorpicks/>
                         )
                      }

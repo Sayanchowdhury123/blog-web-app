@@ -212,9 +212,9 @@ const useHomestore = create((set, get) => ({
   },
   editorpicks: [],
   fetchep: async () => {
-    const res = await api.get(`/profile/editorpicks`);
+    const res = await api.get(`/editor/epblog-fetch`);
  
-    set({ editorpicks: res.data[0].editorpicks });
+    set({ editorpicks: res.data });
   },
 
 

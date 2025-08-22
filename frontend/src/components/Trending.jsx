@@ -14,7 +14,7 @@ export default function Trending() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white  rounded-xl  absolute top-[22px] left-[70px] cursor-pointer shadow-lg">
             <div>
-                <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Trending Blogs<IoIosTrendingUp className="text-orange-500 text-xl" /> </h1>
+                <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Trending Blogs<IoIosTrendingUp className=" text-xl" /> </h1>
             </div>
             <div className="">
                 {

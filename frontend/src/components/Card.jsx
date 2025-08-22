@@ -12,9 +12,11 @@ import { MdEdit } from "react-icons/md";
 import { MdOutlinePreview } from "react-icons/md";
 import useProfilestore from "@/store/profilestore";
 import { IoMdRemoveCircle } from "react-icons/io";
+import { FaCheck } from "react-icons/fa";
+import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 
 export default function Card({ type }) {
-    const { fetchall, blogs, approveblog, bid, setbid, bloginfo } = useEditorstore();
+    const { fetchall, blogs, approveblog, bid, setbid, bloginfo,epblog } = useEditorstore();
     const { setshownav, user } = useAuthstore()
     const [loading, setloading] = useState(false)
     const [id, setid] = useState(null)
@@ -78,12 +80,58 @@ export default function Card({ type }) {
         }
     }
 
+     const pickep = async (blogid) => {
+        setid(blogid)
+        try {
+              if(savedpage){
+                await tblog(blogid)
+                  toast("Blog Removed",
+                {
+                    icon: '🎉',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                })
+                
+              }else{
+                  await epblog(blogid)
+                   toast(`${bloginfo?.ep ? "Blog Unpicked" : "Blog Picked"}`,
+                {
+                    icon: '🎉',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                })
+              }
+           
+           
+        } catch (error) {
+            console.log(error);
+            toast('Action failed',
+                {
+                    icon: '❌',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                })
+        } finally {
+            setid(null)
+
+        }
+    }
+
     return (
-        <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4" >
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 " >
 
             {
                 (savedpage ? savedblogs : blogs)?.map((b, i) => (
-                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id} >
+                    <motion.div  initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
                         {
                             id === b._id && (
                                 <Loading2 />
@@ -92,9 +140,10 @@ export default function Card({ type }) {
                         <figure>
                             <img
                                 src={`${b.coverimage}`}
-                                alt="Shoes" />
+                                alt="coverimages" className=" object-cover absolute inset-0" />
                         </figure>
-                        <div className="card-body">
+                        <div className="absolute inset-0 bg-black/70"></div>
+                        <div className="relative card-body">
                             <div className="flex justify-between items-center ">
                                 <div>
                                     <h2 className="card-title">{b?.title}</h2>
@@ -139,6 +188,14 @@ export default function Card({ type }) {
                                     ) : (
                                         <button className="btn btn-primary btn-sm" onClick={() => ab(b._id)} ><FcApprove />Approve</button>
                                     )}
+
+                                    { b?.ep ? (
+                                        <button className="btn btn-error btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleSharp /> Unpick</button>
+                                    ) : (
+                                        <button className="btn btn-neutral btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleOutline/> Pick</button>
+                                    )}
+
+                                   
 
 
                                 </div>

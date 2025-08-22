@@ -33,7 +33,23 @@ const useEditorstore = create((set) => ({
   },
   setbid: () => {
     set({bid: ""})
-  }
+  },
+  epblog: async (blogid) => {
+    const res = await api.patch(
+      `/editor/${blogid}/epblog`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localuser.token}`,
+        },
+      }
+    );
+    set((state) => {
+     return {blogs: state.blogs.map((b) => (b._id === blogid ? res.data : b)),bloginfo: res.data} 
+    });
+  },
+
+
 }));
 
 export default useEditorstore;
