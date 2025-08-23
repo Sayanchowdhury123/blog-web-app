@@ -17,6 +17,15 @@ const userschema = new mogoose.Schema({
           readAt: {type: Date, default: Date.now}
         },
     ],
+      followers: [{
+        type: mogoose.Schema.Types.ObjectId, ref: "User"
+      },],
+      following:[
+      {
+        type: mogoose.Schema.Types.ObjectId, ref: "User"
+      },
+      ],
+  
     
 },{timestamps: true})
 

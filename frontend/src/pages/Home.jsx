@@ -114,7 +114,8 @@ console.log(recomdations);
            
 
                 <div className="relative">
-                    {
+                 
+                     {
                         width >= 1528 && (
                             <Trending />
                         )
@@ -127,17 +128,16 @@ console.log(recomdations);
                     }
 
                     {
-                        width >= 1528 &&  (
+                        width >= 1528 && recomdations?.length > 0 &&  (
                             <Recom />
                         )
                     }
 
                     {
-                         width >= 1528 && recomdations?.length > 0 &&  (
+                         width >= 1528 &&   (
                             <Editorpicks/>
                         )
                      }
-
                      <Homecards />
 
                 </div>
