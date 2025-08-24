@@ -14,14 +14,14 @@ exports.following = async (req,res) => {
              return res.status(404).json("user not fonud")
         }
 
-        const alreadyfollowing = goingtofollow.followers.some((f) => f.toString() === userid.toString())
+        const alreadyfollowing = goingtofollow.followers.some((f) => f.toString() === uid.toString())
         if(alreadyfollowing){
-        goingtofollow.followers =  goingtofollow.followers.filter((f) => f.toString() !== userid.toString())
-         followinglist.following =  followinglist.following.filter((f) => f.toString() !== followingid.toString())
+        goingtofollow.followers =  goingtofollow.followers.filter((f) => f.toString() !== uid.toString())
+         followinglist.following =  followinglist.following.filter((f) => f.toString() !== fid.toString())
 
         }else{
-            goingtofollow.followers.push(userid)
-           followinglist.following.push(followingid)
+            goingtofollow.followers.push(uid)
+           followinglist.following.push(fid)
         }
 
         await goingtofollow.save()
@@ -38,6 +38,7 @@ exports.following = async (req,res) => {
 
 exports.getuserinfo = async (req,res) => {
     const {userid} = req.params; 
+ 
     try {
         const blogs = await Blogs.find({creator: userid}).populate("creator comments.user")
         const userinfo = await User.findById(userid).select("-password -__v")
@@ -46,9 +47,7 @@ exports.getuserinfo = async (req,res) => {
              return res.status(404).json("user info not fonud")
         }
 
-        if(blogs.length === 0){
-                 return res.status(404).json("blogs not fonud")
-        }
+        
 
         res.status(200).json({
             blogs: blogs,

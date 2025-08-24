@@ -32,9 +32,7 @@ export default function Pa() {
             <div className="">
                 {
                     uniqueauthors?.map((t) => (
-                        <div key={t._id} onClick={() => navigate(`/blog/${t._id}`, {
-                                state: { blogid: t._id }
-                            })} className="p-4 flex items-center gap-2 hover:bg-base-200" >
+                        <div key={t._id} onClick={() => navigate(`/f-page/${t?.creator?._id}`)} className="p-4 flex items-center gap-2 hover:bg-base-200" >
                           <img src={t?.creator?.profilepic} alt="profilepic" className="w-10 h-10 rounded-full" />
                           <p className="font-semibold">{t?.creator?.name}</p>
                         </div>

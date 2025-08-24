@@ -17,22 +17,22 @@ import Editorpicks from "@/components/Editorpicks"
 
 export default function Home() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations,search, fetchep ,fetchr} = useHomestore();
+    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations, search, fetchep, fetchr } = useHomestore();
     const { userinfo, fetchuser } = useProfilestore()
     const [width, setwidth] = useState(window.innerWidth)
     const [searchtext, setsearchtext] = useState("")
 
- 
 
-console.log(recomdations);
-     const searchb = async () => {
+
+    console.log(recomdations);
+    const searchb = async () => {
         setloading(true)
         try {
-            if(searchtext){
-              await search(searchtext)
-              
+            if (searchtext) {
+                await search(searchtext)
+
             }
-            
+
 
         } catch (error) {
             console.log(error);
@@ -41,7 +41,7 @@ console.log(recomdations);
         }
     }
 
- 
+
 
     useEffect(() => {
         const handlesize = () => setwidth(window.innerWidth)
@@ -58,11 +58,11 @@ console.log(recomdations);
         setloading(true)
         try {
             await fetchinfo()
-           await  fetchuser()
-         await  fetcht()
-        await fetchpa()
-       await fetchr()
-       await  fetchep()
+            await fetchuser()
+            await fetcht()
+            await fetchpa()
+            await fetchr()
+            await fetchep()
         } catch (error) {
             console.log(error);
         } finally {
@@ -72,8 +72,10 @@ console.log(recomdations);
 
     useEffect(() => {
         fetchl()
-       
+
     }, [])
+
+
 
 
     if (loading) return <Loadingscrenn />
@@ -82,27 +84,27 @@ console.log(recomdations);
         <div className="  relative bg-base-100 ">
             <Sidebar />
 
-           
 
-          
+
+
 
             <div className="space-y-6">
-    
+
 
                 <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
                     <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
-                    
+
                         navigate("/home")
                     }}>  BlogApp</h1>
 
 
-    
-                                     
+
+
 
                     <div className="flex ">
 
                         <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
-                            
+
                             setshownav
                         }} />
                     </div>
@@ -111,11 +113,11 @@ console.log(recomdations);
 
 
 
-           
+
 
                 <div className="relative">
-                 
-                     {
+
+                    {
                         width >= 1528 && (
                             <Trending />
                         )
@@ -128,17 +130,17 @@ console.log(recomdations);
                     }
 
                     {
-                        width >= 1528 && recomdations?.length > 0 &&  (
+                        width >= 1528 && recomdations?.length > 0 && (
                             <Recom />
                         )
                     }
 
                     {
-                         width >= 1528 &&   (
-                            <Editorpicks/>
+                        width >= 1528 && (
+                            <Editorpicks />
                         )
-                     }
-                     <Homecards />
+                    }
+                    <Homecards />
 
                 </div>
 

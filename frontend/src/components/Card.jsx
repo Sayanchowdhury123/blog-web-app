@@ -127,7 +127,7 @@ export default function Card({ type }) {
     }
 
     return (
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 " >
+        <motion.div className={`grid grid-cols-1 ${savedpage ? "md:grid-cols-3": "md:grid-cols-2"} gap-4 p-4 `} >
 
             {
                 (savedpage ? savedblogs : blogs)?.map((b, i) => (

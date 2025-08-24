@@ -172,7 +172,7 @@ export default function Homecards() {
                             const issaved = userinfo?.savedblogs?.includes(b._id)
 
                             return (
-                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} >
+                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl cursor-pointer  " key={b._id} >
 
 
                                     <div className="">
@@ -181,7 +181,7 @@ export default function Homecards() {
                                         <div className="flex items-center gap-4 p-2 mt-2">
                                             <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
                                             <div>
-                                                <h1 className="text-xl font-semibold">{b?.creator.name}</h1>
+                                                <h1 className="text-xl font-semibold" onClick={() => navigate(`/f-page/${b?.creator?._id}`)}>{b?.creator.name}</h1>
                                                 <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>
                                             </div>
 

@@ -9,6 +9,7 @@ const localuser = JSON.parse(ls);
 const useProfilestore = create((set,get) => ({
   userinfo: {},
   savedblogs: [],
+  ui:{},
   fetchuser: async () => {
     const res = await api.get(`/profile/${localuser.id}`, {
       headers: {
@@ -17,6 +18,7 @@ const useProfilestore = create((set,get) => ({
     });
 
     set({ userinfo: res.data });
+    set({ui: res.data})
   },
   showedit: false,
   setshowedit: () => {
