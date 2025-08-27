@@ -63,7 +63,7 @@ exports.getfollowerinfo = async (req,res) => {
     const {followerid} = req.params; 
     try {
      
-        const userinfo = await User.findById(followerid).select("-password -__v").populate("followers name profilepic")
+        const userinfo = await User.findById(followerid).populate("followers following").select("followers following")
 
         if(!userinfo){
              return res.status(404).json("user info not fonud")

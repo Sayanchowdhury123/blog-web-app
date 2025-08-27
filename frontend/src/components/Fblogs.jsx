@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 export default function Fblogs({ b, i }) {
 const navigate = useNavigate()
 
-    const getexcerpt = (text, wordlimit = 50) => {
+    const getexcerpt = (text, wordlimit = 20) => {
         const words = text?.trim().split(/\s+/)
         if (words?.length <= wordlimit) {
             return text
