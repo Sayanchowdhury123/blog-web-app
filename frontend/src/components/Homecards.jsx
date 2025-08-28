@@ -179,7 +179,7 @@ export default function Homecards() {
 
                                       
                                         <div className="flex items-center gap-4 p-2 mt-2">
-                                            <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
+                                            <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full border-2 border-black" />
                                             <div>
                                                 <h1 className="text-xl font-semibold" onClick={() => navigate(`/f-page/${b?.creator?._id}`)}>{b?.creator.name}</h1>
                                                 <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>

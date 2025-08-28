@@ -205,7 +205,7 @@ exports.getrecommdations = async (req, res) => {
 
     const topTags = Object.keys(tagcount)
       .sort((a, b) => tagcount[b] - tagcount[a])
-      .slice(0, 4);
+      .slice(0, 3);
 
       
    
@@ -216,7 +216,7 @@ exports.getrecommdations = async (req, res) => {
       tags: { $in: topTags },
       _id: { $nin: alreadyReadIds },
     })
-      .limit(10)
+      .limit(3)
       .populate("creator");
 
 
