@@ -16,17 +16,18 @@ import { Toaster } from "react-hot-toast"
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
     const { userinfo, fetchuser } = useProfilestore()
-    const {search,blogs,fetchinfo,l} = useSearchstore()
-     const navigate = useNavigate()
-     const [st,setst] = useState("")
-     const[load,setload] = useState(false)
-     const[loading,setloading] = useState(false)
+    const { search, blogs, fetchinfo, l, sorting } = useSearchstore()
+    const navigate = useNavigate()
+    const [st, setst] = useState("")
+    const [load, setload] = useState(false)
+    const [loading, setloading] = useState(false)
+    const [sv, setsv] = useState("all")
 
     useEffect(() => {
         fetchuser()
     }, [])
 
-      const fetchblogs = async () => {
+    const fetchblogs = async () => {
         setloading(true)
         try {
             await fetchinfo()
@@ -38,37 +39,63 @@ export default function Search() {
     }
 
     useEffect(() => {
-     fetchblogs()
-    },[])
+        fetchblogs()
+    }, [])
 
 
-    const searching = async () => {
+    const searching = async() => {
         setload(true)
+        
         try {
-            if(st){
-                await search(st)
-                
-                toast.success(`${l} results found`)
+            if (st) {
+              await search(st)
+               
+             
             }
         } catch (error) {
             console.log(error);
-        }finally{
+        } finally {
             setload(false)
         }
     }
+
+
+    useEffect(() => {
+        
+     fetchblogs() 
+    }, [])
 
     useEffect(() => {
      if(st.length === 0){
         fetchblogs()
      }
-    },[st.length])
+     
+    },[st])
 
-  if(loading) return <Loadingscrenn/>
-  if(load) return <Loading3/>
+
+    
+    const sort = async (e) => {
+    
+         setsv(e.target.value) 
+        setload(true)
+        try {
+
+         
+            await sorting(e.target.value)
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setload(false)
+        }
+    }
+
+    if (loading) return <Loadingscrenn />
+    if (load) return <Loading3 />
 
     return (
         <div className="  relative bg-base-100 ">
-            
+
             <Sidebar />
 
 
@@ -96,20 +123,28 @@ export default function Search() {
                 </div>
 
 
-                <div className="mt-6 flex justify-center ">
+                <div className="mt-6 flex justify-center gap-2">
                     <div className="flex gap-2">
-                      <input type="text" className="input " onChange={(e) => setst(e.target.value)} value={st} placeholder="Search" />
-                    <button className="btn" onClick={searching}><FaSearch/></button>
+                        <input type="text" className="input " onChange={(e) => setst(e.target.value)} value={st} placeholder="Search" />
+                        <button className="btn" onClick={searching} ><FaSearch /></button>
+                    </div>
+                    <div>
+                        <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
+                            <option value="all">All</option>
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="popularity">Popularity</option>
+                        </select>
                     </div>
                 </div>
 
-                 
 
-            
-                  {blogs?.length === 0 ? (
-                   <NotFound/>                  
-                    ) : (<Sblogs/>)}
-                
+
+
+                {blogs?.length === 0 ? (
+                    <NotFound />
+                ) : (<Sblogs />)}
+
             </div>
         </div>
     )
