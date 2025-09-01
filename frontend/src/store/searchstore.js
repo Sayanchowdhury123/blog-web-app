@@ -8,6 +8,7 @@ const localuser = JSON.parse(ls);
 
 const useSearchstore = create((set, get) => ({
   blogs: [],
+  sh:[],
  
   fetchinfo: async () => {
   
@@ -29,6 +30,25 @@ const useSearchstore = create((set, get) => ({
       set({blogs: res.data})
      }
       
+  },
+  addsh: async (st) => {
+     const res = await api.patch(`/sp/addsh`,{searchtext: st},{
+       headers: {
+        Authorization: `Bearer ${localuser.token}`,
+      },
+     })
+     
+  
+  },
+  getsh: async () => {
+     const res = await api.get(`/sp/getsh`,{
+       headers: {
+        Authorization: `Bearer ${localuser.token}`,
+      },
+     })
+     console.log(res.data);
+
+     set({sh: res.data})
   }
 
 }));

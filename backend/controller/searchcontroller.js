@@ -107,8 +107,9 @@ exports.addsh = async (req, res) => {
     }
 
     await user.save();
+    
 
-    res.status(200).json("history added");
+    res.status(200).json(user.sh);
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });

@@ -16,7 +16,7 @@ import { Toaster } from "react-hot-toast"
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
     const { userinfo, fetchuser } = useProfilestore()
-    const { search, blogs, fetchinfo, l, sorting } = useSearchstore()
+    const { search, blogs, fetchinfo, l, sorting ,addsh,getsh,sh} = useSearchstore()
     const navigate = useNavigate()
     const [st, setst] = useState("")
     const [load, setload] = useState(false)
@@ -49,7 +49,7 @@ export default function Search() {
         try {
             if (st) {
               await search(st)
-               
+               await addsh(st)
              
             }
         } catch (error) {
@@ -72,6 +72,7 @@ export default function Search() {
      
     },[st])
 
+    
 
     
     const sort = async (e) => {
@@ -89,6 +90,20 @@ export default function Search() {
             setload(false)
         }
     }
+
+
+
+    const fetchsh = async () => {
+        
+        try {
+            await getsh()
+            console.log(sh);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    
 
     if (loading) return <Loadingscrenn />
     if (load) return <Loading3 />
@@ -124,10 +139,18 @@ export default function Search() {
 
 
                 <div className="mt-6 flex justify-center gap-2">
-                    <div className="flex gap-2">
-                        <input type="text" className="input " onChange={(e) => setst(e.target.value)} value={st} placeholder="Search" />
-                        <button className="btn" onClick={searching} ><FaSearch /></button>
+                    <div>
+                        <div className="flex gap-2">
+                         <input type="text" className="input " onChange={(e) => {setst(e.target.value)}} onFocus={fetchsh} value={st} placeholder="Search" />
+                        <button className="btn" onClick={() => {
+                            searching()
+                            
+                        }} ><FaSearch /></button>
                     </div>
+
+                    
+                    </div>
+                  
                     <div>
                         <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
                             <option value="all">All</option>
