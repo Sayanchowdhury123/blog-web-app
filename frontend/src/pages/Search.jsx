@@ -12,16 +12,18 @@ import { FaSearch } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast"
+import { motion } from "framer-motion"
 
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
     const { userinfo, fetchuser } = useProfilestore()
-    const { search, blogs, fetchinfo, l, sorting ,addsh,getsh,sh} = useSearchstore()
+    const { search, blogs, fetchinfo, l, sorting, addsh, getsh, sh } = useSearchstore()
     const navigate = useNavigate()
     const [st, setst] = useState("")
     const [load, setload] = useState(false)
     const [loading, setloading] = useState(false)
     const [sv, setsv] = useState("all")
+    const [shopen, setshopen] = useState(false)
 
     useEffect(() => {
         fetchuser()
@@ -43,14 +45,14 @@ export default function Search() {
     }, [])
 
 
-    const searching = async() => {
+    const searching = async () => {
         setload(true)
-        
+
         try {
             if (st) {
-              await search(st)
-               await addsh(st)
-             
+                await search(st)
+                await addsh(st)
+
             }
         } catch (error) {
             console.log(error);
@@ -61,27 +63,27 @@ export default function Search() {
 
 
     useEffect(() => {
-        
-     fetchblogs() 
+
+        fetchblogs()
     }, [])
 
     useEffect(() => {
-     if(st.length === 0){
-        fetchblogs()
-     }
-     
-    },[st])
+        if (st.length === 0) {
+            fetchblogs()
+        }
 
-    
+    }, [st])
 
-    
+
+
+
     const sort = async (e) => {
-    
-         setsv(e.target.value) 
+
+        setsv(e.target.value)
         setload(true)
         try {
 
-         
+
             await sorting(e.target.value)
 
         } catch (error) {
@@ -94,7 +96,7 @@ export default function Search() {
 
 
     const fetchsh = async () => {
-        
+
         try {
             await getsh()
             console.log(sh);
@@ -103,7 +105,7 @@ export default function Search() {
         }
     }
 
-    
+
 
     if (loading) return <Loadingscrenn />
     if (load) return <Loading3 />
@@ -139,18 +141,43 @@ export default function Search() {
 
 
                 <div className="mt-6 flex justify-center gap-2">
-                    <div>
-                        <div className="flex gap-2">
-                         <input type="text" className="input " onChange={(e) => {setst(e.target.value)}} onFocus={fetchsh} value={st} placeholder="Search" />
-                        <button className="btn" onClick={() => {
-                            searching()
-                            
-                        }} ><FaSearch /></button>
+                    <div className="flex flex-col  relative">
+                        <div className="flex gap-2 ">
+                            <input type="text" className="input " onChange={(e) => { setst(e.target.value) }} onClick={() => {
+                                setshopen((prev) => !prev)
+                                fetchsh()
+                                console.log(shopen);
+                            }} value={st} placeholder="Search" />
+                            <button className="btn" onClick={() => {
+                                searching()
+
+                            }} ><FaSearch /></button>
+
+                        </div>
+
+                        {
+                            shopen ? (
+                                <motion.div initial={{opacity:0}} animate={{opacity:1}} className=" z-10 bg-base-200 p-4 w-[220px] rounded-bl-xl rounded-xl absolute top-12 shadow-xl" >
+                                    {
+                                        sh?.map((s, i) => (
+                                            <div key={i} className="py-2 hover:text-gray-500 cursor-pointer" onClick={() => {
+                                                setshopen(false)
+                                                search(s)
+                                                setst(s)
+                                            }} >
+                                                <p>{s}</p>
+                                            </div>
+                                        ))
+                                    }
+                                </motion.div>
+                            ) : ""
+                        }
+
+
+
+
                     </div>
 
-                    
-                    </div>
-                  
                     <div>
                         <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
                             <option value="all">All</option>
