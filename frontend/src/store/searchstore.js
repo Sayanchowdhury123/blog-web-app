@@ -46,10 +46,10 @@ const useSearchstore = create((set, get) => ({
         Authorization: `Bearer ${localuser.token}`,
       },
      })
-     console.log(res.data);
+   
 
      set({sh: res.data})
-  }
+  },
 
 }));
 

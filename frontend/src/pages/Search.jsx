@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast"
 import { motion } from "framer-motion"
+import { FaHistory } from "react-icons/fa";
 
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
@@ -24,9 +25,11 @@ export default function Search() {
     const [loading, setloading] = useState(false)
     const [sv, setsv] = useState("all")
     const [shopen, setshopen] = useState(false)
+    const [searchhistory, setsearchhistory] = useState([])
 
     useEffect(() => {
         fetchuser()
+        setsearchhistory(sh)
     }, [])
 
     const fetchblogs = async () => {
@@ -99,11 +102,24 @@ export default function Search() {
 
         try {
             await getsh()
-            console.log(sh);
+
         } catch (error) {
             console.log(error);
         }
     }
+
+    const onChangesearch = (s) => {
+
+        if (s.length > 0) {
+            const sr = sh.filter((ss) => ss.toLowerCase().includes(s.toLowerCase()))
+            setsearchhistory(sr)
+          
+        } else {
+            setsearchhistory(sh)
+        }
+    }
+
+
 
 
 
@@ -143,10 +159,13 @@ export default function Search() {
                 <div className="mt-6 flex justify-center gap-2">
                     <div className="flex flex-col  relative">
                         <div className="flex gap-2 ">
-                            <input type="text" className="input " onChange={(e) => { setst(e.target.value) }} onClick={() => {
+                            <input type="text" className="input " onChange={(e) => {
+                                setst(e.target.value)
+                                onChangesearch(e.target.value)
+                            }} onClick={() => {
                                 setshopen((prev) => !prev)
                                 fetchsh()
-                                console.log(shopen);
+
                             }} value={st} placeholder="Search" />
                             <button className="btn" onClick={() => {
                                 searching()
@@ -155,22 +174,37 @@ export default function Search() {
 
                         </div>
 
+
                         {
-                            shopen ? (
-                                <motion.div initial={{opacity:0}} animate={{opacity:1}} className=" z-10 bg-base-200 p-4 w-[220px] rounded-bl-xl rounded-xl absolute top-12 shadow-xl" >
+                            shopen && (
+
+                                <div>
                                     {
-                                        sh?.map((s, i) => (
-                                            <div key={i} className="py-2 hover:text-gray-500 cursor-pointer" onClick={() => {
-                                                setshopen(false)
-                                                search(s)
-                                                setst(s)
-                                            }} >
-                                                <p>{s}</p>
-                                            </div>
-                                        ))
+                                        searchhistory.length > 0 && (
+                                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 w-[220px] rounded-bl-xl rounded-xl absolute top-12 shadow-xl" >
+
+                                                {
+                                                    searchhistory?.map((s, i) => (
+                                                        <div key={i} className="py-2 hover:text-gray-500 cursor-pointer flex items-center gap-3" onClick={() => {
+                                                            setshopen(false)
+                                                            search(s)
+                                                            setst(s)
+                                                        }} >
+
+                                                            <FaHistory /><p>{s}</p>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </motion.div>
+                                        )
                                     }
-                                </motion.div>
-                            ) : ""
+
+
+
+
+                                </div>
+
+                            )
                         }
 
 
