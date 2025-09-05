@@ -31,9 +31,9 @@ import useFollowingstore from "@/store/followingstore";
 
 
 
-export default function Homecards() {
+export default function Fcards() {
     const [loading, setloading] = useState(false)
-    const { blogs, fetchinfo, h } = useHomestore()
+    
     const navigate = useNavigate()
     const { togglelike, removelike, commentsByBlog } = useHomestore()
     const { user } = useAuthstore()
@@ -42,7 +42,7 @@ export default function Homecards() {
     const [option, setoption] = useState(null)
     const bottomref = useRef(null)
     const [showlink, setshowlink] = useState(null)
-    const { followingblogs, hl ,fblogs} = useFollowingstore()
+    const { followingblogs,blogs,h} = useFollowingstore()
     const[floading,setfloading] = useState(false)
 
 
@@ -53,7 +53,7 @@ export default function Homecards() {
             const observer = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting && h) {
                  
-                    fetchblogs()
+                    fetchfblogs()
                 }
             }, {
                 threshold: 1.0
@@ -66,7 +66,7 @@ export default function Homecards() {
             return () => {
                 if (bottomref.current) observer.unobserve(bottomref.current)
             }
-        }, [loading, h, fetchinfo])
+        }, [loading, h, followingblogs])
     
 
 
@@ -103,20 +103,6 @@ export default function Homecards() {
 
         } catch (error) {
             console.log(error);
-        }
-    }
-
-    const fetchblogs = async () => {
-        setloading(true)
-        try {
-          
-                await fetchinfo()
-            
-
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setloading(false)
         }
     }
 

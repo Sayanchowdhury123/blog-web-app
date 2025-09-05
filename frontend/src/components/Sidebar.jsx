@@ -11,6 +11,7 @@ import { IoLogOutSharp } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
 import useProfilestore from "@/store/profilestore";
 import { FaSearch } from "react-icons/fa";
+import { SlUserFollowing } from "react-icons/sl";
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -97,6 +98,14 @@ export default function Sidebar() {
             setshownav()}}>
           <FaSearch/>
         <p>Search Blog</p>
+        </div>
+
+            <div className="flex items-center gap-2" onClick={(e) => {
+               e.stopPropagation()
+            navigate("/followingp")
+            setshownav()}}>
+          <SlUserFollowing/>
+        <p>Following</p>
         </div>
 
 

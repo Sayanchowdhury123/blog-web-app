@@ -20,6 +20,7 @@ import Userprofile from './pages/userprofile';
 import Saved from './pages/Saved';
 import Search from './pages/Search';
 import Followerpage from './pages/Followerpage';
+import Followingpage from './pages/Followingpage';
 function App() {
 
 
@@ -41,6 +42,7 @@ function App() {
           <Route path='/profile' element={<Privateroute><Userprofile/></Privateroute>} />
           <Route path='/saved-blogs' element={<Privateroute><Saved/></Privateroute>} />
           <Route path='/f-page/:userid' element={<Privateroute><Followerpage/></Privateroute>} />
+          <Route path='/followingp' element={<Privateroute><Followingpage/></Privateroute>} />
         </Routes>
       </Router>
     </>

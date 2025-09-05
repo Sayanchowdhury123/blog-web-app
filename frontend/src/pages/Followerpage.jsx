@@ -65,7 +65,7 @@ export default function Followerpage() {
 
     useEffect(() => {
         fetch()
-    }, [])
+    }, [userid])
 
 
     const getfollowerinfo = async (followerid) => {
@@ -170,11 +170,21 @@ export default function Followerpage() {
 
                 </div>
 
-                <div className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
+
+              {
+                blogs?.length > 0 ? (
+                   <div className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
                     {blogs?.map((b, i) => (
                         <Fblogs b={b} i={i} key={i} />
                     ))}
                 </div>
+                ) : (
+                    <div className="flex justify-center text-xl font-semibold mt-10">
+                        No Blogs Posted Yet
+                    </div>
+                )
+              }
+                
 
 
 

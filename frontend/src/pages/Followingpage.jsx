@@ -13,42 +13,18 @@ import Pa from "@/components/Pa"
 import Recom from "@/components/Recom"
 import Sblogs from "@/components/Sblogs"
 import Editorpicks from "@/components/Editorpicks"
+import useFollowingstore from "@/store/followingstore"
+import Fcards from "@/components/Fcards"
+import { SlUserFollowing } from "react-icons/sl"
 
 
-export default function Home() {
+export default function Followingpage() {
     const { logout, setshownav, user, shownav } = useAuthstore()
-    const { fetchinfo, h, fetcht, trendingblogs, fetchpa, pa, searchedblog, recomdations, search, fetchep, fetchr } = useHomestore();
+
+    const { followingblogs} = useFollowingstore()
     const { userinfo, fetchuser } = useProfilestore()
-    const [width, setwidth] = useState(window.innerWidth)
-    const [searchtext, setsearchtext] = useState("")
+  
 
-
-
-   
-    const searchb = async () => {
-        setloading(true)
-        try {
-            if (searchtext) {
-                await search(searchtext)
-
-            }
-
-
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setloading(false)
-        }
-    }
-
-
-
-    useEffect(() => {
-        const handlesize = () => setwidth(window.innerWidth)
-        window.addEventListener("resize", handlesize)
-
-        return () => window.removeEventListener("resize", handlesize)
-    }, [])
 
 
     const [loading, setloading] = useState(false)
@@ -57,12 +33,9 @@ export default function Home() {
     const fetchl = async () => {
         setloading(true)
         try {
-            await fetchinfo()
+          
             await fetchuser()
-            await fetcht()
-            await fetchpa()
-            await fetchr()
-            await fetchep()
+        
         } catch (error) {
             console.log(error);
         } finally {
@@ -88,7 +61,7 @@ export default function Home() {
 
 
 
-            <div className="space-y-6">
+            <div className="">
 
 
                 <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
@@ -112,35 +85,15 @@ export default function Home() {
                 </div>
 
 
-
+                <div className="flex justify-center mt-5">
+                    <h1 className="flex items-center gap-2 text-2xl font-bold"> <SlUserFollowing/>Following</h1>
+                </div>
 
 
                 <div className="relative">
 
-                    {
-                        width >= 1528 && (
-                            <Trending />
-                        )
-                    }
-
-                    {
-                        width >= 1528 && (
-                            <Pa />
-                        )
-                    }
-
-                    {
-                        width >= 1528 && recomdations?.length > 0 && (
-                            <Recom />
-                        )
-                    }
-
-                    {
-                        width >= 1528 && (
-                            <Editorpicks />
-                        )
-                    }
-                    <Homecards />
+                  
+                    <Fcards/>
 
                 </div>
 
