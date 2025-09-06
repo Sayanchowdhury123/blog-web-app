@@ -10,6 +10,7 @@ const {user} = useAuthstore()
 const navigate = useNavigate()
 
 
+
     const followunfollow = async (fid) => {
         try {
             await fu(fid)

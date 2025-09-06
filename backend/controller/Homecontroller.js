@@ -295,26 +295,28 @@ exports.followingpage = async (req, res) => {
     }
 
     const following = user.following;
+    
 
+    
+      const blogs = await Blogs.find({
+        creator: { $in: following },
+      }).sort({ createdAt: -1 }).populate("creator comments.user");
 
-    const blogs = await Blogs.find({
-      creator: { $in: following },
-    })
-      .sort({ createdAt: -1 })
-      .populate("creator comments.user");
+      if (!blogs) {
+        return res.status(400).json("blogs not found");
+      }
 
       
 
-    if (!blogs) {
-      return res.status(400).json("blogs not found");
-    }
+      const pag = blogs.slice(s, l + s);
 
-    const pag = blogs.slice(s, l + s);
+   
 
-    res.status(200).json({
-      blogs: pag,
-      h: s + l < blogs.length,
-    });
+      res.status(200).json({
+        blogs: pag,
+        h: s + l < blogs.length,
+      });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });

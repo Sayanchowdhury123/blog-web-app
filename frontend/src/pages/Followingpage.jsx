@@ -54,7 +54,7 @@ export default function Followingpage() {
     if (loading) return <Loadingscrenn />
     return (
 
-        <div className="  relative bg-base-100 ">
+        <div className="  relative h-screen bg-base-100 ">
             <Sidebar />
 
 
@@ -90,7 +90,7 @@ export default function Followingpage() {
                 </div>
 
 
-                <div className="relative">
+                <div className="relative ">
 
                   
                     <Fcards/>

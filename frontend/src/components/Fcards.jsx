@@ -1,7 +1,7 @@
 import useHomestore from "@/store/homestore"
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading2 from "./Loadin2";
 import toast from "react-hot-toast"
 import { FcApprove } from "react-icons/fc";
@@ -44,16 +44,42 @@ export default function Fcards() {
     const [showlink, setshowlink] = useState(null)
     const { followingblogs,blogs,h} = useFollowingstore()
     const[floading,setfloading] = useState(false)
+    const location = useLocation()
 
+  const fetchfblogs = async () => {
+        setloading(true)
+        try {
+          
+        await followingblogs()
+         
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false)
+        }
+    }
 
+  
+      useEffect(() => {
 
+        useFollowingstore.setState({
+            blogs:[],
+            s:0,
+            l:2,
+            h:true
+        })
+        fetchfblogs()
+      },[])
    
         useEffect(() => {
             if (loading) return;
             const observer = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting && h) {
-                 
-                    fetchfblogs()
+
+                    
+                      fetchfblogs()
+                    
+                    
                 }
             }, {
                 threshold: 1.0
@@ -68,7 +94,7 @@ export default function Fcards() {
             }
         }, [loading, h, followingblogs])
     
-
+console.log(userinfo.following);
 
 
     const getlike = async (id) => {
@@ -106,19 +132,7 @@ export default function Fcards() {
         }
     }
 
-     const fetchfblogs = async () => {
-        setloading(true)
-        try {
-          
-                await followingblogs()
-            
-
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setloading(false)
-        }
-    }
+   
 
     const copylink = (blogid) => {
 

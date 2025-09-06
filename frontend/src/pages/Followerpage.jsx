@@ -65,6 +65,10 @@ export default function Followerpage() {
 
     useEffect(() => {
         fetch()
+         useFpagestore.setState({
+            showfollowers: false,
+            showfollowing: false
+         })
     }, [userid])
 
 

@@ -18,7 +18,7 @@ const useFollowingstore = create((set, get) => ({
         Authorization: `Bearer ${localuser.token}`,
       },
     });
-   
+ 
     const newblogs = res.data.blogs?.filter((blog) => blog.approval === true);
 
     set((state) => {
