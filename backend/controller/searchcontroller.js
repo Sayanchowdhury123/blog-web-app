@@ -97,17 +97,18 @@ exports.addsh = async (req, res) => {
       return res.status(400).json("invalid data");
     }
 
-    if (!user.sh.some(item => item.toLowerCase() === searchtext.toLowerCase())) {
-        user.sh.unshift(searchtext);
-        if(user.sh.length > 10){
-          user.sh.pop()
-        }
+    if (
+      !user.sh.some((item) => item.toLowerCase() === searchtext.toLowerCase())
+    ) {
+      user.sh.unshift(searchtext);
+      if (user.sh.length > 10) {
+        user.sh.pop();
+      }
     } else {
       return res.status(200).json("already added");
     }
 
     await user.save();
-    
 
     res.status(200).json(user.sh);
   } catch (error) {
@@ -118,14 +119,42 @@ exports.addsh = async (req, res) => {
 
 exports.getsh = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(401).json("unauthorized");
     }
 
-    const searchhis = user.sh.slice(0,5)
+    const searchhis = user.sh.slice(0, 5);
 
     res.status(200).json(searchhis);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+exports.filterblog = async (req, res) => {
+  try {
+    const { creators, tags, editorpicks } = req.query;
+
+    const filters = {};
+
+    if (tags) {
+      filters.tags = { $in: tags.split(",") };
+    }
+
+    if (editorpicks !== undefined) {
+      filters.ep = editorpicks === "true";
+    }
+
+    if (authors) {
+      filters.creator = { $in: creators.split(",") };
+    }
+
+    const blogs = await Blogs.find(filters).sort({ createdAt: -1 });
+
+    res.status(200).json(blogs)
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
