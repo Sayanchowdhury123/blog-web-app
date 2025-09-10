@@ -14,11 +14,12 @@ import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast"
 import { motion } from "framer-motion"
 import { FaHistory } from "react-icons/fa";
+import Filterbox from "@/components/Filterbox"
 
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
     const { userinfo, fetchuser } = useProfilestore()
-    const { search, blogs, fetchinfo, l, sorting, addsh, getsh, sh } = useSearchstore()
+    const { search, blogs, fetchinfo, l, sorting, addsh, getsh, sh ,fopen,setfopen} = useSearchstore()
     const navigate = useNavigate()
     const [st, setst] = useState("")
     const [load, setload] = useState(false)
@@ -26,6 +27,7 @@ export default function Search() {
     const [sv, setsv] = useState("all")
     const [shopen, setshopen] = useState(false)
     const [searchhistory, setsearchhistory] = useState([])
+ 
 
     useEffect(() => {
         fetchuser()
@@ -137,6 +139,12 @@ export default function Search() {
 
             <div className=" h-screen">
 
+                {
+                    fopen && (
+                        <Filterbox/>
+                    )
+                }
+
 
                 <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
                     <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
@@ -199,9 +207,6 @@ export default function Search() {
                                         )
                                     }
 
-
-
-
                                 </div>
 
                             )
@@ -219,6 +224,12 @@ export default function Search() {
                             <option value="oldest">Oldest</option>
                             <option value="popularity">Popularity</option>
                         </select>
+                    </div>
+
+
+                    <div>
+                        <button className="btn" onClick={setfopen }>Filter</button>
+                       
                     </div>
                 </div>
 

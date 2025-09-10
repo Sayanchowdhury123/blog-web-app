@@ -50,6 +50,14 @@ const useSearchstore = create((set, get) => ({
 
      set({sh: res.data})
   },
+  fopen: false,
+  setfopen: () => {
+    set((state) => {
+      return {
+        fopen: state.fopen === true ? false : true,
+      };
+    });
+  },
 
 }));
 
