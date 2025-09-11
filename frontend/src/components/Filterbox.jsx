@@ -3,18 +3,18 @@ import { motion } from "framer-motion"
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 export default function Filterbox() {
-    const { setfopen, blogs } = useSearchstore()
+    const { setfopen, allblog ,filters, togglefilters, fetchfilteredblogs} = useSearchstore()
     const [ua, setua] = useState([])
     const [utags, setutags] = useState([])
 
 
     const uq = () => {
-        const uq = blogs.filter((blog, index, self) => index === self.findIndex(b => b.creator.name === blog.creator.name))
+        const uq = allblog.filter((blog, index, self) => index === self.findIndex(b => b.creator.name === blog.creator.name))
         setua(uq)
     }
 
     const uniqutags = () => {
-        const ut = [...new Set(blogs.flatMap(b => b.tags))]
+        const ut = [...new Set(allblog.flatMap(b => b.tags))]
         setutags(ut)
     }
 
@@ -22,13 +22,16 @@ export default function Filterbox() {
     useState(() => {
         uq()
         uniqutags()
-    }, [blogs])
-
-console.log(utags);
+    }, [allblog])
 
 
 
+const handleapply = () => {
+    fetchfilteredblogs()
+    setfopen()
+}
 
+console.log(filters);
 
     return (
 
@@ -42,33 +45,57 @@ console.log(utags);
 
 
                 <div className="">
-                    <p>Authors</p>
+                    <p className="font-semibold">Authors</p>
                     {
-                        ua.map((u) => (
-                            <div className="flex items-center gap-4" key={u._id}>
-                                <p>{u.creator.name}</p>
-                                <input type="checkbox" name="" id="" />
+                        ua.map((u,idx) => (
+                            <div className="flex items-center gap-2" key={u._id}>
+                                
+                                <input type="checkbox" checked={filters?.creators?.includes(u?.creator?._id)}
+                                onChange={() => {
+                                    console.log("adding/removing",u.creator._id);
+                                    togglefilters("creators",u?.creator?._id) 
+                                } }
+                              
+                                />
+
+                                  {u.creator.name}
+
                             </div>
                         ))
                     }
                 </div>
 
                   <div className="">
-                    <p>Tags</p>
+                    <p className="font-semibold">Tags</p>
                     {
-                        utags.map((u,i) => (
+                        utags.map((t,i) => (
                             <div className="flex items-center gap-2" key={i}>
-                                <p>{u}</p>
-                                <input type="checkbox" name="" id="" />
+                                
+                                <input type="checkbox" checked={filters?.tags?.includes(t)}
+                                onChange={() => togglefilters("tags",t)}/>
+                                {t}
                             </div>
                         ))
                     }
                 </div>
 
+                <div>
+                    <p className="font-semibold">Editor's picks</p>
+                  <label className="flex items-center gap-2">
+                      <input type="checkbox" checked={filters.editorpicks === true} onChange={(e) => {
+                        togglefilters("editorpicks",e.target.checked)
+                      }} />
+                      Yes
+                      </label>
+                     
+                </div>
 
+              
+              <div>
+                <button onClick={handleapply} className="btn btn-primary">Apply</button>
+              </div>
 
             </div>
-
         </motion.div>
 
     )

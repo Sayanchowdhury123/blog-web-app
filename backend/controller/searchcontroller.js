@@ -137,6 +137,8 @@ exports.filterblog = async (req, res) => {
   try {
     const { creators, tags, editorpicks } = req.query;
 
+  
+
     const filters = {};
 
     if (tags) {
@@ -147,11 +149,11 @@ exports.filterblog = async (req, res) => {
       filters.ep = editorpicks === "true";
     }
 
-    if (authors) {
+    if (creators) {
       filters.creator = { $in: creators.split(",") };
     }
 
-    const blogs = await Blogs.find(filters).sort({ createdAt: -1 });
+    const blogs = await Blogs.find(filters).sort({ createdAt: -1 }).populate("creator comments.user");
 
     res.status(200).json(blogs)
     
