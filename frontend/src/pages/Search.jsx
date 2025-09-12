@@ -19,15 +19,15 @@ import Filterbox from "@/components/Filterbox"
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
     const { userinfo, fetchuser } = useProfilestore()
-    const { search, blogs, fetchinfo, l, sorting, addsh, getsh, sh ,fopen,setfopen} = useSearchstore()
+    const { search, blogs, fetchinfo, l, sorting, addsh, getsh, sh, fopen, setfopen, load } = useSearchstore()
     const navigate = useNavigate()
     const [st, setst] = useState("")
-    const [load, setload] = useState(false)
+    const [loadi, setload] = useState(false)
     const [loading, setloading] = useState(false)
     const [sv, setsv] = useState("all")
     const [shopen, setshopen] = useState(false)
     const [searchhistory, setsearchhistory] = useState([])
- 
+
 
     useEffect(() => {
         fetchuser()
@@ -115,7 +115,7 @@ export default function Search() {
         if (s.length > 0) {
             const sr = sh.filter((ss) => ss.toLowerCase().includes(s.toLowerCase()))
             setsearchhistory(sr)
-          
+
         } else {
             setsearchhistory(sh)
         }
@@ -126,6 +126,7 @@ export default function Search() {
 
 
     if (loading) return <Loadingscrenn />
+    if (loadi) return <Loading3 />
     if (load) return <Loading3 />
 
     return (
@@ -141,7 +142,7 @@ export default function Search() {
 
                 {
                     fopen && (
-                        <Filterbox/>
+                        <Filterbox />
                     )
                 }
 
@@ -164,7 +165,7 @@ export default function Search() {
                 </div>
 
 
-                <div className="mt-6 flex justify-center gap-2">
+                <div className="mt-6 flex justify-center lg:gap-50 sm:gap-10">
                     <div className="flex flex-col  relative">
                         <div className="flex gap-2 ">
                             <input type="text" className="input " onChange={(e) => {
@@ -217,20 +218,24 @@ export default function Search() {
 
                     </div>
 
-                    <div>
-                        <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
-                            <option value="all">All</option>
-                            <option value="newest">Newest</option>
-                            <option value="oldest">Oldest</option>
-                            <option value="popularity">Popularity</option>
-                        </select>
+                    <div className="flex gap-2">
+                        <div>
+                            <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
+                                <option value="all">All</option>
+                                <option value="newest">Newest</option>
+                                <option value="oldest">Oldest</option>
+                                <option value="popularity">Popularity</option>
+                            </select>
+                        </div>
+
+
+                        <div>
+                            <button className="btn" onClick={setfopen}>Filter</button>
+
+                        </div>
                     </div>
 
 
-                    <div>
-                        <button className="btn" onClick={setfopen }>Filter</button>
-                       
-                    </div>
                 </div>
 
 

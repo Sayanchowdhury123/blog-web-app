@@ -9,19 +9,32 @@ const localuser = JSON.parse(ls);
 const useSearchstore = create((set, get) => ({
   blogs: [],
   sh: [],
-  allblog:[],
+  allblog: [],
+  load: false,
+  setload: (value) => {
+    set({ load: value });
+  },
 
   fetchinfo: async () => {
     const res = await api.get(`/sp/allblogs`);
-    set({allblog: res.data})
+    set({ allblog: res.data });
     set({ blogs: res.data });
   },
 
   search: async (st) => {
-    const res = await api.get(`/sp/search?st=${st}`);
+    const {setload} = get()
+    setload(true)
+    try {
+        const res = await api.get(`/sp/search?st=${st}`);
 
     set({ blogs: res.data || [] });
     toast.success(`${res.data.length} results found`);
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setload(false)
+    }
+  
   },
   sorting: async (sv) => {
     if (sv) {
@@ -63,31 +76,34 @@ const useSearchstore = create((set, get) => ({
     editorpicks: null,
   },
   togglefilters: (key, value) => {
-   
     set((state) => {
-      if(key === "editorpicks"){
+      if (key === "editorpicks") {
         return {
-          filters:{
-            ...state.filters,editorpicks: value
-          }
-        }
+          filters: {
+            ...state.filters,
+            editorpicks: value,
+          },
+        };
       }
       const values = state.filters[key] || [];
       const exists = values?.includes(value);
-      
-      return {
-        filters:{
-         ...state.filters,
-        [key]: exists ? values.filter((v) => v !== value) : [...values, value],
-        }
 
+      return {
+        filters: {
+          ...state.filters,
+          [key]: exists
+            ? values.filter((v) => v !== value)
+            : [...values, value],
+        },
       };
     });
   },
 
   fetchfilteredblogs: async () => {
+    const { setload } = get();
+    setload(true);
     try {
-      const { filters,allblog,fetchinfo } = get();
+      const { filters, allblog, fetchinfo } = get();
       const queryparams = new URLSearchParams();
       if (filters.creators.length > 0) {
         queryparams.append("creators", filters.creators.join(","));
@@ -99,17 +115,20 @@ const useSearchstore = create((set, get) => ({
         queryparams.append("editorpicks", filters.editorpicks);
       }
 
-    if(filters.editorpicks !== true && filters.creators.length === 0 && filters.tags.length === 0){
-    
-       fetchinfo()
-    }else{
-     const res = await api.get(`/sp/filter?${queryparams.toString()}`);
-      set({ blogs: res.data });
-    }
-
-     
+      if (
+        filters.editorpicks !== true &&
+        filters.creators.length === 0 &&
+        filters.tags.length === 0
+      ) {
+        fetchinfo();
+      } else {
+        const res = await api.get(`/sp/filter?${queryparams.toString()}`);
+        set({ blogs: res.data });
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setload(false);
     }
   },
 }));

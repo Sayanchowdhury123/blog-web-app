@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 export default function Filterbox() {
-    const { setfopen, allblog ,filters, togglefilters, fetchfilteredblogs} = useSearchstore()
+    const { setfopen, allblog ,filters, togglefilters, fetchfilteredblogs,setload,load} = useSearchstore()
     const [ua, setua] = useState([])
     const [utags, setutags] = useState([])
 
@@ -27,17 +27,22 @@ export default function Filterbox() {
 
 
 const handleapply = () => {
-    fetchfilteredblogs()
+
+    try {
+        fetchfilteredblogs()
     setfopen()
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-console.log(filters);
+
 
     return (
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center">
-            <div className="bg-base-200 w-[400px] h-[400px] p-6 rounded-xl space-y-4 overflow-scroll " style={{ scrollbarWidth: "none" }}>
+            <div className="bg-base-200 w-[400px] h-[400px] p-6 rounded-xl space-y-2 overflow-scroll " style={{ scrollbarWidth: "none" }}>
 
                 <div className="flex justify-end">
                     <IoMdClose onClick={setfopen} />
@@ -72,7 +77,7 @@ console.log(filters);
                             <div className="flex items-center gap-2" key={i}>
                                 
                                 <input type="checkbox" checked={filters?.tags?.includes(t)}
-                                onChange={() => togglefilters("tags",t)}/>
+                                onChange={() => togglefilters("tags",t)} />
                                 {t}
                             </div>
                         ))
