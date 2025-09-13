@@ -201,16 +201,13 @@ exports.getrecommdations = async (req, res) => {
       });
     });
 
-   
-
     const topTags = Object.keys(tagcount)
       .sort((a, b) => tagcount[b] - tagcount[a])
       .slice(0, 3);
 
-      
-   
-
-    const alreadyReadIds = user.readinghistory.map((r) => new mongoose.Types.ObjectId(r.blogid._id));
+    const alreadyReadIds = user.readinghistory.map(
+      (r) => new mongoose.Types.ObjectId(r.blogid._id)
+    );
 
     const recommended = await Blogs.find({
       tags: { $in: topTags },
@@ -218,9 +215,6 @@ exports.getrecommdations = async (req, res) => {
     })
       .limit(3)
       .populate("creator");
-
-
-     
 
     res.status(200).json(recommended);
   } catch (error) {
@@ -271,3 +265,87 @@ exports.geteditorpicks = async (req, res) => {
     res.status(500).json({ msg: "internal server error" });
   }
 };
+
+exports.editemail = async (req, res) => {
+
+  const { pass, newemail } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json("user not found");
+    }
+
+    const ismatch = bcrypts.compare(pass, user.password);
+    if (!ismatch) {
+      return res.status(400).json({ message: "invalid crediatials" });
+    }
+
+  
+        
+          user.email = newemail;
+          await user.save()
+          res.status(200).json("email updated")
+    
+  } catch (error) {
+        console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+
+exports.editpassword = async (req, res) => {
+  const { oldpass, newpass } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json("user not found");
+    }
+
+    const ismatch = bcrypts.compare(oldpass, user.password);
+    if (!ismatch) {
+      return res.status(400).json({ message: "invalid crediatials" });
+    }
+   
+     const salt = await bcrypts.genSalt(10);
+    user.password = await bcrypts.hash(newpass, salt);
+     
+    await user.save()
+        
+    res.status(200).json("password updated")
+  } catch (error) {
+        console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+exports.delp = async (req, res) => {
+  const { p } = req.params;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json("user not found");
+    }
+
+    const ismatch = bcrypts.compare(p, user.password);
+    if (!ismatch) {
+      return res.status(400).json({ message: "invalid crediatials" });
+    }
+     if (user.pid) {
+          await cloudinary.uploader.destroy(user.pid, {
+            resource_type: "image",
+          });
+        }
+    await Blogs.deleteMany({creator: req.user.id})
+   await User.findByIdAndDelete(req.user.id)
+   
+     
+    res.status(200).json("account deleted")
+  } catch (error) {
+        console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+
+
+
