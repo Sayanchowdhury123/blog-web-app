@@ -5,13 +5,17 @@ import api from "@/axios"
 import toast from "react-hot-toast"
 import Loading2 from "./Loadin2"
 import Loading3 from "./Loading3"
+import useFpagestore from "@/store/fapagestore"
+import { useParams } from "react-router-dom"
 
 export default function Editprofile() {
         const { setshowedit, editp ,userinfo,showedit} = useProfilestore()
     const [name, setname] = useState(userinfo.name)
     const [profilepic, setpic] = useState(userinfo.profilepic)
-
+const { fetchuserinfo } = useFpagestore()
+    const { fetchuser, ui } = useProfilestore()
     const [l, setl] = useState(false)
+    const {userid} = useParams()
 
     const handlefile = (e) => {
         const ci = e.target.files[0]
@@ -29,8 +33,8 @@ export default function Editprofile() {
 
             if (formdata) {
                 await editp(formdata)
-
-
+                await fetchuserinfo(userid)
+                
                 toast('Profile Updated',
                     {
                         icon: '🎉',
@@ -66,12 +70,12 @@ export default function Editprofile() {
 
     return (
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className={` p-6 w-3xl   mt-70 `}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="  z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center ">
 
 
 
 
-            <div className=" bg-base-300 p-6 shadow-lg rounded-xl space-y-6 ">
+            <div className="bg-base-200  p-6 w-3xl shadow-lg rounded-xl space-y-6 ">
 
                 <div>
                     <h1 className="text-3xl font-bold">Edit Profile</h1>
@@ -91,6 +95,7 @@ export default function Editprofile() {
                     <label htmlFor="f" className="label mb-2">
                         <span className="label-text font-semibold">Profile Picture</span>
                     </label>
+                   
                     <img src={userinfo.profilepic} className="w-30 rounded-full mb-2" alt="profile pic" />
                     <input type="file" id="f" className="file-input w-full" onChange={handlefile} required />
                 </div>

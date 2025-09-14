@@ -56,7 +56,7 @@ export default function Authform({ type }) {
             }
 
         } catch (error) {
-          //  setErrors({ email: "something went wrong" })
+          
               toast('Something went wrong',
                     {
                         icon: '❌',

@@ -63,7 +63,7 @@ exports.updateprofile = async (req, res) => {
 
     await user.save();
 
-    console.log(user);
+
 
     res.status(200).json(user);
   } catch (error) {
@@ -301,7 +301,8 @@ exports.editpassword = async (req, res) => {
       return res.status(404).json("user not found");
     }
 
-    const ismatch = bcrypts.compare(oldpass, user.password);
+    const ismatch = await bcrypts.compare(oldpass, user.password);
+    
     if (!ismatch) {
       return res.status(400).json({ message: "invalid crediatials" });
     }
@@ -310,7 +311,7 @@ exports.editpassword = async (req, res) => {
     user.password = await bcrypts.hash(newpass, salt);
      
     await user.save()
-        
+   
     res.status(200).json("password updated")
   } catch (error) {
         console.log(error);

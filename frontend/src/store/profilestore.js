@@ -91,6 +91,16 @@ const useProfilestore = create((set, get) => ({
       };
     });
   },
+
+  updatebox: false,
+  setupdatebox: () => {
+   
+    set((state) => {
+      return {
+        updatebox: state.updatebox === true ? false : true,
+      };
+    });
+  },
   load: false,
   setload: (value) => {
     set({ load: value });
@@ -132,7 +142,7 @@ const useProfilestore = create((set, get) => ({
     }
   },
     editpassword: async (oldpass,newpass) => {
-    const { setload,setboxopen } = get();
+    const { setload,setboxopen,setupdatebox } = get();
     setload(true);
     try {
       const res = await api.patch(
@@ -152,7 +162,8 @@ const useProfilestore = create((set, get) => ({
           color: "#fff",
         },
       });
-      setboxopen()
+      setupdatebox()
+      
     } catch (error) {
       console.log(error);
       toast("Password updation failed", {

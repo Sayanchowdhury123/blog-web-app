@@ -63,7 +63,7 @@ export default function Sidebar() {
 
         <div className="flex items-center gap-2"  onClick={(e) => {
                e.stopPropagation()
-            navigate("/profile")
+            navigate(`/f-page/${user.id}`)
             setshownav()
           }}>
           <FaUserCircle />

@@ -7,7 +7,7 @@ const localuser = JSON.parse(ls);
 
 const useFpagestore = create((set) => ({
   blogs: [],
-  userinfo: {},
+  userinfoi: {},
   fetchuserinfo: async (userid) => {
     const res = await api.get(`/fpage/${userid}`, {
       headers: {
@@ -16,7 +16,7 @@ const useFpagestore = create((set) => ({
     });
 
     set({ blogs: res.data.blogs });
-    set({ userinfo: res.data.userinfo });
+    set({ userinfoi: res.data.userinfo });
   },
   fu: async (fid) => {
     const res = await api.patch(
@@ -31,11 +31,11 @@ const useFpagestore = create((set) => ({
 
     set((state) => {
       return {
-        userinfo: {
-          ...state.userinfo,
-          followers: state.userinfo.followers?.includes(localuser.id)
-            ? state.userinfo.followers.filter((f) => f !== localuser.id)
-            : [...state.userinfo.followers, fid],
+        userinfoi: {
+          ...state.userinfoi,
+          followers: state.userinfoi.followers?.includes(localuser.id)
+            ? state.userinfoi.followers.filter((f) => f !== localuser.id)
+            : [...state.userinfoi.followers, fid],
         },
       };
     });

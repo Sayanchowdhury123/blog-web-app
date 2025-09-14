@@ -10,17 +10,23 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import Sf from "@/components/Sf";
 import Sfollowing from "@/components/Sfollowing";
+import Editprofile from "@/components/Editprofile";
+import { FaUserCog } from "react-icons/fa";
+import Po from "@/components/Po";
+import Updatep from "@/components/Updatep";
+import Loading3 from "@/components/Loading3";
 
 export default function Followerpage() {
 
-    const { fetchuserinfo, userinfo, blogs, fu, showfollowers, setshowfollowers, getfinfo, followerinfo, showfollowing, setshowfollowing } = useFpagestore();
-    const { fetchuser, ui } = useProfilestore()
+    const { fetchuserinfo, blogs,userinfoi, fu, showfollowers, setshowfollowers, getfinfo, followerinfo, showfollowing, setshowfollowing } = useFpagestore();
+    const { fetchuser, ui,userinfo } = useProfilestore()
     const { userid } = useParams()
     const { user } = useAuthstore()
     const { setshownav } = useAuthstore()
     const navigate = useNavigate()
     const [loading, setloading] = useState(false)
-
+    const { setshowedit, showedit, setboxopen, boxopen,updatebox,setupdatebox,load } = useProfilestore()
+   
 
 
     const fetch = async () => {
@@ -39,7 +45,7 @@ export default function Followerpage() {
         try {
             await fu(userid)
             await fetchuserinfo(userid)
-            toast(`${userinfo?.followers?.includes(user.id) ? `Unfollowed ${userinfo?.name}` : `Following ${userinfo?.name}`}`,
+            toast(`${userinfoi?.followers?.includes(user.id) ? `Unfollowed ${userinfoi?.name}` : `Following ${userinfoi?.name}`}`,
                 {
                     icon: '🎉',
                     style: {
@@ -65,10 +71,10 @@ export default function Followerpage() {
 
     useEffect(() => {
         fetch()
-         useFpagestore.setState({
+        useFpagestore.setState({
             showfollowers: false,
             showfollowing: false
-         })
+        })
     }, [userid])
 
 
@@ -106,6 +112,7 @@ export default function Followerpage() {
 
 
     if (loading) return <Loadingscrenn />
+    if(load) return <Loading3/>
 
     return (
 
@@ -123,6 +130,26 @@ export default function Followerpage() {
             {
                 showfollowing && (
                     <Sfollowing />
+                )
+            }
+
+            {
+                showedit && (
+
+                    <Editprofile />
+
+                )
+            }
+
+            {
+                boxopen && (
+                    <Po />
+                )
+            }
+
+            {
+                updatebox && (
+                    <Updatep/>
                 )
             }
 
@@ -146,21 +173,43 @@ export default function Followerpage() {
                     <div className="flex flex-col items-center sm:flex sm:flex-row  justify-center gap-4 sm:gap-16 ">
                         <div className="">
                             <motion.img initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 100 }}
-                                src={userinfo?.profilepic} alt="profilepic" className="border-4 border-blue-500  h-40 w-40 object-center   rounded-full" />
+                                src={userinfoi?.profilepic} alt="profilepic" className="border-4 border-blue-500  h-40 w-40 object-center   rounded-full" />
+                            {
+                                user.id === userid && (
+                                    <p className="mt-2 text-gray-500 text-md">{userinfoi.email}</p>
+                                )
+                            }
                         </div>
 
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="space-y-6  text-center sm:text-left">
-                            <p className="text-2xl font-semibold ">{userinfo.name}</p>
+                            <div className="flex items-center gap-3">
+                                <p className="text-2xl font-semibold ">{userinfoi.name}</p>
+                                {
+                                    user.id === userid && (
+                                      <FaUserCog className="text-xl" onClick={setboxopen} />
+                                    )
+                                }
+                              
+                            </div>
+
                             <div className="flex items-center gap-6">
                                 <p className="text-lg font-bold">{blogs?.length || 0} <span className="block sm:inline text-md text-gray-400">posts</span></p>
-                                <p className="text-lg font-bold" onClick={() => getfollowerinfo(userinfo._id)}>{userinfo?.followers?.length || 0} <span className="block sm:inline  text-md text-gray-400">followers</span></p>
-                                <p className="text-lg font-bold" onClick={() => getfollowinginfo(userinfo._id)} >{userinfo?.following?.length || 0} <span className="block sm:inline text-md text-gray-400">following</span></p>
+                                <p className="text-lg font-bold" onClick={() => getfollowerinfo(userinfoi._id)}>{userinfoi?.followers?.length || 0} <span className="block sm:inline  text-md text-gray-400">followers</span></p>
+                                <p className="text-lg font-bold" onClick={() => getfollowinginfo(userinfoi._id)} >{userinfoi?.following?.length || 0} <span className="block sm:inline text-md text-gray-400">following</span></p>
                             </div>
                             {user.id === userid ? "" : (
                                 <div>
-                                    {userinfo?.followers?.includes(user.id) ? (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >unfollow</button>) : (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >Follow</button>)}
+                                    {userinfoi?.followers?.includes(user.id) ? (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >unfollow</button>) : (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >Follow</button>)}
                                 </div>
                             )}
+
+                            {
+                                user.id === userid && (
+                                    <div>
+                                        <button className="btn w-full btn-primary" onClick={setshowedit}>Edit Profile</button>
+                                    </div>
+                                )
+                            }
 
 
                         </motion.div>
@@ -175,20 +224,20 @@ export default function Followerpage() {
                 </div>
 
 
-              {
-                blogs?.length > 0 ? (
-                   <div className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
-                    {blogs?.map((b, i) => (
-                        <Fblogs b={b} i={i} key={i} />
-                    ))}
-                </div>
-                ) : (
-                    <div className="flex justify-center text-xl font-semibold mt-10">
-                        No Blogs Posted Yet
-                    </div>
-                )
-              }
-                
+                {
+                    blogs?.length > 0 ? (
+                        <div className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
+                            {blogs?.map((b, i) => (
+                                <Fblogs b={b} i={i} key={i} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex justify-center text-xl font-semibold mt-10">
+                            No Blogs Posted Yet
+                        </div>
+                    )
+                }
+
 
 
 

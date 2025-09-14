@@ -37,7 +37,8 @@ exports.login = async (req,res) => {
             return res.status(400).json("user does not exist")
         }
 
-        const ismatch =  bcrypts.compare(password,existinguser.password)
+        const ismatch = await bcrypts.compare(password,existinguser.password)
+      
         if(!ismatch){
               return  res.status(400).json({message: "invalid crediatials"})
         }
