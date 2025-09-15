@@ -15,18 +15,20 @@ import { FaUserCog } from "react-icons/fa";
 import Po from "@/components/Po";
 import Updatep from "@/components/Updatep";
 import Loading3 from "@/components/Loading3";
+import Pinput from "@/components/Pinput";
+import Delp from "@/components/Delp";
 
 export default function Followerpage() {
 
-    const { fetchuserinfo, blogs,userinfoi, fu, showfollowers, setshowfollowers, getfinfo, followerinfo, showfollowing, setshowfollowing } = useFpagestore();
-    const { fetchuser, ui,userinfo } = useProfilestore()
+    const { fetchuserinfo, blogs, userinfoi, fu, showfollowers, setshowfollowers, getfinfo, followerinfo, showfollowing, setshowfollowing } = useFpagestore();
+    const { fetchuser, ui, userinfo } = useProfilestore()
     const { userid } = useParams()
     const { user } = useAuthstore()
     const { setshownav } = useAuthstore()
     const navigate = useNavigate()
     const [loading, setloading] = useState(false)
-    const { setshowedit, showedit, setboxopen, boxopen,updatebox,setupdatebox,load } = useProfilestore()
-   
+    const { setshowedit, showedit, setboxopen, boxopen, updatebox, setupdatebox, load } = useProfilestore()
+
 
 
     const fetch = async () => {
@@ -112,7 +114,7 @@ export default function Followerpage() {
 
 
     if (loading) return <Loadingscrenn />
-    if(load) return <Loading3/>
+    if (load) return <Loading3 />
 
     return (
 
@@ -148,8 +150,20 @@ export default function Followerpage() {
             }
 
             {
-                updatebox && (
-                    <Updatep/>
+                updatebox === "pass" && (
+                    <Updatep />
+                )
+            }
+
+            {
+                updatebox === "email" && (
+                    <Pinput />
+                )
+            }
+
+            {
+                updatebox === "del" && (
+                    <Delp />
                 )
             }
 
@@ -170,7 +184,7 @@ export default function Followerpage() {
 
                 <div className="px-4 py-8">
 
-                    <div className="flex flex-col items-center sm:flex sm:flex-row  justify-center gap-4 sm:gap-16 ">
+                    <div className="flex flex-col items-center sm:flex sm:flex-row  justify-center  gap-2 sm:gap-8 ">
                         <div className="">
                             <motion.img initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 100 }}
                                 src={userinfoi?.profilepic} alt="profilepic" className="border-4 border-blue-500  h-40 w-40 object-center   rounded-full" />
@@ -181,15 +195,15 @@ export default function Followerpage() {
                             }
                         </div>
 
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="space-y-6  text-center sm:text-left">
-                            <div className="flex items-center gap-3">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="space-y-2 sm:space-y-8 text-center sm:text-left">
+                            <div className="flex items-center  sm:justify-start justify-center gap-2">
                                 <p className="text-2xl font-semibold ">{userinfoi.name}</p>
                                 {
                                     user.id === userid && (
-                                      <FaUserCog className="text-xl" onClick={setboxopen} />
+                                        <FaUserCog className="text-xl" onClick={setboxopen} />
                                     )
                                 }
-                              
+
                             </div>
 
                             <div className="flex items-center gap-6">

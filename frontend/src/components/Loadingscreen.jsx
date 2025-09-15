@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 
 
-const Loadingscrenn = () => {
+const Loadingscrenn = ({ type }) => {
+
+    const isep = type === "ep";
 
     return (
 
@@ -11,10 +13,16 @@ const Loadingscrenn = () => {
             <motion.div className="flex items-center justify-center gap-4"
                 initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 100 }}
             >
+                {
+                    isep ? (
+                        <p className="text-lg font-semibold animate-pulse text-white">
+                            Please Wait...<span className="loading text-white loading-spinner loading-sm ml-2"></span>
+                        </p>
+                    ) : <p className="text-lg font-semibold animate-pulse text-white">
+                        Loading...<span className="loading text-white loading-spinner loading-sm ml-2"></span>
+                    </p>
+                }
 
-                <p className="text-lg font-semibold animate-pulse text-white">
-                    Loading<span className="loading text-white loading-spinner loading-sm ml-2"></span>
-                </p>
             </motion.div>
 
 

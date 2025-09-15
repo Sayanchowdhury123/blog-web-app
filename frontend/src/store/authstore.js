@@ -21,7 +21,7 @@ const useAuthstore = create((set) => ({
   blogid: "",
   setshownav: () =>
     set((state) => {
-      return { shownav: !state.shownav };
+      return { shownav: state.shownav === true ? false : true };
     }),
   showalert: false,
   setshowalert: (id) =>

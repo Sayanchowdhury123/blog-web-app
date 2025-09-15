@@ -57,6 +57,7 @@ export default function Home() {
     const fetchl = async () => {
         setloading(true)
         try {
+          
             await fetchinfo()
             await fetchuser()
             await fetcht()
@@ -105,7 +106,7 @@ export default function Home() {
 
                         <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
 
-                            setshownav
+                            setshownav()
                         }} />
                     </div>
 

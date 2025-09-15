@@ -12,7 +12,7 @@ import { FaUserCog } from "react-icons/fa";
 
 export default function Userprofile() {
     const [loading, setloading] = useState(false)
-    const { fetchuser, userinfo, setshowedit, showedit ,setboxopen,boxopen} = useProfilestore()
+    const { fetchuser, userinfo, setshowedit, showedit ,setboxopen,boxopen,load} = useProfilestore()
 
     const fetchl = async () => {
         setloading(true)
@@ -30,6 +30,7 @@ export default function Userprofile() {
     }, [])
 
     if (loading) return <Loadingscrenn />
+    if(load) return <Loadingscrenn type="ep"/>
 
     return (
 
@@ -69,7 +70,7 @@ export default function Userprofile() {
                 
                     <div className="  p-6 shadow-lg rounded-xl  w-sm sm:w-md md:w-3xl ">
                             
-                     <div className="flex justify-end">
+                         <div className="flex justify-end">
                          <FaUserCog onClick={setboxopen} />
                         </div>
                         <div className=" text-center space-y-2 flex flex-col items-center gap-2">

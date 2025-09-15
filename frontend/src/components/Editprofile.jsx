@@ -66,7 +66,7 @@ const { fetchuserinfo } = useFpagestore()
         }
     }
 
-    if (l) return <Loading3 />
+    
 
     return (
 

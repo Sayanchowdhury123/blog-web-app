@@ -275,14 +275,11 @@ exports.editemail = async (req, res) => {
       return res.status(404).json("user not found");
     }
 
-    const ismatch = bcrypts.compare(pass, user.password);
+    const ismatch = await bcrypts.compare(pass, user.password);
     if (!ismatch) {
       return res.status(400).json({ message: "invalid crediatials" });
     }
-
-  
-        
-          user.email = newemail;
+         user.email = newemail;
           await user.save()
           res.status(200).json("email updated")
     
@@ -327,7 +324,7 @@ exports.delp = async (req, res) => {
       return res.status(404).json("user not found");
     }
 
-    const ismatch = bcrypts.compare(p, user.password);
+    const ismatch = await bcrypts.compare(p, user.password);
     if (!ismatch) {
       return res.status(400).json({ message: "invalid crediatials" });
     }

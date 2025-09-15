@@ -27,19 +27,7 @@ const useProfilestore = create((set, get) => ({
     });
   },
 
-  editp: async (formdata) => {
-    const res = await api.patch(
-      `/profile/${localuser.id}/updateprofile`,
-      formdata,
-      {
-        headers: {
-          Authorization: `Bearer ${localuser.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    set({ userinfo: res.data });
-  },
+
 
   tblog: async (blogid) => {
     const res = await api.patch(
@@ -92,21 +80,19 @@ const useProfilestore = create((set, get) => ({
     });
   },
 
-  updatebox: false,
-  setupdatebox: () => {
-   
-    set((state) => {
-      return {
-        updatebox: state.updatebox === true ? false : true,
-      };
-    });
+  updatebox: "",
+  setupdatebox: (value) => {
+    set({updatebox: value})
+  },
+  rupdatebox: () => {
+   set({updatebox: ""})
   },
   load: false,
   setload: (value) => {
     set({ load: value });
   },
   editemail: async (pass, newemail) => {
-    const { setload,setboxopen } = get();
+    const { setload,setboxopen,setupdatebox } = get();
     setload(true);
     try {
       const res = await api.patch(
@@ -126,7 +112,7 @@ const useProfilestore = create((set, get) => ({
           color: "#fff",
         },
       });
-      setboxopen()
+      setupdatebox()
     } catch (error) {
       console.log(error);
       toast("Email updation failed", {
@@ -179,7 +165,7 @@ const useProfilestore = create((set, get) => ({
     }
   },
    delprofile: async (p) => {
-    const { setload,setboxopen } = get();
+    const { setload,setboxopen,setupdatebox } = get();
     setload(true);
     try {
       const res = await api.delete(
@@ -191,7 +177,7 @@ const useProfilestore = create((set, get) => ({
           },
         }
       );
-      toast("Profile Deleted", {
+      toast("Account Deleted", {
         icon: "🎉",
         style: {
           borderRadius: "10px",
@@ -199,7 +185,7 @@ const useProfilestore = create((set, get) => ({
           color: "#fff",
         },
       });
-      setboxopen()
+      setupdatebox()
     } catch (error) {
       console.log(error);
       toast("Profile Deletion Failed", {
@@ -213,6 +199,30 @@ const useProfilestore = create((set, get) => ({
     } finally {
       setload(false);
     }
+  },
+    editp: async (formdata) => {
+    const {setload,fetchuser} = get()
+    setload(true)
+    try {
+      const res = await api.patch(
+      `/profile/${localuser.id}/updateprofile`,
+      formdata,
+      {
+        headers: {
+          Authorization: `Bearer ${localuser.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      } );
+
+     set({ userinfo: res.data });
+     await fetchuser()
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setload(false)
+    }
+    
+   
   },
 }));
 

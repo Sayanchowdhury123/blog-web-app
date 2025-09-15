@@ -27,12 +27,18 @@ const navigate = useNavigate()
             </div>
 
             <div className="flex flex-col gap-4  cursor-pointer">
-                <div className="px-6 py-4 flex items-center gap-2 hover:bg-base-100" ><MdEmail/>Update Email</div>
                 <div className="px-6 py-4 flex items-center gap-2 hover:bg-base-100" onClick={() => {
                     setboxopen()
-                    setupdatebox()
+                    setupdatebox("email")
+                }}   ><MdEmail/>Update Email</div>
+                <div className="px-6 py-4 flex items-center gap-2 hover:bg-base-100" onClick={() => {
+                    setboxopen()
+                    setupdatebox("pass")
                 }}  > <MdOutlinePassword/> Password</div>
-                <div className="px-6 py-4 flex items-center gap-2 hover:bg-base-100"><FaUser/>Delete Profile</div>
+                <div className="px-6 py-4 flex items-center gap-2 hover:bg-base-100"  onClick={() => {
+                    setboxopen()
+                    setupdatebox("del")
+                }}  ><FaUser/>Delete Profile</div>
             </div>
          
 
