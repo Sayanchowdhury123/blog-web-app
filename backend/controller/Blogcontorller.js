@@ -254,3 +254,23 @@ exports.addview = async (req,res) => {
    }
 }
 
+exports.selectusers = async (req,res) => {
+  try {
+   
+    if(req.user.id){
+       const users = await User.find({
+      _id: {$ne: req.user.id},
+      role: {$in: ["editor","writer"]},
+    }).select("name profilepic role")
+    
+
+    res.status(200).json(users)
+    }
+    
+
+  } catch (error) {
+    console.log(error);
+     res.status(500).json({ msg: "internal server error" });
+  }
+}
+

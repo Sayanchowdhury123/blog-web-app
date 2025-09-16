@@ -1,0 +1,43 @@
+import { create } from "zustand";
+import api from "../axios";
+import useAuthstore from "./authstore";
+
+const ls = localStorage.getItem("user");
+const localuser = JSON.parse(ls);
+
+const useBlogmstore = create((set,get) => ({
+  users: [],
+  fetchusers: async () => {
+    const res = await api.get("/blogs/get-users", {
+      headers: {
+        Authorization: `Bearer ${localuser.token}`,
+      },
+    });
+
+    set({ users: res.data });
+  },
+  ubox:false,
+  setubox: () => {
+    set((state) => {
+        return{
+           ubox: state.ubox === true ? false : true
+        }
+    })
+  },
+  selectusers: [],
+  setselectusers: (value) => {
+   set((state) => {
+     const exists = state.selectusers.includes(value)
+
+     return {
+        selectusers: exists ? state.selectusers.filter((s) => s !== value) : [...state.selectusers,value]
+     }
+   })
+   
+  }
+  
+
+
+}));
+
+export default useBlogmstore;

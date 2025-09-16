@@ -12,6 +12,9 @@ import Loading2 from "../components/Loadin2";
 import Editblog from "../components/Editblog";
 import { useLocation, useNavigate } from "react-router-dom";
 import useProfilestore from "@/store/profilestore";
+import { FcCollaboration } from "react-icons/fc";
+import useBlogmstore from "@/store/Blogm";
+import Au from "@/components/Au";
 
 
 export default function Blogmanage() {
@@ -23,6 +26,7 @@ export default function Blogmanage() {
   const location = useLocation()
   const navigate = useNavigate()
   const {fetchuser,userinfo} = useProfilestore()
+  const {setubox,ubox} = useBlogmstore()
 
   const fb = async () => {
   
@@ -98,9 +102,6 @@ export default function Blogmanage() {
   }
 
 
-
-
-
   if(loading)  return <Loadingscrenn />
   return (
     <div className="h-screen  relative overflow-x-hidden">
@@ -146,6 +147,11 @@ export default function Blogmanage() {
           )
         }
 
+       {
+        ubox && (
+          <Au/>
+        )
+       }
 
         <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4" >
           {
@@ -168,11 +174,13 @@ export default function Blogmanage() {
                     </div>
                     <p></p>
                   <div className="card-actions justify-end">
+                    <button className="btn" onClick={setubox}><FcCollaboration/></button>
                     <button className="btn btn-success" onClick={() => navigate(`/edit-content/${b._id}`,{
                       state: {t: b}
                     })}>Edit Content</button>
                     <button className="btn btn-primary" onClick={() => setshowedit(b._id,b)}>Edit Blog</button>
                     <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
+
                   </div>
                 </div>
               </motion.div>

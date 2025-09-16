@@ -33,7 +33,6 @@ export default function Home() {
 
             }
 
-
         } catch (error) {
             console.log(error);
         } finally {
@@ -75,8 +74,6 @@ export default function Home() {
         fetchl()
 
     }, [])
-
-
 
 
     if (loading) return <Loadingscrenn />
@@ -141,6 +138,7 @@ export default function Home() {
                             <Editorpicks />
                         )
                     }
+
                     <Homecards />
 
                 </div>
