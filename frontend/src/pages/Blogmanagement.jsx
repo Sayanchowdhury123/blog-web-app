@@ -26,7 +26,7 @@ export default function Blogmanage() {
   const location = useLocation()
   const navigate = useNavigate()
   const {fetchuser,userinfo} = useProfilestore()
-  const {setubox,ubox} = useBlogmstore()
+  const {setubox,ubox,setroomid} = useBlogmstore()
 
   const fb = async () => {
   
@@ -174,7 +174,11 @@ export default function Blogmanage() {
                     </div>
                     <p></p>
                   <div className="card-actions justify-end">
-                    <button className="btn" onClick={setubox}><FcCollaboration/></button>
+                  
+                     <button className="btn" onClick={() => {
+                      setubox()
+                      setroomid(b)
+                    }}><FcCollaboration/></button>
                     <button className="btn btn-success" onClick={() => navigate(`/edit-content/${b._id}`,{
                       state: {t: b}
                     })}>Edit Content</button>

@@ -21,6 +21,7 @@ import Saved from './pages/Saved';
 import Search from './pages/Search';
 import Followerpage from './pages/Followerpage';
 import Followingpage from './pages/Followingpage';
+import Collabeditor from './components/Collabeditor';
 function App() {
 
 
@@ -43,6 +44,7 @@ function App() {
           <Route path='/saved-blogs' element={<Privateroute><Saved/></Privateroute>} />
           <Route path='/f-page/:userid' element={<Privateroute><Followerpage/></Privateroute>} />
           <Route path='/followingp' element={<Privateroute><Followingpage/></Privateroute>} />
+          <Route path='/collab/:blogid' element={<Privateroute><Collabeditor/></Privateroute>} />
         </Routes>
       </Router>
     </>

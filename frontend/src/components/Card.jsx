@@ -16,12 +16,12 @@ import { FaCheck } from "react-icons/fa";
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 
 export default function Card({ type }) {
-    const { fetchall, blogs, approveblog, bid, setbid, bloginfo,epblog } = useEditorstore();
+    const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog } = useEditorstore();
     const { setshownav, user } = useAuthstore()
     const [loading, setloading] = useState(false)
     const [id, setid] = useState(null)
     const navigate = useNavigate()
-    const { savedblogs,tblog } = useProfilestore()
+    const { savedblogs, tblog } = useProfilestore()
     const savedpage = type === "savedblogs";
 
 
@@ -37,32 +37,32 @@ export default function Card({ type }) {
     const ab = async (blogid) => {
         setid(blogid)
         try {
-              if(savedpage){
+            if (savedpage) {
                 await tblog(blogid)
-                  toast("Blog Removed",
-                {
-                    icon: '🎉',
-                    style: {
-                        borderRadius: '10px',
-                        background: '#333',
-                        color: '#fff',
-                    },
-                })
-                
-              }else{
-                  await  approveblog(blogid)
-                   toast(`${bloginfo?.approval ? "Blog Disapproved" : "Blog Approved"}`,
-                {
-                    icon: '🎉',
-                    style: {
-                        borderRadius: '10px',
-                        background: '#333',
-                        color: '#fff',
-                    },
-                })
-              }
-           
-           
+                toast("Blog Removed",
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
+
+            } else {
+                await approveblog(blogid)
+                toast(`${bloginfo?.approval ? "Blog Disapproved" : "Blog Approved"}`,
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
+            }
+
+
         } catch (error) {
             console.log(error);
             toast('Status upation failed',
@@ -80,35 +80,35 @@ export default function Card({ type }) {
         }
     }
 
-     const pickep = async (blogid) => {
+    const pickep = async (blogid) => {
         setid(blogid)
         try {
-              if(savedpage){
+            if (savedpage) {
                 await tblog(blogid)
-                  toast("Blog Removed",
-                {
-                    icon: '🎉',
-                    style: {
-                        borderRadius: '10px',
-                        background: '#333',
-                        color: '#fff',
-                    },
-                })
-                
-              }else{
-                  await epblog(blogid)
-                   toast(`${bloginfo?.ep ? "Blog Unpicked" : "Blog Picked"}`,
-                {
-                    icon: '🎉',
-                    style: {
-                        borderRadius: '10px',
-                        background: '#333',
-                        color: '#fff',
-                    },
-                })
-              }
-           
-           
+                toast("Blog Removed",
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
+
+            } else {
+                await epblog(blogid)
+                toast(`${bloginfo?.ep ? "Blog Unpicked" : "Blog Picked"}`,
+                    {
+                        icon: '🎉',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    })
+            }
+
+
         } catch (error) {
             console.log(error);
             toast('Action failed',
@@ -127,11 +127,11 @@ export default function Card({ type }) {
     }
 
     return (
-        <motion.div className={`grid grid-cols-1 ${savedpage ? "md:grid-cols-3": "md:grid-cols-2"} gap-4 p-4 `} >
+        <motion.div className={`grid grid-cols-1 ${savedpage ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4 p-4 `} >
 
             {
                 (savedpage ? savedblogs : blogs)?.map((b, i) => (
-                    <motion.div  initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
                         {
                             id === b._id && (
                                 <Loading2 />
@@ -154,25 +154,25 @@ export default function Card({ type }) {
                                 </div>
 
                             </div>
- 
-                          {savedpage ? (
-                               <div dangerouslySetInnerHTML={{
-                                __html: getexcerpt(b.blogtext)
-                            }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
-                                        state: { blogid: b._id }
-                                    })} >
 
-                            </div>
-                          ) : (
-                               <div dangerouslySetInnerHTML={{
-                                __html: getexcerpt(b.blogtext)
-                            }} className="prose max-w-none cursor-pointer"  >
+                            {savedpage ? (
+                                <div dangerouslySetInnerHTML={{
+                                    __html: getexcerpt(b.blogtext)
+                                }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
+                                    state: { blogid: b._id }
+                                })} >
 
-                            </div>
-                          )}                  
-                          
+                                </div>
+                            ) : (
+                                <div dangerouslySetInnerHTML={{
+                                    __html: getexcerpt(b.blogtext)
+                                }} className="prose max-w-none cursor-pointer"  >
 
-                              
+                                </div>
+                            )}
+
+
+
                             <p></p>
                             {savedpage ? "" : (
                                 <div className="card-actions justify-end">
@@ -189,28 +189,36 @@ export default function Card({ type }) {
                                         <button className="btn btn-primary btn-sm" onClick={() => ab(b._id)} ><FcApprove />Approve</button>
                                     )}
 
-                                    { b?.ep ? (
+                                    {b?.ep ? (
                                         <button className="btn btn-error btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleSharp /> Unpick</button>
                                     ) : (
-                                        <button className="btn btn-neutral btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleOutline/> Pick</button>
+                                        <button className="btn btn-neutral btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleOutline /> Pick</button>
                                     )}
 
-                                   
+                                    {
+                                        b.collabrators?.includes(user.id) && (
+                                            <button className="btn" onClick={() => navigate(`/collab/${b._id}`,{
+                                                state: {t: b}
+                                            })}>Join</button>
+                                        )
+                                    }
+
+
 
 
                                 </div>
                             )}
-                         
-                         {
-                            savedpage && (
-                                  <div className="card-actions justify-end">
-                                <button className="btn btn-error" onClick={() => tblog(b._id)}><IoMdRemoveCircle/>Remove</button>
-                            </div>
-                            )
-                         }
-                           
 
-                        
+                            {
+                                savedpage && (
+                                    <div className="card-actions justify-end">
+                                        <button className="btn btn-error" onClick={() => tblog(b._id)}><IoMdRemoveCircle />Remove</button>
+                                    </div>
+                                )
+                            }
+
+
+
 
                         </div>
                     </motion.div>

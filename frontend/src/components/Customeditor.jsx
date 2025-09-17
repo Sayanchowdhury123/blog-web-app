@@ -32,17 +32,23 @@ import { AlignLeftIcon } from "./tiptap-icons/align-left-icon";
 import { AlignCenterIcon } from "./tiptap-icons/align-center-icon";
 import { AlignRightIcon } from "./tiptap-icons/align-right-icon";
 import Highlight from "@tiptap/extension-highlight";
+import Collaboration from "@tiptap/extension-collaboration";
+import * as Y from "yjs";
+import { io } from "socket.io-client";
+import useAuthstore from "@/store/authstore";
 
+const socket = io("http://localhost:5000")
 
-
-export default function Customeditor({ intialContent = "", onContentChange }) {
+export default function Customeditor({ intialContent = "", onContentChange, blogid }) {
   const [content, setcontent] = useState(intialContent)
   const [h, seth] = useState(1)
+  const { user } = useAuthstore()
+  const ydoc = new Y.Doc();
 
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({history:false}),
       TextStyle,
       FontFamily,
       FontSize,
@@ -51,18 +57,46 @@ export default function Customeditor({ intialContent = "", onContentChange }) {
       }),
       Highlight.configure({
         multicolor: true
+      }),
+      Collaboration.configure({
+        document: ydoc
       })
 
     ],
     content: intialContent,
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML()
-      setcontent(html)
-      if (onContentChange) {
-        onContentChange(html)
-      }
-    }
+    
   })
+
+  useEffect(() => {
+    editor.on("update",() => {
+      setcontent(editor.getHTML())
+    })
+
+    return () => {
+      editor.off("update")
+    }
+  },[editor])
+
+
+  useEffect(() => {
+    socket.emit("join-room", { roomid: blogid, token: user.token })
+
+    socket.on("sync-step", ({ update }) => {
+      if(update){
+          Y.applyUpdate(ydoc, new Uint8Array(update))
+      }
+   
+    })
+
+    ydoc.on("update", (update) => {
+      socket.emit("sync-step", { roomid: blogid, update })
+    })
+
+    return () => {
+      socket.off("sync-step")
+    }
+
+  }, [blogid, user.token])
 
 
   useEffect(() => {
@@ -205,7 +239,7 @@ export default function Customeditor({ intialContent = "", onContentChange }) {
         </div>
 
 
-     
+
 
 
 

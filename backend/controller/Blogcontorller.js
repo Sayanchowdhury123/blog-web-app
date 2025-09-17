@@ -259,7 +259,6 @@ exports.selectusers = async (req,res) => {
    
     if(req.user.id){
        const users = await User.find({
-      _id: {$ne: req.user.id},
       role: {$in: ["editor","writer"]},
     }).select("name profilepic role")
     
@@ -273,4 +272,37 @@ exports.selectusers = async (req,res) => {
      res.status(500).json({ msg: "internal server error" });
   }
 }
+
+exports.startcollab = async (req,res) => {
+  const {blogid,users} = req.body;
+  try {
+  
+    const blog = await Blogs.findById(blogid);
+    
+    blog.collabrators = users;
+
+    await blog.save()
+    res.status(200).json(blog.collabrators)
+  } catch (error) {
+         console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}
+
+exports.endcollab = async (req,res) => {
+  const {blogid} = req.body;
+   try {
+  
+    const blog = await Blogs.findById(blogid);
+    
+    blog.collabrators = []
+
+    await blog.save()
+    res.status(200).json(blog.collabrators)
+  } catch (error) {
+         console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}
+
 
