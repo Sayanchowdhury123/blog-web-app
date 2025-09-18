@@ -30,4 +30,6 @@ const blogschema = new mogoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mogoose.model("Blog", blogschema);
+
+
+module.exports =  mogoose.model("Blog", blogschema);

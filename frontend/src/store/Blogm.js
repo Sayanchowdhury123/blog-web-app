@@ -38,7 +38,11 @@ const useBlogmstore = create((set,get) => ({
   blog:"",
   setroomid: (b) => {
     set({blog: b})
-  }
+  },
+  blogt: "",
+  setblogtext: (text) => {
+    set({blogt: text})
+  },
   
 
 

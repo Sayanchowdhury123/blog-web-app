@@ -36,6 +36,8 @@ import Loading2 from '@/components/Loadin2'
 import api from '@/axios'
 import toast from 'react-hot-toast'
 import useProfilestore from '@/store/profilestore'
+import useBlogmstore from '@/store/Blogm'
+import Collabe from './Collabe'
 
 
 
@@ -54,9 +56,23 @@ export default function Collabeditor() {
     const navigate = useNavigate()
     const { setshownav } = useAuthstore()
     const { fetchuser, userinfo } = useProfilestore()
+    const {blogt} = useBlogmstore() 
 
-    
 
+
+   const endcollab = async () => {
+        try {
+            const res = await api.patch(`/blogs/${t._id}/end-collab`, { blogid: t._id}, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            })
+            console.log(res.data);
+             
+        } catch (error) {
+          console.log(error);
+        }
+    }
 
 
     const handlesubmit = async (e) => {
@@ -65,13 +81,15 @@ export default function Collabeditor() {
 
         try {
 
-            const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
+            const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogt }, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     "Content-Type": "multipart/form-data"
 
                 }
             })
+
+            endcollab()
 
             toast('Content Updation successful',
                 {
@@ -142,16 +160,18 @@ export default function Collabeditor() {
                     <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
                 </div>
                 <div className=''>
-                    <h1 className="text-3xl text-center font-semibold">Edit Content</h1>
+                    <h1 className="text-3xl text-center font-semibold">Collaboration</h1>
                 </div>
 
                 <div className='flex justify-center items-center  p-4 '>
                     <form onSubmit={handlesubmit} className=" relative" >
-                        <Customeditor intialContent={blogtext} onContentChange={setblogtext} blogid={t._id} />
-                        <div className='text-center'>
-                            <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
-                        </div>
-
+                        <Collabe intialContent={blogtext} onContentChange={setblogtext} blogid={t._id} />
+                        
+                                <div className='text-center'>
+                                    <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
+                                </div>
+                            
+                    
                     </form>
 
                 </div>

@@ -260,6 +260,7 @@ exports.selectusers = async (req,res) => {
     if(req.user.id){
        const users = await User.find({
       role: {$in: ["editor","writer"]},
+      _id: {$ne: req.user.id}
     }).select("name profilepic role")
     
 
@@ -278,8 +279,10 @@ exports.startcollab = async (req,res) => {
   try {
   
     const blog = await Blogs.findById(blogid);
+
+    const uarray = [...users,req.user.id]
     
-    blog.collabrators = users;
+    blog.collabrators = uarray;
 
     await blog.save()
     res.status(200).json(blog.collabrators)

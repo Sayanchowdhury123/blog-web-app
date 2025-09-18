@@ -33,17 +33,24 @@ import { AlignCenterIcon } from "./tiptap-icons/align-center-icon";
 import { AlignRightIcon } from "./tiptap-icons/align-right-icon";
 import Highlight from "@tiptap/extension-highlight";
 import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import * as Y from "yjs";
 import { io } from "socket.io-client";
 import useAuthstore from "@/store/authstore";
+import { CustomSocketIOProvider } from "@/services/Socketp";
+import { SocketIOProvider } from "y-socket.io";
+import useBlogmstore from "@/store/Blogm";
 
-const socket = io("http://localhost:5000")
+
+
 
 export default function Customeditor({ intialContent = "", onContentChange, blogid }) {
   const [content, setcontent] = useState(intialContent)
   const [h, seth] = useState(1)
   const { user } = useAuthstore()
-  const ydoc = new Y.Doc();
+  const {setblogtext,blogt} = useBlogmstore()
+
+
 
 
   const editor = useEditor({
@@ -58,10 +65,8 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
       Highlight.configure({
         multicolor: true
       }),
-      Collaboration.configure({
-        document: ydoc
-      })
-
+    
+     
     ],
     content: intialContent,
     
@@ -70,7 +75,11 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
   useEffect(() => {
     editor.on("update",() => {
       setcontent(editor.getHTML())
+       setblogtext(editor.getHTML())
+      
     })
+
+  
 
     return () => {
       editor.off("update")
@@ -78,25 +87,8 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
   },[editor])
 
 
-  useEffect(() => {
-    socket.emit("join-room", { roomid: blogid, token: user.token })
 
-    socket.on("sync-step", ({ update }) => {
-      if(update){
-          Y.applyUpdate(ydoc, new Uint8Array(update))
-      }
-   
-    })
-
-    ydoc.on("update", (update) => {
-      socket.emit("sync-step", { roomid: blogid, update })
-    })
-
-    return () => {
-      socket.off("sync-step")
-    }
-
-  }, [blogid, user.token])
+  
 
 
   useEffect(() => {

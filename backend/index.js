@@ -2,6 +2,8 @@ const app = require("./app")
 const connectdb = require("./config/db")
 const {Server} = require("socket.io")
 const http = require("http")
+
+
 connectdb()
 
 const server = http.createServer(app)
@@ -10,12 +12,17 @@ const io = new Server(server,{
   cors: {origin: "*"}
 })
 
+
+
 const rooms = {};
 const Y = require("yjs")
 const Blogs = require("./models/Blogs")
 
 io.on("connection",(socket) => {
   console.log("user connected",socket.id);
+   
+  
+
 
   socket.on("join-room", async({roomid,token}) => {
     try {
@@ -50,6 +57,8 @@ io.on("connection",(socket) => {
       socket.to(roomid).emit("sync-step",{update})
     }
   })
+
+ 
 
 
   socket.on("disconnect",() => {

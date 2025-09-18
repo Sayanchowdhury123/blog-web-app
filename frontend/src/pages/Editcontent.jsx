@@ -36,6 +36,7 @@ import Loading2 from '@/components/Loadin2'
 import api from '@/axios'
 import toast from 'react-hot-toast'
 import useProfilestore from '@/store/profilestore'
+import useBlogmstore from '@/store/Blogm'
 
 
 
@@ -54,6 +55,7 @@ export default function Editcontent() {
   const navigate = useNavigate()
   const { setshownav } = useAuthstore()
   const { fetchuser, userinfo } = useProfilestore()
+  const {blogt} = useBlogmstore()
 
 
 
@@ -68,7 +70,7 @@ export default function Editcontent() {
 
     try {
 
-      const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogtext }, {
+      const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogt }, {
         headers: {
           Authorization: `Bearer ${user.token}`,
           "Content-Type": "multipart/form-data"
