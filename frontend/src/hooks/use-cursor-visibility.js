@@ -1,94 +1,51 @@
 import * as React from "react"
 import { useWindowSize } from "@/hooks/use-window-size"
+import { useBodyRect } from "./use-element-rect"
 
 /**
  * Custom hook that ensures the cursor remains visible when typing in a Tiptap editor.
  * Automatically scrolls the window when the cursor would be hidden by the toolbar.
  *
- * This is particularly useful for long-form content editing where the cursor
- * might move out of the visible area as the user types.
- *
- * @param options Configuration options for cursor visibility behavior
  * @param options.editor The Tiptap editor instance
- * @param options.overlayHeight Reference to the toolbar element that may obscure the cursor
- * @returns void
+ * @param options.overlayHeight Toolbar height to account for
+ * @returns The bounding rect of the body
  */
 export function useCursorVisibility({
   editor,
   overlayHeight = 0
 }) {
   const { height: windowHeight } = useWindowSize()
-  const [rect, setRect] = React.useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+  const rect = useBodyRect({
+    enabled: true,
+    throttleMs: 100,
+    useResizeObserver: true,
   })
-
-  const updateRect = React.useCallback(() => {
-    const element = document.body
-
-    const DOMRect = element.getBoundingClientRect()
-    setRect(DOMRect)
-  }, [])
-
-  React.useEffect(() => {
-    const element = document.body
-
-    updateRect()
-
-    const resizeObserver = new ResizeObserver(() => {
-      window.requestAnimationFrame(updateRect)
-    })
-
-    resizeObserver.observe(element)
-    window.addEventListener("scroll", updateRect, true)
-
-    return () => {
-      resizeObserver.disconnect()
-      window.removeEventListener("scroll", updateRect)
-    };
-  }, [updateRect])
 
   React.useEffect(() => {
     const ensureCursorVisibility = () => {
       if (!editor) return
 
       const { state, view } = editor
-
       if (!view.hasFocus()) return
 
       // Get current cursor position coordinates
       const { from } = state.selection
       const cursorCoords = view.coordsAtPos(from)
 
-      if (windowHeight < rect.height) {
-        if (cursorCoords) {
-          // Check if there's enough space between cursor and bottom of window
-          const availableSpace = windowHeight - cursorCoords.top
+      if (windowHeight < rect.height && cursorCoords) {
+        const availableSpace = windowHeight - cursorCoords.top
 
-          // If not enough space, scroll to position cursor in the middle of viewport
-          if (availableSpace < overlayHeight) {
-            // Calculate target scroll position to center cursor in viewport
-            // Account for overlay height to ensure cursor is not hidden
-            const targetCursorY = Math.max(windowHeight / 2, overlayHeight)
+        // If the cursor is hidden behind the overlay or offscreen, scroll it into view
+        if (availableSpace < overlayHeight) {
+          const targetCursorY = Math.max(windowHeight / 2, overlayHeight)
+          const currentScrollY = window.scrollY
+          const cursorAbsoluteY = cursorCoords.top + currentScrollY
+          const newScrollY = cursorAbsoluteY - targetCursorY
 
-            // Get current scroll position and cursor's absolute position
-            const currentScrollY = window.scrollY
-            const cursorAbsoluteY = cursorCoords.top + currentScrollY
-
-            // Calculate new scroll position
-            const newScrollY = cursorAbsoluteY - targetCursorY
-
-            window.scrollTo({
-              top: Math.max(0, newScrollY),
-              behavior: "smooth",
-            })
-          }
+          window.scrollTo({
+            top: Math.max(0, newScrollY),
+            behavior: "smooth",
+          })
         }
       }
     }

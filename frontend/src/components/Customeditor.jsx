@@ -1,24 +1,14 @@
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { useEffect, useState } from "react"
-import { FaBold } from "react-icons/fa";
-import { FaItalic } from "react-icons/fa";
-import { FaStrikethrough } from "react-icons/fa";
-import { FaCode } from "react-icons/fa";
-import { FaUnderline } from "react-icons/fa";
-import { BsBlockquoteRight } from "react-icons/bs";
-import { BlockquoteButton } from "./tiptap-ui/blockquote-button";
-import { ToolbarGroup } from "./tiptap-ui-primitive/toolbar";
-import { HeadingDropdownMenu } from "./tiptap-ui/heading-dropdown-menu";
-import { Toolbar } from "./tiptap-ui-primitive/toolbar";
+
 import { TextStyle } from "@tiptap/extension-text-style";
 import { FontFamily } from "@tiptap/extension-text-style";
 import { FontSize } from "@tiptap/extension-text-style";
 import { HiListBullet } from "react-icons/hi2";
-import { GoListOrdered } from "react-icons/go";
+
 import { FaGripLines } from "react-icons/fa";
-import { LuUndo2 } from "react-icons/lu";
-import { LuRedo2 } from "react-icons/lu";
+
 import { Undo2Icon } from "./tiptap-icons/undo2-icon";
 import { Redo2Icon } from "./tiptap-icons/redo2-icon";
 import { BoldIcon } from "./tiptap-icons/bold-icon";
@@ -32,14 +22,10 @@ import { AlignLeftIcon } from "./tiptap-icons/align-left-icon";
 import { AlignCenterIcon } from "./tiptap-icons/align-center-icon";
 import { AlignRightIcon } from "./tiptap-icons/align-right-icon";
 import Highlight from "@tiptap/extension-highlight";
-import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCaret from "@tiptap/extension-collaboration-caret";
-import * as Y from "yjs";
-import { io } from "socket.io-client";
 import useAuthstore from "@/store/authstore";
-import { CustomSocketIOProvider } from "@/services/Socketp";
-import { SocketIOProvider } from "y-socket.io";
 import useBlogmstore from "@/store/Blogm";
+import api from "@/axios";
+
 
 
 
@@ -48,14 +34,14 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
   const [content, setcontent] = useState(intialContent)
   const [h, seth] = useState(1)
   const { user } = useAuthstore()
-  const {setblogtext,blogt} = useBlogmstore()
+  const { setblogtext, blogt } = useBlogmstore()
 
 
 
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({history:false}),
+      StarterKit.configure({ history: false }),
       TextStyle,
       FontFamily,
       FontSize,
@@ -65,30 +51,33 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
       Highlight.configure({
         multicolor: true
       }),
-    
-     
+
+
     ],
     content: intialContent,
-    
+
   })
 
+
+
+
   useEffect(() => {
-    editor.on("update",() => {
+    editor.on("update", () => {
       setcontent(editor.getHTML())
-       setblogtext(editor.getHTML())
-      
+      setblogtext(editor.getHTML())
+
     })
 
-  
+
 
     return () => {
       editor.off("update")
     }
-  },[editor])
+  }, [editor])
 
 
 
-  
+
 
 
   useEffect(() => {

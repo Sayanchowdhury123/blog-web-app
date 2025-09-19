@@ -1,24 +1,14 @@
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
+import { EditorContent, EditorContext, useEditor,Editor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import { useEffect, useState } from "react"
-import { FaBold } from "react-icons/fa";
-import { FaItalic } from "react-icons/fa";
-import { FaStrikethrough } from "react-icons/fa";
-import { FaCode } from "react-icons/fa";
-import { FaUnderline } from "react-icons/fa";
-import { BsBlockquoteRight } from "react-icons/bs";
-import { BlockquoteButton } from "./tiptap-ui/blockquote-button";
-import { ToolbarGroup } from "./tiptap-ui-primitive/toolbar";
-import { HeadingDropdownMenu } from "./tiptap-ui/heading-dropdown-menu";
-import { Toolbar } from "./tiptap-ui-primitive/toolbar";
+import { useEffect, useMemo, useState } from "react"
+
 import { TextStyle } from "@tiptap/extension-text-style";
 import { FontFamily } from "@tiptap/extension-text-style";
 import { FontSize } from "@tiptap/extension-text-style";
 import { HiListBullet } from "react-icons/hi2";
-import { GoListOrdered } from "react-icons/go";
+
 import { FaGripLines } from "react-icons/fa";
-import { LuUndo2 } from "react-icons/lu";
-import { LuRedo2 } from "react-icons/lu";
+
 import { Undo2Icon } from "./tiptap-icons/undo2-icon";
 import { Redo2Icon } from "./tiptap-icons/redo2-icon";
 import { BoldIcon } from "./tiptap-icons/bold-icon";
@@ -33,14 +23,19 @@ import { AlignCenterIcon } from "./tiptap-icons/align-center-icon";
 import { AlignRightIcon } from "./tiptap-icons/align-right-icon";
 import Highlight from "@tiptap/extension-highlight";
 import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import * as Y from "yjs";
 import { io } from "socket.io-client";
 import useAuthstore from "@/store/authstore";
-import { CustomSocketIOProvider } from "@/services/Socketp";
-import { SocketIOProvider } from "y-socket.io";
 import useBlogmstore from "@/store/Blogm";
+import { debounce } from "lodash";
+import api from "@/axios";
+
+
+
+
+
 const socket = io("http://localhost:5000")
+
 
 
 
@@ -48,14 +43,13 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   const [content, setcontent] = useState(intialContent)
   const [h, seth] = useState(1)
   const { user } = useAuthstore()
-  const {setblogtext,blogt} = useBlogmstore()
-  const ydoc = new Y.Doc();
+  const { setblogtext, blogt } = useBlogmstore()
+  const ydoc = useMemo(() => new Y.Doc(),[])
 
-
-
+   
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({history:false}),
+      StarterKit.configure({ history: false }),
       TextStyle,
       FontFamily,
       FontSize,
@@ -68,39 +62,25 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
       Collaboration.configure({
         document: ydoc
       }),
-     
-    ],
-    content: intialContent,
-    
-  })
-
-  useEffect(() => {
-    editor.on("update",() => {
-      setcontent(editor.getHTML())
-       setblogtext(editor.getHTML())
       
-    })
+    ],
+   editable: true,
 
+  })
   
-
-    return () => {
-      editor.off("update")
-    }
-  },[editor])
-
-  console.log(blogt);
-
-  useEffect(() => {
+    useEffect(() => {
     socket.emit("join-room", { roomid: blogid, token: user.token })
 
     socket.on("sync-step", ({ update }) => {
-      if(update){
-          Y.applyUpdate(ydoc, new Uint8Array(update))
+     
+      if (update) {
+        Y.applyUpdate(ydoc, new Uint8Array(update))
       }
-   
+
     })
 
     ydoc.on("update", (update) => {
+      
       socket.emit("sync-step", { roomid: blogid, update })
     })
 
@@ -111,11 +91,40 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   }, [blogid, user.token])
 
 
+  const debouncedsave = debounce((html) => {
+
+    setblogtext(html)
+
+  }, 2000)
+
+
   useEffect(() => {
-    if (editor && intialContent !== editor.getHTML() && intialContent) {
-      editor.commands.setContent(intialContent)
+    editor.on("update", () => {
+     
+      const html = editor.getHTML()
+      debouncedsave(html)
+    })
+
+
+    return () => {
+      editor.off("update")
     }
-  }, [intialContent, editor])
+  }, [editor])
+
+
+useEffect(() => {
+  if(!editor) return;
+
+  const yxml = ydoc.getXmlFragment("default");
+
+  const isydocempty = yxml.length === 0;
+
+  if(!isydocempty && intialContent && intialContent.trim().length > 0){
+    editor.commands.setContent(intialContent)
+  }
+}, [ydoc, editor, intialContent]);
+
+
 
   function Toolbar1() {
     if (!editor) return null;
@@ -301,7 +310,7 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
           <Toolbar1 />
         </div>
 
-        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-y-hidden" />
+        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none" />
 
       </div>
 

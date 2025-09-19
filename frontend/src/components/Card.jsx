@@ -14,6 +14,7 @@ import useProfilestore from "@/store/profilestore";
 import { IoMdRemoveCircle } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
+import { MdOutlineConnectWithoutContact } from "react-icons/md";
 
 export default function Card({ type }) {
     const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog } = useEditorstore();
@@ -197,15 +198,13 @@ export default function Card({ type }) {
 
                                     {
                                         b.collabrators?.includes(user.id) && (
-                                            <button className="btn" onClick={() => navigate(`/collab/${b._id}`,{
-                                                state: {t: b}
-                                            })}>Join</button>
+                                            <button className="btn btn-sm" onClick={() => navigate(`/collab/${b._id}`, {
+                                                state: { t: b }
+                                            })}><MdOutlineConnectWithoutContact/>Join</button>
                                         )
                                     }
 
-
-
-
+                    
                                 </div>
                             )}
 

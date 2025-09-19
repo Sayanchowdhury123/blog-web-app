@@ -43,6 +43,9 @@ const useBlogmstore = create((set,get) => ({
   setblogtext: (text) => {
     set({blogt: text})
   },
+  clearblogtext: () => {
+    set({blogt: ""})
+  },
   
 
 

@@ -15,7 +15,7 @@ export default function Editorpicks() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white  w-[328px]  rounded-xl  absolute top-[22px] left-[1130px]  shadow-lg ">
             <div>
-                <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Editor Picks<span className="material-symbols-outlined">editor_choice</span> </h1>
+                <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Editor Picks</h1>
             </div>
             <div className="">
                 {

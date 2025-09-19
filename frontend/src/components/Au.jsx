@@ -23,7 +23,7 @@ export default function Au() {
                     Authorization: `Bearer ${user.token}`,
                 },
             })
-            console.log(res.data);
+          
              
         } catch (error) {
           console.log(error);
@@ -37,7 +37,7 @@ export default function Au() {
                     Authorization: `Bearer ${user.token}`,
                 },
             })
-            console.log(res.data);
+            
              
         } catch (error) {
           console.log(error);
@@ -59,15 +59,19 @@ export default function Au() {
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center">
-            <div className="bg-base-200 w-[400px] h-[400px] p-6 rounded-xl space-y-2 overflow-scroll " style={{ scrollbarWidth: "none" }}>
+            <div className="bg-base-200 w-[400px] h-[350px] p-6 rounded-xl space-y-2  " style={{ scrollbarWidth: "none" }}>
 
-                <div className="flex justify-end">
-                    <IoMdClose onClick={setubox} />
-                </div>
+               
 
                 <div className="">
-                    <p className="font-semibold">Choose Users</p>
-                    {
+                    <div className="flex justify-between">
+                         <p className="font-semibold mb-2">Choose Users</p>
+                           <IoMdClose onClick={setubox} />
+                    </div>
+
+
+                   <div className="h-[230px] overflow-scroll">
+                                            {
                         users.map((u, idx) => (
                             <div className="flex items-center gap-2" key={u._id}>
 
@@ -81,14 +85,17 @@ export default function Au() {
                             </div>
                         ))
                     }
+                   </div>
+
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-4 ">
                      <button className="btn btn-success" onClick={() =>  {
                         startcollab()
                        navigate(`/collab/${blog._id}`,{
                       state: {t: blog,users:selectusers}
                     })
+                    setubox()
                      }}>Choose</button>
 
                       <button className="btn btn-error" onClick={() =>  {

@@ -36,6 +36,7 @@ io.on("connection",(socket) => {
         if(!rooms[roomid]){
          rooms[roomid] = new Y.Doc();
       }
+      
 
       socket.join(roomid)
 
@@ -57,8 +58,6 @@ io.on("connection",(socket) => {
       socket.to(roomid).emit("sync-step",{update})
     }
   })
-
- 
 
 
   socket.on("disconnect",() => {
