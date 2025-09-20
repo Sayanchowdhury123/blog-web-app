@@ -305,12 +305,12 @@ useEffect(() => {
   return (
 
     <EditorContext.Provider value={{ editor }}>
-      <div className=" border rounded-xl  " style={{ scrollbarWidth: "none" }}>
+      <div className=" border rounded-xl  " style={{ scrollbarWidth: "none" }} >
         <div className="border-b ">
           <Toolbar1 />
         </div>
 
-        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none" />
+        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none" style={{ scrollbarWidth: "none" }} />
 
       </div>
 
