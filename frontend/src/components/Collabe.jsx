@@ -45,6 +45,7 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   const { user } = useAuthstore()
   const { setblogtext, blogt } = useBlogmstore()
   const ydoc = useMemo(() => new Y.Doc(),[])
+  const [hasinjected,sethasinjected] = useState(false)
 
    
   const editor = useEditor({
@@ -113,16 +114,19 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
 
 useEffect(() => {
+   
   if(!editor) return;
+ 
 
-  const yxml = ydoc.getXmlFragment("default");
+  const html = editor.getHTML()
 
-  const isydocempty = yxml.length === 0;
 
-  if(!isydocempty && intialContent && intialContent.trim().length > 0){
+  if( !html && intialContent && intialContent.trim().length > 0){
     editor.commands.setContent(intialContent)
+       console.log(html);
+    
   }
-}, [ydoc, editor, intialContent]);
+}, [ editor, intialContent]);
 
 
 
@@ -310,7 +314,7 @@ useEffect(() => {
           <Toolbar1 />
         </div>
 
-        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none" style={{ scrollbarWidth: "none" }} />
+        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none border-none" style={{ scrollbarWidth: "none" }} />
 
       </div>
 
