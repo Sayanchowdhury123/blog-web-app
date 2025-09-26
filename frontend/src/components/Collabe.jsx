@@ -45,7 +45,8 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   const { user } = useAuthstore()
   const { setblogtext, blogt } = useBlogmstore()
   const ydoc = useMemo(() => new Y.Doc(),[])
-  const [hasinjected,sethasinjected] = useState(false)
+ 
+  const [hasInjected, sethasi] = useState(false)
 
    
   const editor = useEditor({
@@ -113,20 +114,26 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   }, [editor])
 
 
+
+
 useEffect(() => {
-   
-  if(!editor) return;
+  if (!editor || hasInjected) return;
  
 
-  const html = editor.getHTML()
+  const html = editor.getHTML();
 
-
-  if( !html && intialContent && intialContent.trim().length > 0){
-    editor.commands.setContent(intialContent)
-       console.log(html);
+  
+  if (html === "<p></p>" && intialContent && intialContent.trim().length > 0) {
+    editor.commands.setContent(intialContent);
+     sethasi(true)
     
   }
-}, [ editor, intialContent]);
+   
+
+    
+  
+}, [editor, intialContent, hasInjected]);
+
 
 
 

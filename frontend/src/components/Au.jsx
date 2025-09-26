@@ -58,8 +58,8 @@ export default function Au() {
     return (
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center">
-            <div className="bg-base-200 w-[400px] h-[350px] p-6 rounded-xl space-y-2  " style={{ scrollbarWidth: "none" }}>
+            className="z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center" >
+            <div className="bg-base-200 w-[400px] h-[350px] p-6 rounded-xl space-y-2  " style={{ scrollbarWidth: "none" }}  >
 
                
 
@@ -70,7 +70,7 @@ export default function Au() {
                     </div>
 
 
-                   <div className="h-[230px] overflow-scroll">
+                   <div className="h-[230px] overflow-scroll "  style={{ scrollbarWidth: "none" }}  >
                                             {
                         users.map((u, idx) => (
                             <div className="flex items-center gap-2" key={u._id}>
