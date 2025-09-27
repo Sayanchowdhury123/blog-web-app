@@ -108,6 +108,14 @@ export default function Sidebar() {
         <p>Following</p>
         </div>
 
+         <div className="flex items-center gap-2" onClick={(e) => {
+               e.stopPropagation()
+            navigate('/collabrate')
+            setshownav()}}>
+          <SlUserFollowing/>
+        <p>Collabrate</p>
+        </div>
+
 
          <div className="flex items-center gap-2">
           <IoLogOutSharp/>

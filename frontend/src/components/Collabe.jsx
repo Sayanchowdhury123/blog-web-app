@@ -48,7 +48,6 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
  
   const [hasInjected, sethasi] = useState(false)
 
-   
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ history: false }),
@@ -92,12 +91,18 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
   }, [blogid, user.token])
 
+  
+
 
   const debouncedsave = debounce((html) => {
 
     setblogtext(html)
+   
+     
 
   }, 2000)
+
+
 
 
   useEffect(() => {
@@ -115,24 +120,34 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
 
 
+ let injected = Boolean( intialContent && intialContent.trim().length > 0)
+
+   setTimeout(() => {
+      sethasi(Boolean( intialContent && intialContent.trim().length > 0))
+   }, 500);
+
+   console.log(hasInjected);
+
 
 useEffect(() => {
-  if (!editor || hasInjected) return;
- 
+  if (!editor) return;
+  if(hasInjected === true) return; 
 
+ 
+  
   const html = editor.getHTML();
 
   
-  if (html === "<p></p>" && intialContent && intialContent.trim().length > 0) {
+  if ( hasInjected === false && intialContent && intialContent.trim().length > 0) {
     editor.commands.setContent(intialContent);
-     sethasi(true)
-    
-  }
    
 
     
+  }
+
   
-}, [editor, intialContent, hasInjected]);
+   
+}, [editor,intialContent]);
 
 
 

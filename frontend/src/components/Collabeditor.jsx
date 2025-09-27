@@ -26,6 +26,7 @@ import Collabe from './Collabe'
 
 
 export default function Collabeditor() {
+   
     const { user } = useAuthstore()
     const location = useLocation()
     const { t, editor } = location.state || {};
@@ -38,8 +39,11 @@ export default function Collabeditor() {
     
   
 
+ 
 
+  
 
+  
   
 
    const endcollab = async () => {
