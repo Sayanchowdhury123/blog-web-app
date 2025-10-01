@@ -122,27 +122,22 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
  let injected = Boolean( intialContent && intialContent.trim().length > 0)
 
-   setTimeout(() => {
-      sethasi(Boolean( intialContent && intialContent.trim().length > 0))
-   }, 500);
 
-   console.log(hasInjected);
 
 
 useEffect(() => {
   if (!editor) return;
-  if(hasInjected === true) return; 
+
+  if(injected === true) return; 
 
  
   
   const html = editor.getHTML();
 
   
-  if ( hasInjected === false && intialContent && intialContent.trim().length > 0) {
-    editor.commands.setContent(intialContent);
+  if (  intialContent && intialContent.trim().length > 0) {
+      editor.commands.setContent(intialContent);
    
-
-    
   }
 
   
