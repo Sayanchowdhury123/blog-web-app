@@ -1,6 +1,6 @@
-import { EditorContent, EditorContext, useEditor,Editor } from "@tiptap/react"
+import { EditorContent, EditorContext, useEditor, Editor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import { TextStyle } from "@tiptap/extension-text-style";
 import { FontFamily } from "@tiptap/extension-text-style";
@@ -44,9 +44,10 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   const [h, seth] = useState(1)
   const { user } = useAuthstore()
   const { setblogtext, blogt } = useBlogmstore()
-  const ydoc = useMemo(() => new Y.Doc(),[])
- 
+  const ydoc = useMemo(() => new Y.Doc(), [])
+
   const [hasInjected, sethasi] = useState(false)
+  const ionce = useRef(false)
 
   const editor = useEditor({
     extensions: [
@@ -63,17 +64,17 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
       Collaboration.configure({
         document: ydoc
       }),
-      
+
     ],
-   editable: true,
+
 
   })
-  
-    useEffect(() => {
+
+  useEffect(() => {
     socket.emit("join-room", { roomid: blogid, token: user.token })
 
     socket.on("sync-step", ({ update }) => {
-     
+
       if (update) {
         Y.applyUpdate(ydoc, new Uint8Array(update))
       }
@@ -81,7 +82,7 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
     })
 
     ydoc.on("update", (update) => {
-      
+
       socket.emit("sync-step", { roomid: blogid, update })
     })
 
@@ -91,14 +92,14 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
   }, [blogid, user.token])
 
-  
+
 
 
   const debouncedsave = debounce((html) => {
 
     setblogtext(html)
-   
-     
+
+
 
   }, 2000)
 
@@ -107,7 +108,7 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
   useEffect(() => {
     editor.on("update", () => {
-     
+
       const html = editor.getHTML()
       debouncedsave(html)
     })
@@ -119,30 +120,25 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   }, [editor])
 
 
-
- let injected = Boolean( intialContent && intialContent.trim().length > 0)
-
-
-
-
 useEffect(() => {
   if (!editor) return;
 
-  if(injected === true) return; 
+  const incoming = intialContent?.trim();
+  if (!incoming) return;
 
- 
-  
-  const html = editor.getHTML();
+  const handler = () => {
+    if (editor.isEmpty) {
+      editor.commands.setContent(incoming);
+    }
+    editor.off('create', handler); 
+  };
 
-  
-  if (  intialContent && intialContent.trim().length > 0) {
-      editor.commands.setContent(intialContent);
-   
-  }
+  editor.on("create", handler);
 
-  
-   
-}, [editor,intialContent]);
+  return () => {
+    editor.off('create', handler);
+  };
+}, [editor, intialContent]);
 
 
 
