@@ -15,9 +15,12 @@ import { IoMdRemoveCircle } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
+import useBlogmstore from "@/store/Blogm";
+import api from "@/axios";
 
 export default function Collabcard({ type }) {
-    const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog } = useEditorstore();
+    const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog,notjoin } = useEditorstore();
     const { setshownav, user } = useAuthstore()
     const [loading, setloading] = useState(false)
     const [id, setid] = useState(null)
@@ -127,8 +130,10 @@ export default function Collabcard({ type }) {
         }
     }
 
+
+
     const collabblogs = blogs.filter((b) => b.collabrators?.includes(user.id))
-   
+
 
     return (
         <motion.div className={`grid grid-cols-1 ${savedpage ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4 p-4 `} >
@@ -136,9 +141,9 @@ export default function Collabcard({ type }) {
             {
                 collabblogs?.map((b, i) => {
 
-                 
 
-                    return ( 
+
+                    return (
                         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
                             {
                                 id === b._id && (
@@ -187,18 +192,13 @@ export default function Collabcard({ type }) {
                                     })}><MdOutlineConnectWithoutContact />Join</button>
 
 
+                                    <button className="btn btn-sm btn-error" onClick={() => notjoin(b)}><MdCancel />Cancel</button>
                                 </div>
-
-
-
-
-
-
 
                             </div>
                         </motion.div>
 
-                                )
+                    )
                 }
 
 

@@ -12,6 +12,7 @@ import { FaUserEdit } from "react-icons/fa";
 import useProfilestore from "@/store/profilestore";
 import { FaSearch } from "react-icons/fa";
 import { SlUserFollowing } from "react-icons/sl";
+import { RiTeamFill } from "react-icons/ri";
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -112,8 +113,8 @@ export default function Sidebar() {
                e.stopPropagation()
             navigate('/collabrate')
             setshownav()}}>
-          <SlUserFollowing/>
-        <p>Collabrate</p>
+          <RiTeamFill/>
+        <p>Collaborate</p>
         </div>
 
 

@@ -29,12 +29,12 @@ import useAuthstore from "@/store/authstore";
 import useBlogmstore from "@/store/Blogm";
 import { debounce } from "lodash";
 import api from "@/axios";
+import {generateJSON} from "@tiptap/html";
 
 
 
 
 
-const socket = io("http://localhost:5000")
 
 
 
@@ -44,12 +44,20 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   const [h, seth] = useState(1)
   const { user } = useAuthstore()
   const { setblogtext, blogt } = useBlogmstore()
-  const ydoc = useMemo(() => new Y.Doc(), [])
+
 
   const [hasInjected, sethasi] = useState(false)
   const ionce = useRef(false)
+  const ydocRef = useRef(null);
+     const ydoc = new Y.Doc();
+    ydocRef.current = ydoc;
 
-  const editor = useEditor({
+  
+  
+
+   const socket = io("http://localhost:5000");
+
+   const editor = useEditor({
     extensions: [
       StarterKit.configure({ history: false }),
       TextStyle,
@@ -62,13 +70,33 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
         multicolor: true
       }),
       Collaboration.configure({
-        document: ydoc
-      }),
+        document: ydocRef.current
+      })
+     
 
     ],
 
 
   })
+
+useEffect(() => {
+    if (!editor || ydocRef.current) return; // Wait for editor or skip if ydoc exists
+
+ 
+    // 5. Insert initial content if doc is empty
+    const yXmlFragment = ydoc.getXmlFragment("content");
+    if (yXmlFragment.length === 0 && intialContent) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(intialContent, "text/html");
+         const json = generateJSON(doc.body.innerHTML,editor.schema );
+        yXmlFragment.insert(0, json);
+      
+    }
+
+ 
+}, [ editor,intialContent]);
+
+
 
   useEffect(() => {
     socket.emit("join-room", { roomid: blogid, token: user.token })
@@ -76,12 +104,12 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
     socket.on("sync-step", ({ update }) => {
 
       if (update) {
-        Y.applyUpdate(ydoc, new Uint8Array(update))
+        Y.applyUpdate(ydocRef.current, new Uint8Array(update))
       }
 
     })
 
-    ydoc.on("update", (update) => {
+    ydocRef.current.on("update", (update) => {
 
       socket.emit("sync-step", { roomid: blogid, update })
     })
@@ -93,13 +121,26 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   }, [blogid, user.token])
 
 
+  const savecontent = async (html) => {
+    try {
+       const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: html }, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                    "Content-Type": "multipart/form-data"
+
+                }
+            })
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   const debouncedsave = debounce((html) => {
 
     setblogtext(html)
-
-
+ 
+  
 
   }, 2000)
 
@@ -119,29 +160,14 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
     }
   }, [editor])
 
-
-useEffect(() => {
-  if (!editor) return;
-
-  const incoming = intialContent?.trim();
-  if (!incoming) return;
-
-  const handler = () => {
-    if (editor.isEmpty) {
-      editor.commands.setContent(incoming);
-    }
-    editor.off('create', handler); 
-  };
-
-  editor.on("create", handler);
-
-  return () => {
-    editor.off('create', handler);
-  };
-}, [editor, intialContent]);
+ 
 
 
 
+
+ 
+ 
+ 
 
   function Toolbar1() {
     if (!editor) return null;
@@ -327,7 +353,7 @@ useEffect(() => {
           <Toolbar1 />
         </div>
 
-        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none border-none" style={{ scrollbarWidth: "none" }} />
+        <EditorContent id="editor" editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none border-none" style={{ scrollbarWidth: "none" }} />
 
       </div>
 

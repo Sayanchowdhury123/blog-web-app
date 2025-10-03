@@ -48,6 +48,25 @@ const useEditorstore = create((set) => ({
      return {blogs: state.blogs.map((b) => (b._id === blogid ? res.data : b)),bloginfo: res.data} 
     });
   },
+  notjoin: async (b) => {
+    try {
+          
+            const res = await api.patch(`/blogs/${b._id}/end-collab`, { blogid: b._id }, {
+                headers: {
+                    Authorization: `Bearer ${localuser.token}`,
+                },
+            })
+
+       
+      set((state) => {
+        return {
+          blogs: state.blogs.filter((blog) => blog._id !== b._id)
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 }));

@@ -59,7 +59,7 @@ export default function Collabpage() {
 
 
         <div>
-          <h1 className="text-3xl text-center font-semibold">Collabrate With Others</h1>
+          <h1 className="text-3xl text-center font-semibold">Collaborate With Others</h1>
         </div>
 
         <Collabcard/>

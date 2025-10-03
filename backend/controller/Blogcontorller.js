@@ -294,11 +294,12 @@ exports.startcollab = async (req,res) => {
 
 exports.endcollab = async (req,res) => {
   const {blogid} = req.body;
+
    try {
   
     const blog = await Blogs.findById(blogid);
     
-    blog.collabrators = []
+    blog.collabrators = blog.collabrators.filter((c) => c.toString() !== req.user.id)
 
     await blog.save()
     res.status(200).json(blog.collabrators)
