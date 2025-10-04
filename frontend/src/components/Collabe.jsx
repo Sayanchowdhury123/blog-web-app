@@ -29,10 +29,13 @@ import useAuthstore from "@/store/authstore";
 import useBlogmstore from "@/store/Blogm";
 import { debounce } from "lodash";
 import api from "@/axios";
-import {generateJSON} from "@tiptap/html";
-
-
-
+import { generateJSON } from "@tiptap/html";
+import { SocketIOProvider } from "y-socket.io";
+import { HocuspocusProvider } from "@hocuspocus/provider";
+import CollaborationCaret from "@tiptap/extension-collaboration-caret";
+import Document from "@tiptap/extension-document";
+import Text from "@tiptap/extension-text";
+import Paragraph from "@tiptap/extension-paragraph";
 
 
 
@@ -40,134 +43,115 @@ import {generateJSON} from "@tiptap/html";
 
 
 export default function Collabe({ intialContent = "", onContentChange, blogid }) {
-  const [content, setcontent] = useState(intialContent)
-  const [h, seth] = useState(1)
   const { user } = useAuthstore()
   const { setblogtext, blogt } = useBlogmstore()
-
-
-  const [hasInjected, sethasi] = useState(false)
-  const ionce = useRef(false)
-  const ydocRef = useRef(null);
-     const ydoc = new Y.Doc();
-    ydocRef.current = ydoc;
-
-  
-  
-
-   const socket = io("http://localhost:5000");
-
-   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({ history: false }),
-      TextStyle,
-      FontFamily,
-      FontSize,
-      TextAlign.configure({
-        types: ["heading", "paragraph"]
-      }),
-      Highlight.configure({
-        multicolor: true
-      }),
-      Collaboration.configure({
-        document: ydocRef.current
-      })
-     
-
-    ],
-
-
-  })
-
-useEffect(() => {
-    if (!editor || ydocRef.current) return; // Wait for editor or skip if ydoc exists
-
- 
-    // 5. Insert initial content if doc is empty
-    const yXmlFragment = ydoc.getXmlFragment("content");
-    if (yXmlFragment.length === 0 && intialContent) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(intialContent, "text/html");
-         const json = generateJSON(doc.body.innerHTML,editor.schema );
-        yXmlFragment.insert(0, json);
-      
-    }
-
- 
-}, [ editor,intialContent]);
-
-
-
+    const [ydoc, setYdoc] = useState(null);
+  // 2. Create the Y.Doc
+  const [provider, setProvider] = useState(null);
+    const [editor, setEditor] = useState(null);
+      const [connectionStatus, setConnectionStatus] = useState('Connecting...');
+    // NEW: Ref to bind the editor to the DOM (replaces EditorContent binding)
+    const editorRef = useRef(null); 
   useEffect(() => {
-    socket.emit("join-room", { roomid: blogid, token: user.token })
+    // Create Y.Doc
+    const newydoc = new Y.Doc();
 
-    socket.on("sync-step", ({ update }) => {
+    // Create Hocuspocus provider (WebSocket connection)
+    const hpProvider = new HocuspocusProvider({
+      url: "ws://localhost:5000/collaboration", // Express+Hocuspocus server
+      name: blogid, // unique document ID (e.g. blogId)
+      document: newydoc,
+        onStatus: (data) => {
+                setConnectionStatus(data.status);
+                console.log(`[HOCUSPOCUS] Status: ${data.status}`);
+            },
+       onSynced: () => {
+                console.log('[HOCUSPOCUS] Document Synced. Checking content state...');
+                // Optional: Insert initial content only if YDoc is truly empty
+                const yXmlFragment = newydoc.getXmlFragment("default"); 
+                if (yXmlFragment.length === 0 && intialContent && editor) {
+                     // Check if editor exists before attempting content insertion
+                    console.log('Inserting initial content into empty YDoc.');
+                    editor.commands.setContent(intialContent); 
+                }
+            }
 
-      if (update) {
-        Y.applyUpdate(ydocRef.current, new Uint8Array(update))
-      }
+    });
 
-    })
-
-    ydocRef.current.on("update", (update) => {
-
-      socket.emit("sync-step", { roomid: blogid, update })
-    })
-
+    setProvider(hpProvider);
+   setYdoc(newydoc)
     return () => {
-      socket.off("sync-step")
-    }
+      hpProvider.destroy();
+    };
+  }, [blogid]);
 
-  }, [blogid, user.token])
+   const debouncedsave = debounce((html) => {
+    setblogtext(html)
+
+  }, 2000)
+
+   useEffect(() => {
+        // Only run if dependencies are ready AND the editor hasn't been created yet
+        if (!provider || !ydoc || editor) return; 
+        
+        // Ensure the DOM element is mounted before creating the editor view
+        if (!editorRef.current) return;
+
+        // Configuration object (guaranteed to be complete here)
+        const config = {
+            element: editorRef.current, // CRITICAL: Bind to the ref
+            editable: true, 
+            content: '',
+            extensions: [
+                StarterKit, 
+                // ... (Other extensions) ...
+                Collaboration.configure({
+                    document: ydoc,
+                    field: 'default', 
+                }),
+            ],
+            onUpdate: ({ editor }) => {
+                // ... (your onContentChange and setblogtext logic)
+              
+                const html = editor.getHTML();
+                onContentChange && onContentChange(html);
+                setblogtext(html)
+            
+                
+            },
+        };
+       
+
+        // Create the new Editor instance
+        const newEditor = new Editor(config);
+        
+        setEditor(newEditor);
+
+        // Cleanup function for the manual editor creation
+        return () => {
+            // Destroy the editor instance on unmount
+            if (newEditor) {
+                newEditor.destroy();
+            }
+        };
+    }, [provider, ydoc, editor,editorRef,onContentChange, setblogtext]);
 
 
   const savecontent = async (html) => {
     try {
-       const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: html }, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                    "Content-Type": "multipart/form-data"
+      const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: html }, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "multipart/form-data"
 
-                }
-            })
+        }
+      })
     } catch (error) {
       console.log(error);
     }
   }
 
 
-  const debouncedsave = debounce((html) => {
-
-    setblogtext(html)
- 
-  
-
-  }, 2000)
-
-
-
-
-  useEffect(() => {
-    editor.on("update", () => {
-
-      const html = editor.getHTML()
-      debouncedsave(html)
-    })
-
-
-    return () => {
-      editor.off("update")
-    }
-  }, [editor])
-
- 
-
-
-
-
- 
- 
- 
 
   function Toolbar1() {
     if (!editor) return null;
@@ -347,17 +331,19 @@ useEffect(() => {
 
   return (
 
-    <EditorContext.Provider value={{ editor }}>
+
       <div className=" border rounded-xl  " style={{ scrollbarWidth: "none" }} >
         <div className="border-b ">
           <Toolbar1 />
         </div>
 
-        <EditorContent id="editor" editor={editor} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none border-none" style={{ scrollbarWidth: "none" }} />
-
+        <div id="editor" ref={editorRef} className="p-4 h-[60vh] w-[984px] overflow-scroll outline-none border-none prose" style={{ scrollbarWidth: "none" }} />
+          <p className="mt-2 text-sm text-gray-600">
+                Connection Status: <span className={`font-semibold ${connectionStatus === 'connected' ? 'text-green-600' : 'text-red-600'}`}>{connectionStatus}</span>
+            </p>
+           
       </div>
 
 
-    </EditorContext.Provider>
   )
 }

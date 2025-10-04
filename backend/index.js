@@ -1,68 +1,85 @@
 const app = require("./app")
 const connectdb = require("./config/db")
-const {Server} = require("socket.io")
 const http = require("http")
-
-
+const { YSocketIO } = require("y-socket.io/dist/server");
+const {Server} = require("@hocuspocus/server")
+const expressWs = require("express-ws");
+expressWs(app)
 connectdb()
 
-const server = http.createServer(app)
 const jwt = require("jsonwebtoken")
-const io = new Server(server,{
-  cors: {origin: "*"}
-})
-
-
-
 const rooms = {};
 const Y = require("yjs")
 const Blogs = require("./models/Blogs")
 
-io.on("connection",(socket) => {
-  console.log("user connected",socket.id);
-   
-  
+const documentCache = new Map();
 
+const hocuspocus = new Server({
+    async onLoadDocument({ documentName }) {
+        const blogId = documentName.split('?')[0]; // Clean the blogId from the query string
+        
+        // 1. Try to get the document from the cache
+        let ydoc = documentCache.get(blogId);
 
-  socket.on("join-room", async({roomid,token}) => {
-    try {
-      const user = jwt.verify(token,process.env.JWT)
-      const blog = await Blogs.findById(roomid).select("collabrators")
-      if(!blog.collabrators.includes(user.id)){
-      
-        return socket.disconnect()
-      }
+        if (!ydoc) {
+            // 2. If not cached, load from the database
+            const blog = await Blogs.findById(blogId);
 
-        if(!rooms[roomid]){
-         rooms[roomid] = new Y.Doc();
-      }
-      
+            if (!blog) {
+                console.warn(`[LOAD] Blog not found: ${blogId}. Starting fresh Y.Doc.`);
+                ydoc = new Y.Doc();
+            } else if (blog.yjsState) {
+                console.log(`[LOAD] Blog ${blogId} loaded from database.`);
+                ydoc = new Y.Doc();
+                // Apply the saved state (Uint8Array)
+                Y.applyUpdate(ydoc, blog.yjsState);
+            } else {
+                console.log(`[LOAD] Blog ${blogId} found, but no Yjs state. Starting fresh.`);
+                ydoc = new Y.Doc();
+            }
 
-      socket.join(roomid)
+            documentCache.set(blogId, ydoc);
+        }
+        
+        return ydoc;
+    },
 
-      
-      console.log(`user joined room ${roomid}`);
-  
-    const state = Y.encodeStateAsUpdate(rooms[roomid])
-    socket.emit("sync-step",{roomid,update: Array.from(state)})
+    /**
+     * Document Store Hook: Saves the document state back to the database.
+     */
+    async onStoreDocument({ documentName, document }) {
+        const blogId = documentName.split('?')[0]; // Clean the blogId
+        
+        // Convert the Y.Doc state to a storable Uint8Array
+        const yjsState = Y.encodeStateAsUpdate(document);
 
-    } catch (error) {
-      console.log("auth failed",error);
-      socket.disconnect()
-    }
-  })
+        // Update the database entry
+        await Blogs.findByIdAndUpdate(blogId, {
+            yjsState: Buffer.from(yjsState) // Store as a buffer/binary type
+        });
+        
+        console.log(`[SAVE] Blog ${blogId} state saved.`);
+    },
 
-  socket.on("sync-step",({roomid,update}) => {
-    if(rooms[roomid]){
-      Y.applyUpdate(rooms[roomid],update)
-      socket.to(roomid).emit("sync-step",{update})
-    }
-  })
+    /**
+     * Disconnect Hook: Clean up cache when document is empty (optional but good).
+     */
+    async onDestroy(data) {
+        const blogId = data.documentName.split('?')[0];
+        // If the document is truly empty and no one is using it, you can clear the cache
+        // if (data.clientsCount === 0) {
+        //     documentCache.delete(blogId);
+        //     console.log(`[CLEAN] Blog ${blogId} removed from cache.`);
+        // }
+    },
+ async onConnect (data) {
+    console.log("new websocket connection",data.socketId);
+  }
+})
 
+app.ws("/collaboration",(ws,req) => {
 
-  socket.on("disconnect",() => {
-    console.log("user disconnected",socket.id);
-  })
+    hocuspocus.handleConnection(ws,req)
 })
 
 
@@ -71,6 +88,6 @@ const PORT = process.env.PORT ;
 
 
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`server running ${PORT}`);
 });

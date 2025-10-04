@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
+    "@hocuspocus/provider": "^3.2.4",
     "@huggingface/inference": "^4.5.3",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-popover": "^1.1.15",
