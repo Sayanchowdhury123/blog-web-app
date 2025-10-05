@@ -94,11 +94,7 @@ export default function Home() {
 
                         navigate("/home")
                     }}>  BlogApp</h1>
-
-
-
-
-
+                    
                     <div className="flex ">
 
                         <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {

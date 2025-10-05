@@ -13,6 +13,7 @@ import useProfilestore from "@/store/profilestore";
 import { FaSearch } from "react-icons/fa";
 import { SlUserFollowing } from "react-icons/sl";
 import { RiTeamFill } from "react-icons/ri";
+import { MdOutlineAnalytics } from "react-icons/md";
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -90,6 +91,18 @@ export default function Sidebar() {
           }} >
             <FaUserEdit/>
             <p>Blog Approval</p>
+          </div>
+        ) : ""}
+
+        
+        { user.role === "writer" ? (
+          <div className="flex items-center gap-2" onClick={(e) => {
+               e.stopPropagation()
+            navigate("/analytics")
+            setshownav()
+          }} >
+            <MdOutlineAnalytics/>
+            <p>Analytics</p>
           </div>
         ) : ""}
 

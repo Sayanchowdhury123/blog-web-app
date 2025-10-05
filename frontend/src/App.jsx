@@ -24,6 +24,7 @@ import Followingpage from './pages/Followingpage';
 import Collabeditor from './components/Collabeditor';
 import Collabpage from './pages/Collabpage';
 import Customeextension from './components/Customextension';
+import Analytics from './pages/Analytics';
 function App() {
 
 
@@ -48,7 +49,7 @@ function App() {
           <Route path='/followingp' element={<Privateroute><Followingpage/></Privateroute>} />
           <Route path='/collab/:blogid' element={<Privateroute><Collabeditor/></Privateroute>} />
           <Route path='/collabrate' element={<Privateroute><Collabpage/></Privateroute>} />
-          <Route path='/custom' element={<Customeextension/>} />
+          <Route path='/analytics' element={<Privateroute><Analytics/></Privateroute>}  />
         </Routes>
       </Router>
     </>
