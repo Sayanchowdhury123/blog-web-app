@@ -18,8 +18,8 @@ export default function Blogpage() {
   const navigate = useNavigate()
   const [viewed, setviewed] = useState(false)
   const { fetchuser, userinfo } = useProfilestore()
+  const [eid, seteid] = useState("")
 
-  
 
   const fb = async () => {
 
@@ -48,11 +48,61 @@ export default function Blogpage() {
   useEffect(() => {
     fb()
     fetchuser()
-    
-
 
   }, [])
 
+  const trackview = async () => {
+    try {
+      const res = await api.post(`/writers/track-view/${blogid}`, {}, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        }
+      })
+       seteid(res.data._id)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+    let entryid;
+  const tryackentry = async () => {
+    try {
+      const res = await api.post(`/writers/entry/${blogid}`, {}, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        }
+      })
+
+     
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    trackview()
+  }, [blogid])
+
+
+const handleExit =  () => {
+    if (eid) {
+
+     api.post(`/writers/exit/${eid}`, { exitat: Date.now() });
+    }
+  };
+
+
+useEffect(() => {
+  
+    
+  window.addEventListener("pagehide", handleExit);
+
+  return () => {
+    handleExit()
+    window.removeEventListener("pagehide", handleExit);
+  };
+}, [eid]);
 
 
 
