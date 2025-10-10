@@ -50,7 +50,9 @@ exports.popularblogs = async (req, res) => {
 exports.trackview = async (req, res) => {
   try {
     const ip =
-      process.env.NODE_ENV === "development" ? "8.8.8.8" : req.headers["x-forwarded-for"]?.split(",")[0];
+      process.env.NODE_ENV === "development"
+        ? "8.8.8.8"
+        : req.headers["x-forwarded-for"]?.split(",")[0];
 
     const geo = geoip.lookup(ip);
     const parser = new UAParser(req.headers["user-agent"]);
@@ -65,8 +67,7 @@ exports.trackview = async (req, res) => {
       device: devicetype,
       entryat: new Date(),
     });
-  
-    
+
     res.status(200).json(newa);
   } catch (error) {
     console.log(error);
@@ -79,7 +80,7 @@ exports.traceentry = async (req, res) => {
       postid: req.params.postid,
       entryat: new Date(),
     });
-   
+
     res.json(entry);
   } catch (error) {
     console.log(error);
@@ -97,9 +98,28 @@ exports.traceexit = async (req, res) => {
       analytic.duration = (analytic.exitat - analytic.entryat) / 1000;
       await analytic.save();
     }
-  
+
     res.json({ success: true });
   } catch (error) {
     console.log(error);
+  }
+};
+
+exports.getwriterinfo = async (req, res) => {
+  try {
+    const analytics = await Analytics.find().populate("postid");
+    const filteredanalytics = analytics.filter(
+      (a) => String(a.postid.creator) === String(req.user.id)
+    );
+
+    if(!filteredanalytics.length === 0){
+      return res.status(404).json("no analytics found")
+    }
+
+
+    res.status(200).json(filteredanalytics)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
   }
 };

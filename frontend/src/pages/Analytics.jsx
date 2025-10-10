@@ -14,12 +14,14 @@ export default function Analytics() {
     const { userinfo, fetchuser } = useProfilestore()
     const [wdata, setwdata] = useState([])
     const[pb,setpb] = useState([])
+    const [pa,setpa] = useState([])
      const [loading,setloading] = useState(false)
 
     useEffect(() => {
         fetchuser()
         fetchdata()
         popularblogs()
+        postanalytics()
     }, [])
 
 
@@ -57,6 +59,22 @@ export default function Analytics() {
         }
     }
 
+    const postanalytics = async () => {
+        setloading(true)
+        try {
+               const res = await api.get(`/writers/post-analytics`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            })
+            setpa(res.data)
+        } catch (error) {
+            console.log(error);
+        }finally{
+            setloading(false)
+        }
+    }
+
 
     if(loading) return <Loadingscrenn/>
     return (
@@ -85,7 +103,7 @@ export default function Analytics() {
                 </div>
 
 
-                <Writeranalytics data={wdata} popularblogs={pb} />
+                <Writeranalytics data={wdata} popularblogs={pb} postanalytics={pa} />
 
 
 
