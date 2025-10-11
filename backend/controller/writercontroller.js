@@ -107,7 +107,7 @@ exports.traceexit = async (req, res) => {
 
 exports.getwriterinfo = async (req, res) => {
   try {
-    const analytics = await Analytics.find().populate("postid");
+    const analytics = await Analytics.find().populate("postid").sort({ createdAt: -1 });
     const filteredanalytics = analytics.filter(
       (a) => String(a.postid.creator) === String(req.user.id)
     );

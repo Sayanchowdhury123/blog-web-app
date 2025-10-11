@@ -256,7 +256,7 @@ exports.popularaauthors = async (req, res) => {
 
 exports.searching = async (req, res) => {
   const { searchtext } = req.body;
-  console.log(searchtext);
+
 
   try {
     if (!searchtext) {
