@@ -6,8 +6,8 @@ const { authmiddleware, authorizerole } = require("../middleware/auth");
 const { onlywrittenbywriter, popularblogs, trackview, traceentry, traceexit, getwriterinfo } = require("../controller/writercontroller");
 
 
-router.get("/",authmiddleware,authorizerole("writer"),onlywrittenbywriter)
-router.get("/popular",authmiddleware,authorizerole("writer"),popularblogs)
+router.get("/",authmiddleware,authorizerole("writer","editor"),onlywrittenbywriter)
+router.get("/popular",authmiddleware,authorizerole("writer","editor"),popularblogs)
 router.get("/post-analytics",authmiddleware,authorizerole("writer","editor"),getwriterinfo)
 router.post("/track-view/:postid",authmiddleware,authorizerole("writer","editor"),trackview)
 router.post("/entry/:postid",authmiddleware,authorizerole("writer","editor"),traceentry)

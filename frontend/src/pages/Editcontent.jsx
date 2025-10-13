@@ -32,15 +32,40 @@ export default function Editcontent() {
   const {blogt} = useBlogmstore()
 
 
+ const trackentry = async () => {
+  try {
+      const res = await api.post(`/ea/edited`, { blogid: t._id }, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "multipart/form-data"
 
+        }
+      })
+   
+  } catch (error) {
+     console.log(error); 
+  }
+ }
+
+  const trackexit = async () => {
+  try {
+      const res = await api.patch(`/ea/exit-edit`, { blogid: t._id }, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "multipart/form-data"
+
+        }
+      })
+     
+  } catch (error) {
+     console.log(error); 
+  }
+ }
 
 
   const handlesubmit = async (e) => {
     e.preventDefault()
     setl(true)
-
-
-
 
     try {
 
@@ -53,7 +78,7 @@ export default function Editcontent() {
       })
 
 
-
+     trackexit()
       toast('Content Updation successful',
         {
           icon: '🎉',
@@ -100,6 +125,7 @@ export default function Editcontent() {
 
   useEffect(() => {
     fetchuser()
+    trackentry()
   }, [])
 
   if (l) return <Loading2 />

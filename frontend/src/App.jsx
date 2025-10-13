@@ -25,6 +25,7 @@ import Collabeditor from './components/Collabeditor';
 import Collabpage from './pages/Collabpage';
 import Customeextension from './components/Customextension';
 import Analytics from './pages/Analytics';
+import Reviewpage from './pages/Reviewpage';
 function App() {
 
 
@@ -50,6 +51,7 @@ function App() {
           <Route path='/collab/:blogid' element={<Privateroute><Collabeditor/></Privateroute>} />
           <Route path='/collabrate' element={<Privateroute><Collabpage/></Privateroute>} />
           <Route path='/analytics' element={<Privateroute><Analytics/></Privateroute>}  />
+          <Route path='/review/:blogid' element={<Privateroute><Reviewpage/></Privateroute>} />
         </Routes>
       </Router>
     </>

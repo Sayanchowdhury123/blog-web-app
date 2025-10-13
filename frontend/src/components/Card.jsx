@@ -177,7 +177,7 @@ export default function Card({ type }) {
                             <p></p>
                             {savedpage ? "" : (
                                 <div className="card-actions justify-end">
-                                    <button className="btn btn-sm btn-secondary" onClick={() => navigate(`/blog/${b._id}`, {
+                                    <button className="btn btn-sm btn-secondary" onClick={() => navigate(`/review/${b._id}`, {
                                         state: { blogid: b._id }
                                     })}><MdOutlinePreview />Review Content</button>
                                     <button className="btn btn-sm " onClick={() => navigate(`/edit-content/${b._id}`, {

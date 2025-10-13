@@ -77,9 +77,6 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
 
 
 
-
-
-
   useEffect(() => {
     if (editor && intialContent !== editor.getHTML() && intialContent) {
       editor.commands.setContent(intialContent)

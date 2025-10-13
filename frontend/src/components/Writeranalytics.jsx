@@ -15,12 +15,27 @@ import {
     ResponsiveContainer
 
 } from "recharts";
-import { couch } from "globals";
+import dayjs from "dayjs";
 
 export default function Writeranalytics({ data, popularblogs, postanalytics }) {
 
 
+  const viewstrenddata = [].slice(0,7)
 
+  postanalytics.reduce((acc,record) => {
+    const date = dayjs(record.entryat).format("YYYY-MM-DD");
+    const existing = viewstrenddata.find((d) => d.date === date)
+
+    if(existing){
+       return
+    }else{
+      viewstrenddata.push({
+         date,views: record?.postid?.views?.length,
+      })
+    }
+
+    return acc;
+  },[])
 
 
 
@@ -53,27 +68,22 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
         totalViews: totalviews,
     };
 
-    const viewstrends = postanalytics?.map((b) => ({
-        day: new Date(b?.entryat).toLocaleDateString("en-US", {
-            weekday: "short"
-        }),
-        views: b?.postid?.views?.length || 0,
-    })).slice(0, 10)
+   const devicecount = {};
 
-    const devicedata = postanalytics?.map((b) => ({
-        name: b?.device,
-        value: b?.device === "desktop" ? 3000 : 2000,
+   postanalytics.forEach((record) => {
+    const device = record.device ;
+    if(devicecount[device]){
+        devicecount[device] +=1
+    }else{
+        devicecount[device] = 1;
+    }
+   })
 
-    })).slice(0, 10).slice(0, 10)
+   const dt = Object.keys(devicecount).map((key) => ({
+       name: key,
+       value: devicecount[key],
+   }))
 
-    const pb = postanalytics?.map((b) => ({
-        title: b?.postid?.blogtext?.slice(0, 30) + "...",
-        views: b?.postid?.views?.length,
-        likes: b?.postid?.likes?.length || 0,
-        avgduration: b?.duration || 0,
-    })).sort((a, b) => b?.postid?.views?.length - a?.postid?.views?.length).slice(0, 5)
-
-  
 
 
     const locationData = [
@@ -132,45 +142,14 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
                 }
             </div>
 
-
-            <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-                <div className="card-body">
-                    <h2 className="card-title">Popular Blogs</h2>
-                    <div className="">
-                        <table className="table table-zebra w-full">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Views</th>
-                                    <th>Likes</th>
-                                    <th>Avg Duration (sec)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    avgdurationdata?.map((blog, idx) => (
-                                        <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
-                                            <td>{blog.title}</td>
-                                            <td>{blog.views}</td>
-                                            <td>{blog.likes}</td>
-                                            <td>{blog.avgduration}</td>
-                                        </motion.tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="card bg-base-300 shadow-xl p-4 ">
-                    <h2 className="text-lg font-bold mb-4">Device Breakdown</h2>
+                    <h2 className="text-lg font-bold mb-4">📱 Device Breakdown</h2>
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
-                            <Pie data={devicedata} dataKey="value" name="name" cx="50%" cy="50%" outerRadius={100} label>
+                            <Pie data={dt} dataKey="value" name="name" cx="50%" cy="50%" outerRadius={100} label>
                                 {
-                                    devicedata?.map((entry, idx) => (
+                                    dt?.map((entry, idx) => (
                                         <Cell key={`Cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
                                     ))
                                 }
@@ -207,15 +186,48 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
                 </motion.div>
             </div>
 
+
+            <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+                <div className="card-body">
+                    <h2 className="card-title">📈 Popular Blogs</h2>
+                    <div className="">
+                        <table className="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Views</th>
+                                    <th>Likes</th>
+                                    <th>Avg Duration (sec)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    avgdurationdata?.map((blog, idx) => (
+                                        <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
+                                            <td>{blog.title}</td>
+                                            <td>{blog.views}</td>
+                                            <td>{blog.likes}</td>
+                                            <td>{blog.avgduration}</td>
+                                        </motion.tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+           
+
             <motion.div initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="card bg-base-200 shadow-xl p-4">
-                <h2 className="text-lg font-bold mb-4">📊 Views Trend (Weekly)</h2>
+                <h2 className="text-lg font-bold mb-4">📊 Views Trend (Daily)</h2>
                 <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={viewstrends} >
+                    <LineChart data={viewstrenddata} >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="day" />
+                        <XAxis dataKey="date" />
                         <YAxis />
                         <Tooltip />
                         <Line type="monotone" dataKey="views" stroke="#8884d8" />

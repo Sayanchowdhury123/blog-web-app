@@ -38,6 +38,7 @@
     "axios": "^1.10.0",
     "daisyui": "^5.0.46",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.18",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.6",
     "lodash": "^4.17.21",

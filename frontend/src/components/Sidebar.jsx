@@ -95,7 +95,7 @@ export default function Sidebar() {
         ) : ""}
 
         
-        { user.role === "writer" ? (
+        { user.role === "writer" || user.role === "editor" ? (
           <div className="flex items-center gap-2" onClick={(e) => {
                e.stopPropagation()
             navigate("/analytics")
