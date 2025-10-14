@@ -73,13 +73,32 @@ exports.editexit = async (req, res) => {
       return res.status(404).json({ msg: "Blog not found in analytics" });
     }
 
-    findblog.exitAt = new Date();
+    findblog.exitAt = new Date() || 0;
     findblog.duration = (findblog.exitAt - findblog.editedAt) / 1000;
     await analytics.save();
 
     res.status(200).json(findblog);
   } catch (error) {
     res.status(500).json({ msg: "internal server error" });
+    console.log(error);
+  }
+};
+
+exports.geteditedbloginfo = async (req, res) => {
+  try {
+    const alldata = await Editoranalytics.find({
+      editor: req.user.id,
+    }).populate({
+      path: "blogsEdited.blogid", 
+      select: "title views likes", 
+    });
+
+    if (!alldata) {
+      return res.status(404).json("no data found");
+    }
+
+    res.status(200).json(alldata);
+  } catch (error) {
     console.log(error);
   }
 };
@@ -106,6 +125,9 @@ exports.getApprovalRate = async (req, res) => {
     ).length;
 
     const approvalRate = ((approvedCount / totalReviewed) * 100).toFixed(2);
+    const disapprovalRate = ((disapprovedCount / totalReviewed) * 100).toFixed(
+      2
+    );
 
     res.status(200).json({
       success: true,
@@ -113,6 +135,7 @@ exports.getApprovalRate = async (req, res) => {
       approved: approvedCount,
       disapproved: disapprovedCount,
       approvalRate,
+      disapprovalrate: disapprovalRate,
     });
   } catch (error) {
     console.error("Error getting approval rate:", error);

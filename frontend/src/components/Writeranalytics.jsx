@@ -16,26 +16,27 @@ import {
 
 } from "recharts";
 import dayjs from "dayjs";
+import useAuthstore from "@/store/authstore";
 
-export default function Writeranalytics({ data, popularblogs, postanalytics }) {
+export default function Writeranalytics({ data, popularblogs, postanalytics, editordata, editinfo }) {
+    const { user } = useAuthstore()
 
+    const viewstrenddata = [].slice(0, 7)
 
-  const viewstrenddata = [].slice(0,7)
+    postanalytics.reduce((acc, record) => {
+        const date = dayjs(record.entryat).format("YYYY-MM-DD");
+        const existing = viewstrenddata.find((d) => d.date === date)
 
-  postanalytics.reduce((acc,record) => {
-    const date = dayjs(record.entryat).format("YYYY-MM-DD");
-    const existing = viewstrenddata.find((d) => d.date === date)
+        if (existing) {
+            return
+        } else {
+            viewstrenddata.push({
+                date, views: record?.postid?.views?.length,
+            })
+        }
 
-    if(existing){
-       return
-    }else{
-      viewstrenddata.push({
-         date,views: record?.postid?.views?.length,
-      })
-    }
-
-    return acc;
-  },[])
+        return acc;
+    }, [])
 
 
 
@@ -60,6 +61,9 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
         return a + pervieww;
     }, 0)
 
+    
+   
+
     const stats = {
         totalBlogs: data?.length,
         totalWords: totalwords,
@@ -68,21 +72,21 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
         totalViews: totalviews,
     };
 
-   const devicecount = {};
+    const devicecount = {};
 
-   postanalytics.forEach((record) => {
-    const device = record.device ;
-    if(devicecount[device]){
-        devicecount[device] +=1
-    }else{
-        devicecount[device] = 1;
-    }
-   })
+    postanalytics.forEach((record) => {
+        const device = record.device;
+        if (devicecount[device]) {
+            devicecount[device] += 1
+        } else {
+            devicecount[device] = 1;
+        }
+    })
 
-   const dt = Object.keys(devicecount).map((key) => ({
-       name: key,
-       value: devicecount[key],
-   }))
+    const dt = Object.keys(devicecount).map((key) => ({
+        name: key,
+        value: devicecount[key],
+    }))
 
 
 
@@ -92,6 +96,15 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
         { name: "BARRACKPORE", value: 500 },
     ];
 
+    const approvedata = [
+        {
+            name: "Approved",value: parseFloat(editordata?.approvalRate)
+        },
+         {
+            name: "Disapproved",value: parseFloat(editordata?.disapprovalrate)
+        },
+    ]
+
 
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
 
@@ -99,9 +112,9 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
 
     postanalytics.forEach((session) => {
         const blogid = session.postid._id;
-        if(!avgdurations[blogid]){
+        if (!avgdurations[blogid]) {
             avgdurations[blogid] = {
-                totalduraion: 0,count:0, title: session?.postid?.blogtext?.slice(0,30),views:session?.postid?.views?.length,likes:session?.postid?.likes?.length
+                totalduraion: 0, count: 0, title: session?.postid?.title, views: session?.postid?.views?.length, likes: session?.postid?.likes?.length
             }
         }
 
@@ -117,9 +130,48 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
         likes: avgdurations[blogid].likes,
     }))
 
+    
+   const totaltimeedited = editinfo[0]?.blogsEdited?.reduce((a, b) => {
+        const edittime = b?.duration;
+        return a + edittime;
+    }, 0)
 
+   
+
+ 
     return (
         <div className="p-6 space-y-8">
+
+            {
+                user?.role === "editor" && (
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        {
+                            [
+                                {
+                                    label: "Total Reviewd", value: editordata.totalReviewed
+
+                                },
+                                { label: "Approval Rate", value: `${editordata.approvalRate}%` },
+                                { label: "Total Approved", value: editordata.approved },
+                                { label: "Total Disapproved", value: editordata.disapproved },
+                                { label: "Total Edited", value: editinfo[0]?.blogsEdited?.length },
+
+
+                            ].map((item, idx) => (
+                                <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="card bg-base-200 shadow-xl" >
+                                    <div className="card-body text-center">
+                                        <h2 className=" text-lg font-bold">{item.label}</h2>
+                                        <p className="text-2xl font-extrabold">{item.value}</p>
+                                    </div>
+                                </motion.div>
+                            ))
+                        }
+                    </div>
+                )
+            }
+
+
+
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 {
                     [
@@ -142,7 +194,39 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
                 }
             </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+
+                {
+                    user?.role === "editor" && (
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="card bg-base-200 shadow-xl p-4"
+                        >
+                            <h2 className="text-lg font-bold mb-4">Approved VS Rejected</h2>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                    <Pie
+                                        data={approvedata}
+                                        dataKey="value"
+                                        nameKey="name"
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={100}
+                                        label
+                                    >
+                                        {locationData.map((entry, idx) => (
+                                            <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </motion.div>
+                    )
+                }
+
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="card bg-base-300 shadow-xl p-4 ">
                     <h2 className="text-lg font-bold mb-4">📱 Device Breakdown</h2>
                     <ResponsiveContainer width="100%" height={300}>
@@ -187,6 +271,40 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
             </div>
 
 
+            {
+                user?.role === "editor" && (
+                      <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+                <div className="card-body">
+                    <h2 className="card-title">📈 Editing Time</h2>
+                    <div className="">
+                        <table className="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Views</th>
+                                    <th>Likes</th>
+                                    <th>Edit Time (sec)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    editinfo[0]?.blogsEdited?.map((blog, idx) => (
+                                        <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
+                                            <td>{blog.blogid.title}</td>
+                                            <td>{blog.blogid.views?.length}</td>
+                                            <td>{blog.blogid.likes?.length}</td>
+                                            <td>{blog.duration}</td>
+                                        </motion.tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                )
+            }
+              
             <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
                 <div className="card-body">
                     <h2 className="card-title">📈 Popular Blogs</h2>
@@ -217,7 +335,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
                 </div>
             </div>
 
-           
+
 
             <motion.div initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -246,7 +364,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics }) {
                     <BarChart data={avgdurationdata}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="title" />
-                        <YAxis  />
+                        <YAxis />
                         <Tooltip />
                         <Bar dataKey="avgduration" fill="#00C49F" />
                     </BarChart>

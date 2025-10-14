@@ -16,6 +16,8 @@ export default function Analytics() {
     const [pb, setpb] = useState([])
     const [pa, setpa] = useState([])
     const [loading, setloading] = useState(false)
+    const[edata,setedata] = useState({})
+    const[editinfo,seteditinfo] = useState([])
   
 
     useEffect(() => {
@@ -23,8 +25,9 @@ export default function Analytics() {
         fetchdata()
         popularblogs()
         postanalytics()
-        if(user.role === "editor"){
+        if(user?.role === "editor"){
             getapprovalrate()
+            geteditinfo()
         }
     }, [])
 
@@ -87,7 +90,8 @@ export default function Analytics() {
                     Authorization: `Bearer ${user.token}`,
                 },
             })
-            console.log(res.data);
+       
+            setedata(res.data)
         } catch (error) {
             console.log(error);
         } finally {
@@ -95,6 +99,24 @@ export default function Analytics() {
         }
     }
 
+  const geteditinfo = async () => {
+        setloading(true)
+        try {
+            const res = await api.get(`/ea/edit-info`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            })
+            
+            seteditinfo(res.data)
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false)
+        }
+    }
+
+    
 
     if (loading) return <Loadingscrenn />
     return (
@@ -123,7 +145,7 @@ export default function Analytics() {
                 </div>
 
 
-                <Writeranalytics data={wdata} popularblogs={pb} postanalytics={pa} />
+                <Writeranalytics data={wdata} popularblogs={pb} postanalytics={pa}  editordata={edata} editinfo={editinfo} />
 
 
 

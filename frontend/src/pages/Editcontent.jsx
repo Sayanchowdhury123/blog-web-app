@@ -78,7 +78,7 @@ export default function Editcontent() {
       })
 
 
-     trackexit()
+     
       toast('Content Updation successful',
         {
           icon: '🎉',
@@ -126,6 +126,12 @@ export default function Editcontent() {
   useEffect(() => {
     fetchuser()
     trackentry()
+
+
+    
+    return () => {
+      trackexit()
+    }
   }, [])
 
   if (l) return <Loading2 />
