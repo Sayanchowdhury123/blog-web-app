@@ -92,8 +92,8 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
     const locationData = [
         { name: "Kolkata", value: 1200 },
-        { name: "Balurght", value: 800 },
-        { name: "BARRACKPORE", value: 500 },
+        { name: "Mumbai", value: 800 },
+        { name: "Delhi", value: 500 },
     ];
 
     const approvedata = [
@@ -141,6 +141,8 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
  
     return (
         <div className="p-6 space-y-8">
+
+            <h1 className="text-4xl font-bold text-center">Analysis</h1>
 
             {
                 user?.role === "editor" && (
