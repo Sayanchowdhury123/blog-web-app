@@ -15,6 +15,7 @@ import { IoMdRemoveCircle } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
+import api from "@/axios";
 
 export default function Card({ type }) {
     const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog } = useEditorstore();
@@ -35,7 +36,27 @@ export default function Card({ type }) {
         }
     }
 
-    const ab = async (blogid) => {
+
+    const createnotification = async (blogtitle, creator,blogid) => {
+        try {
+            if (blogtitle && creator) {
+                const res = await api.post(`/notify/ban`, { blogtitle, creator,blogid }, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                })
+
+               
+            }
+
+
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const ab = async (blogid, blogtitle, creator) => {
         setid(blogid)
         try {
             if (savedpage) {
@@ -52,6 +73,7 @@ export default function Card({ type }) {
 
             } else {
                 await approveblog(blogid)
+                await createnotification(blogtitle, creator,blogid)
                 toast(`${bloginfo?.approval ? "Blog Disapproved" : "Blog Approved"}`,
                     {
                         icon: '🎉',
@@ -187,7 +209,10 @@ export default function Card({ type }) {
                                     {b?.approval ? (
                                         <button className="btn btn-error btn-sm" onClick={() => ab(b._id)}><FcDisapprove />Disapprove</button>
                                     ) : (
-                                        <button className="btn btn-primary btn-sm" onClick={() => ab(b._id)} ><FcApprove />Approve</button>
+                                        <button className="btn btn-primary btn-sm" onClick={() => {
+                                            ab(b._id, b.title, b?.creator?._id)
+
+                                        }} ><FcApprove />Approve</button>
                                     )}
 
                                     {b?.ep ? (
@@ -200,11 +225,11 @@ export default function Card({ type }) {
                                         b.collabrators?.includes(user.id) && (
                                             <button className="btn btn-sm" onClick={() => navigate(`/collab/${b._id}`, {
                                                 state: { t: b }
-                                            })}><MdOutlineConnectWithoutContact/>Join</button>
+                                            })}><MdOutlineConnectWithoutContact />Join</button>
                                         )
                                     }
 
-                    
+
                                 </div>
                             )}
 

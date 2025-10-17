@@ -13,6 +13,9 @@ import Pa from "@/components/Pa"
 import Recom from "@/components/Recom"
 import Sblogs from "@/components/Sblogs"
 import Editorpicks from "@/components/Editorpicks"
+import api from "@/axios"
+import toast from "react-hot-toast"
+import useNotificationstore from "@/store/notificationstore"
 
 
 export default function Home() {
@@ -21,25 +24,16 @@ export default function Home() {
     const { userinfo, fetchuser } = useProfilestore()
     const [width, setwidth] = useState(window.innerWidth)
     const [searchtext, setsearchtext] = useState("")
+    const {notifications,fetchnotifications} = useNotificationstore()
+  
 
 
-
-   
-    const searchb = async () => {
-        setloading(true)
-        try {
-            if (searchtext) {
-                await search(searchtext)
-
-            }
-
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setloading(false)
-        }
-    }
-
+    
+useEffect(() => {
+    notifications.map((n) => {
+        toast(n?.message)
+    })
+},[notifications])
 
 
     useEffect(() => {
@@ -56,13 +50,14 @@ export default function Home() {
     const fetchl = async () => {
         setloading(true)
         try {
-          
+
             await fetchinfo()
             await fetchuser()
             await fetcht()
             await fetchpa()
             await fetchr()
             await fetchep()
+            await fetchnotifications()
         } catch (error) {
             console.log(error);
         } finally {
@@ -74,6 +69,8 @@ export default function Home() {
         fetchl()
 
     }, [])
+
+    
 
 
     if (loading) return <Loadingscrenn />
@@ -94,7 +91,7 @@ export default function Home() {
 
                         navigate("/home")
                     }}>  BlogApp</h1>
-                    
+
                     <div className="flex ">
 
                         <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
