@@ -16,6 +16,7 @@ import Editorpicks from "@/components/Editorpicks"
 import useFollowingstore from "@/store/followingstore"
 import Fcards from "@/components/Fcards"
 import { SlUserFollowing } from "react-icons/sl"
+import Navbar from "@/components/Navbar"
 
 
 export default function Followingpage() {
@@ -43,10 +44,7 @@ export default function Followingpage() {
         }
     }
 
-    useEffect(() => {
-        fetchl()
 
-    }, [])
 
 
 
@@ -64,25 +62,7 @@ export default function Followingpage() {
             <div className="">
 
 
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
-                    <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
-
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-
-
-
-
-
-                    <div className="flex ">
-
-                        <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
-
-                            setshownav
-                        }} />
-                    </div>
-
-                </div>
+                <Navbar/>
 
 
                 <div className="flex justify-center mt-5">

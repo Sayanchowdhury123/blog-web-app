@@ -16,6 +16,8 @@ import Editorpicks from "@/components/Editorpicks"
 import api from "@/axios"
 import toast from "react-hot-toast"
 import useNotificationstore from "@/store/notificationstore"
+import Notificaion from "@/components/Notificaton"
+import Navbar from "@/components/Navbar"
 
 
 export default function Home() {
@@ -24,16 +26,12 @@ export default function Home() {
     const { userinfo, fetchuser } = useProfilestore()
     const [width, setwidth] = useState(window.innerWidth)
     const [searchtext, setsearchtext] = useState("")
-    const {notifications,fetchnotifications} = useNotificationstore()
-  
+    const { notifications, fetchnotifications } = useNotificationstore()
 
 
-    
-useEffect(() => {
-    notifications.map((n) => {
-        toast(n?.message)
-    })
-},[notifications])
+
+
+
 
 
     useEffect(() => {
@@ -52,12 +50,11 @@ useEffect(() => {
         try {
 
             await fetchinfo()
-            await fetchuser()
             await fetcht()
             await fetchpa()
             await fetchr()
             await fetchep()
-            await fetchnotifications()
+
         } catch (error) {
             console.log(error);
         } finally {
@@ -70,15 +67,15 @@ useEffect(() => {
 
     }, [])
 
-    
+
 
 
     if (loading) return <Loadingscrenn />
     return (
 
         <div className="  relative bg-base-100 ">
-            <Sidebar />
 
+            <Sidebar />
 
 
 
@@ -86,21 +83,7 @@ useEffect(() => {
             <div className="space-y-6">
 
 
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
-                    <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
-
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-
-                    <div className="flex ">
-
-                        <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
-
-                            setshownav()
-                        }} />
-                    </div>
-
-                </div>
+                <Navbar/>
 
 
 

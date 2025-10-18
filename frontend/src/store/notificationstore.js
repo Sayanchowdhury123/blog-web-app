@@ -15,8 +15,36 @@ const useNotificationstore = create((set, get) => ({
           Authorization: `Bearer ${localuser.token}`,
         },
       });
-       const unread = res.data?.filter((n) => n.read === false)?.length;
-      set({ notifications: res.data,unreadCount: unread });
+      const unread = res.data.filter((n) => !n.read);
+      set({ notifications: unread, unreadCount: unread?.length });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  markasread: async () => {
+    try {
+      const res = await api.put(
+        "/notify/banr",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localuser.token}`,
+          },
+        }
+      );
+     
+      set((state) => {
+       
+const updated = state.notifications.map((n) => ({
+          ...n,
+          read: true,
+        }));
+      
+        return {
+          notifications: updated,
+          unreadCount: 0,
+        };
+      });
     } catch (error) {
       console.log(error);
     }

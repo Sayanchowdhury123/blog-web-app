@@ -15,6 +15,7 @@ import useProfilestore from "@/store/profilestore";
 import { FcCollaboration } from "react-icons/fc";
 import useBlogmstore from "@/store/Blogm";
 import Au from "@/components/Au";
+import Navbar from "@/components/Navbar";
 
 
 export default function Blogmanage() {
@@ -48,7 +49,7 @@ export default function Blogmanage() {
 
   useEffect(() => {
     fb()
-    fetchuser()
+
   
   }, [])
 
@@ -116,16 +117,7 @@ export default function Blogmanage() {
       <Sidebar />
       <div className=" space-y-6 ">
        
-            <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-              e.stopPropagation()
-              setshownav
-            }}>
-                <h1 className="text-4xl font-bold" onClick={(e) => {
-                  e.stopPropagation()
-                  navigate("/home")
-                }}>  BlogApp</h1>
-                <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-            </div>
+          <Navbar/>
 
 
 

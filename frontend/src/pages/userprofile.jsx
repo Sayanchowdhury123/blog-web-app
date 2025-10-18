@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { IoMdSettings } from "react-icons/io";
 import { FaUserCog } from "react-icons/fa";
+import Navbar from "@/components/Navbar"
 
 
 export default function Userprofile() {
@@ -25,9 +26,7 @@ export default function Userprofile() {
         }
     }
 
-    useEffect(() => {
-        fetchl()
-    }, [])
+  
 
     if (loading) return <Loadingscrenn />
     if(load) return <Loadingscrenn type="ep"/>
@@ -55,16 +54,7 @@ export default function Userprofile() {
 
             <div className="space-y-6">
 
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-                    e.stopPropagation()
-                    setshownav
-                }}>
-                    <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
-                        e.stopPropagation()
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-                    <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-                </div>
+                <Navbar/>
 
                 <motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:0.6}} className=" flex justify-center items-center">
                 

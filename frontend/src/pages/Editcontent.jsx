@@ -15,6 +15,7 @@ import api from '@/axios'
 import toast from 'react-hot-toast'
 import useProfilestore from '@/store/profilestore'
 import useBlogmstore from '@/store/Blogm'
+import Navbar from '@/components/Navbar'
 
 
 
@@ -124,7 +125,7 @@ export default function Editcontent() {
   }
 
   useEffect(() => {
-    fetchuser()
+
     trackentry()
 
 
@@ -144,16 +145,7 @@ export default function Editcontent() {
       <Sidebar />
       <div className=' space-y-4'>
 
-        <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-          e.stopPropagation()
-          setshownav
-        }}>
-          <h1 className="text-4xl font-bold" onClick={(e) => {
-            e.stopPropagation()
-            navigate("/home")
-          }}>  BlogApp</h1>
-          <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-        </div>
+        <Navbar/>
         <div className=''>
           <h1 className="text-3xl text-center font-semibold">Edit Content</h1>
         </div>

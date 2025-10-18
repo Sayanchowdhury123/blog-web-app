@@ -28,18 +28,17 @@ exports.blogapprovednotify = async (req, res) => {
 };
 
 exports.banr = async (req, res) => {
-  const { nid } = req.body;
-  try {
-    if (!nid) {
-      return res.status(400).json({ msg: "Missing required fields" });
-    }
 
-    const n = await Notification.findById(nid);
+  try {
     
 
-    n.read = true;
-    await n.save();
-    res.status(200).json("notification read");
+    const result = await Notification.updateMany(
+      { user: req.user.id, read: false },
+      { $set: { read: true } }
+    );
+
+   
+    res.status(200).json("notifications read");
   } catch (error) {
       console.log(error);
     res.status(500).json({ msg: "internal server error" });

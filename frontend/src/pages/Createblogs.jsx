@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loadingscrenn from "../components/Loadingscreen";
 import useProfilestore from "@/store/profilestore";
+import Navbar from "@/components/Navbar";
 
 export default function Createblogs() {
     const { logout, setshownav, user } = useAuthstore()
@@ -23,7 +24,7 @@ export default function Createblogs() {
     const [title, settitle] = useState("")
     const navigate = useNavigate()
     const [l, setl] = useState(false)
- const {fetchuser,userinfo} = useProfilestore()
+    const { fetchuser, userinfo } = useProfilestore()
 
     const typewritereffect = (text) => {
         let i = 0;
@@ -129,9 +130,7 @@ export default function Createblogs() {
         }
     }
 
-    useEffect(() => {
-   fetchuser()
-    },[])
+    
 
     if (l) return <Loadingscrenn />
 
@@ -141,17 +140,8 @@ export default function Createblogs() {
 
 
 
-             <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-          e.stopPropagation()
-          setshownav
-        }}>
-          <h1 className="text-4xl font-bold" onClick={(e) => {
-            e.stopPropagation()
-            navigate("/home")
-          }}>  BlogApp</h1>
-          <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-        </div>
-        
+           <Navbar/>
+
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
 
 

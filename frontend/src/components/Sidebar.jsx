@@ -14,6 +14,7 @@ import { FaSearch } from "react-icons/fa";
 import { SlUserFollowing } from "react-icons/sl";
 import { RiTeamFill } from "react-icons/ri";
 import { MdOutlineAnalytics } from "react-icons/md";
+import Notificaion from "./Notificaton";
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -21,7 +22,7 @@ export default function Sidebar() {
   const {userinfo} = useProfilestore()
   
   return (
-    <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, type:"spring", stiffness:100 }} className={`bg-base-200 p-4   w-[300px] h-screen z-50 absolute right-0  `}>
+    <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, type:"spring", stiffness:100 }} className={`bg-base-200 p-4  ${shownav === true ? "": "hidden"}  w-[300px] h-screen z-50 absolute right-0  `}>
       <div className=" flex justify-between   mb-6">
         <div className="flex  items-center gap-2">
           <img src={userinfo.profilepic} alt="profile picture" className="w-8 h-8  rounded-full" />
@@ -30,8 +31,13 @@ export default function Sidebar() {
             <p className="font-semibold text-sm">{user.email}</p>
           </div>
         </div>
+
+       
         <div className="">
-          <IoIosClose className="text-3xl" onClick={setshownav} />
+          <IoIosClose className="text-3xl" onClick={(e) => {
+            e.stopPropagation()
+            setshownav()
+          }} />
         </div>
 
 
@@ -133,7 +139,10 @@ export default function Sidebar() {
 
          <div className="flex items-center gap-2">
           <IoLogOutSharp/>
-          <button onClick={logout}>logout</button>
+          <button onClick={(e) => {
+            e.stopPropagation()
+            logout()
+          }}>logout</button>
         </div>
 
           

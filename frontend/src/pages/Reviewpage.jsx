@@ -1,6 +1,7 @@
 import api from "@/axios";
 import Blog from "@/components/Blog";
 import Loadingscrenn from "@/components/Loadingscreen";
+import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import useAuthstore from "@/store/authstore";
 import useProfilestore from "@/store/profilestore";
@@ -59,7 +60,7 @@ export default function Reviewpage() {
 
     useEffect(() => {
         fb()
-        fetchuser()
+        
         blogreviewd()
 
     }, [])
@@ -75,16 +76,7 @@ export default function Reviewpage() {
         <div className="relative">
             <Sidebar />
             <div className=" ">
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-                    e.stopPropagation()
-                    setshownav
-                }}>
-                    <h1 className="text-4xl font-bold" onClick={(e) => {
-                        e.stopPropagation()
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-                    <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-                </div>
+<Navbar/>
 
                 <Blog blog={blog} />
 

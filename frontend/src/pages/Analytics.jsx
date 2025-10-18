@@ -1,5 +1,6 @@
 import api from "@/axios";
 import Loadingscrenn from "@/components/Loadingscreen";
+import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import Writeranalytics from "@/components/Writeranalytics";
 import useAuthstore from "@/store/authstore";
@@ -21,7 +22,7 @@ export default function Analytics() {
   
 
     useEffect(() => {
-        fetchuser()
+      
         fetchdata()
         popularblogs()
         postanalytics()
@@ -128,22 +129,7 @@ export default function Analytics() {
             <div className="space-y-6">
 
 
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
-                    <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
-
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-
-                    <div className="flex ">
-
-                        <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
-
-                            setshownav()
-                        }} />
-                    </div>
-
-                </div>
-
+                <Navbar/>
 
                 <Writeranalytics data={wdata} popularblogs={pb} postanalytics={pa}  editordata={edata} editinfo={editinfo} />
 

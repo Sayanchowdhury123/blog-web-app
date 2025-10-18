@@ -17,6 +17,7 @@ import Updatep from "@/components/Updatep";
 import Loading3 from "@/components/Loading3";
 import Pinput from "@/components/Pinput";
 import Delp from "@/components/Delp";
+import Navbar from "@/components/Navbar";
 
 export default function Followerpage() {
 
@@ -35,7 +36,7 @@ export default function Followerpage() {
         setloading(true)
         try {
             await fetchuserinfo(userid)
-            await fetchuser()
+           
         } catch (error) {
             console.log(error);
         } finally {
@@ -169,16 +170,7 @@ export default function Followerpage() {
 
 
             <div className="">
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-                    e.stopPropagation()
-                    setshownav
-                }}>
-                    <h1 className="text-4xl font-bold" onClick={(e) => {
-                        e.stopPropagation()
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-                    <img src={ui.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-                </div>
+<Navbar/>
 
 
 

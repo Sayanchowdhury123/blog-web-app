@@ -15,6 +15,7 @@ import { Toaster } from "react-hot-toast"
 import { motion } from "framer-motion"
 import { FaHistory } from "react-icons/fa";
 import Filterbox from "@/components/Filterbox"
+import Navbar from "@/components/Navbar"
 
 export default function Search() {
     const { logout, setshownav, user, shownav } = useAuthstore()
@@ -30,7 +31,7 @@ export default function Search() {
 
 
     useEffect(() => {
-        fetchuser()
+   
         setsearchhistory(sh)
     }, [])
 
@@ -147,22 +148,9 @@ export default function Search() {
                 }
 
 
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
-                    <h1 className="text-4xl font-bold cursor-pointer" onClick={(e) => {
+                 
 
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-
-
-                    <div className="flex ">
-
-                        <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
-
-                            setshownav
-                        }} />
-                    </div>
-
-                </div>
+                <Navbar/>
 
 
                 <div className="mt-6 flex justify-center lg:gap-50 sm:gap-10">
