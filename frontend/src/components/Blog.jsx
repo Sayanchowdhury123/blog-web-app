@@ -10,34 +10,34 @@ import useProfilestore from "@/store/profilestore";
 
 
 export default function Blog({ blog }) {
-const {user} = useAuthstore()
- const {fetchuser,userinfo} = useProfilestore()
+  const { user } = useAuthstore()
+  const { fetchuser, userinfo } = useProfilestore()
 
- 
 
-   const addview = async () => {
+
+  const addview = async () => {
     try {
-      if(blog._id && user){
-        const res = await api.patch(`/blogs/${blog?._id}/add-view/${user.id}`,{},{
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        }
-      })
+      if (blog._id && user) {
+        const res = await api.patch(`/blogs/${blog?._id}/add-view/${user.id}`, {}, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          }
+        })
       }
-      
-      
+
+
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-  
-    if(user?.id && blog?._id){
-        addview()   
+
+    if (user?.id && blog?._id) {
+      addview()
     }
 
-  },[blog._id,user?._id])
+  }, [blog._id, user?._id])
 
   const readhistory = async () => {
     try {
@@ -48,8 +48,8 @@ const {user} = useAuthstore()
             Authorization: `Bearer ${user.token}`,
           }
         })
-       
-        
+
+
       }
 
 
@@ -60,10 +60,10 @@ const {user} = useAuthstore()
   }
 
   useEffect(() => {
-   readhistory()
-  },[])
+    readhistory()
+  }, [])
 
- 
+
 
 
 
@@ -78,7 +78,22 @@ const {user} = useAuthstore()
           <div className="flex gap-2 ">
             <div className="">
               <h1 className="text-4xl font-bold">{blog?.title}</h1>
-              <p>By <span className="font-semibold text-md">{blog?.creator?.name}</span> </p>
+              <div className=" flex gap-4 items-center mt-2">
+                <div>
+                  <p>By <span className="font-semibold text-md">{blog?.creator?.name}</span> </p>
+                </div>
+
+
+                <div>
+                  {user?.role === "writer" || "editor" ? (
+                    <div>
+                      {blog?.approval === true ? <p className="badge badge-neutral p-3 " >Approved</p> : <p className="badge badge-neutral p-3 " >Rejected</p>}
+                    </div>
+                  ) : ""}
+
+                </div>
+              </div>
+
             </div>
 
             <div className="mt-[10px]">

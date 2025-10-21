@@ -27,6 +27,29 @@ exports.blogapprovednotify = async (req, res) => {
   }
 };
 
+exports.brn = async (req,res) => {
+  const { blogtitle, creator, blogid } = req.body;
+  try {
+    if (!creator || !blogtitle || !blogid) {
+      return res.status(400).json({ msg: "Missing required fields" });
+    }
+    let newMessage = ` ❌ Your blog ${blogtitle} has been rejected.`
+
+    const newnotification = await Notification.create({
+      user: creator,
+      message: newMessage,
+      link: `/blog/${blogid}`,
+      read: false,
+      type: "rejection",
+    });
+
+    res.status(200).json(newnotification);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}
+
 exports.banr = async (req, res) => {
 
   try {
@@ -45,6 +68,29 @@ exports.banr = async (req, res) => {
   }
 };
 
+
+exports.newfollower = async (req,res) => {
+  const { username, owner, userid } = req.body;
+  try {
+    if (!username || !owner || !userid) {
+      return res.status(400).json({ msg: "Missing required fields" });
+    }
+    let newMessage = `👥 ${username} started following you`;
+
+    const newnotification = await Notification.create({
+      user: owner,
+      message: newMessage,
+      link: `/f-page/${userid}`,
+      read: false,
+      type: "newfollower",
+    });
+
+    res.status(200).json(newnotification);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}
 
 exports.getnotification = async (req,res) => {
     try {

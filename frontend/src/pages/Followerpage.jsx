@@ -18,6 +18,7 @@ import Loading3 from "@/components/Loading3";
 import Pinput from "@/components/Pinput";
 import Delp from "@/components/Delp";
 import Navbar from "@/components/Navbar";
+import api from "@/axios";
 
 export default function Followerpage() {
 
@@ -102,6 +103,25 @@ export default function Followerpage() {
             setshowfollowing()
             if (followerid) {
                 await getfinfo(followerid)
+            }
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+     const newfollowernotification = async (username, owner, userid) => {
+        try {
+            if (username && owner) {
+                const res = await api.post(`/notify/new-follower`, { username, owner, userid }, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                })
+
+
             }
 
 
@@ -205,7 +225,10 @@ export default function Followerpage() {
                             </div>
                             {user.id === userid ? "" : (
                                 <div>
-                                    {userinfoi?.followers?.includes(user.id) ? (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >unfollow</button>) : (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >Follow</button>)}
+                                    {userinfoi?.followers?.includes(user.id) ? (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >unfollow</button>) : (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={() => {
+                                        followunfollow()
+                                        newfollowernotification(user?.name,userinfoi?._id,user?.id)
+                                        }} >Follow</button>)}
                                 </div>
                             )}
 

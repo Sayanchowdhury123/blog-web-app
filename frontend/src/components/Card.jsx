@@ -26,7 +26,7 @@ export default function Card({ type }) {
     const { savedblogs, tblog } = useProfilestore()
     const savedpage = type === "savedblogs";
 
-
+ 
     const getexcerpt = (text, wordlimit = 50) => {
         const words = text?.trim().split(/\s+/)
         if (words?.length <= wordlimit) {
@@ -37,20 +37,38 @@ export default function Card({ type }) {
     }
 
 
-    const createnotification = async (blogtitle, creator,blogid) => {
+    const createnotification = async (blogtitle, creator, blogid) => {
         try {
             if (blogtitle && creator) {
-                const res = await api.post(`/notify/ban`, { blogtitle, creator,blogid }, {
+                const res = await api.post(`/notify/ban`, { blogtitle, creator, blogid }, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },
                 })
 
-               
+
             }
 
 
-            
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    const brn = async (blogtitle, creator, blogid) => {
+        try {
+            if (blogtitle && creator) {
+                const res = await api.post(`/notify/brn`, { blogtitle, creator, blogid }, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                })
+
+
+            }
+
         } catch (error) {
             console.log(error);
         }
@@ -73,7 +91,8 @@ export default function Card({ type }) {
 
             } else {
                 await approveblog(blogid)
-                await createnotification(blogtitle, creator,blogid)
+                
+                if(bloginfo?.approval === false ?  await createnotification(blogtitle, creator, blogid) : await brn(blogtitle,creator,blogid) ) 
                 toast(`${bloginfo?.approval ? "Blog Disapproved" : "Blog Approved"}`,
                     {
                         icon: '🎉',
@@ -207,7 +226,10 @@ export default function Card({ type }) {
                                     })}><MdEdit />Edit Content</button>
 
                                     {b?.approval ? (
-                                        <button className="btn btn-error btn-sm" onClick={() => ab(b._id)}><FcDisapprove />Disapprove</button>
+                                        <button className="btn btn-error btn-sm" onClick={() => {
+                                            ab(b._id, b.title, b?.creator?._id)
+                                             
+                                        }}><FcDisapprove />Disapprove</button>
                                     ) : (
                                         <button className="btn btn-primary btn-sm" onClick={() => {
                                             ab(b._id, b.title, b?.creator?._id)
