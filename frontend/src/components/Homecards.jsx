@@ -1,7 +1,7 @@
 import useHomestore from "@/store/homestore"
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading2 from "./Loadin2";
 import toast from "react-hot-toast"
 import { FcApprove } from "react-icons/fc";
@@ -28,6 +28,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import Trending from "./Trending";
 import useFollowingstore from "@/store/followingstore";
+import api from "@/axios";
 
 
 
@@ -42,32 +43,33 @@ export default function Homecards() {
     const [option, setoption] = useState(null)
     const bottomref = useRef(null)
     const [showlink, setshowlink] = useState(null)
-    const { followingblogs, hl ,fblogs} = useFollowingstore()
-    const[floading,setfloading] = useState(false)
+    const { followingblogs, hl, fblogs } = useFollowingstore()
+    const [floading, setfloading] = useState(false)
+    const location = useLocation()
 
 
 
-   
-        useEffect(() => {
-            if (loading) return;
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting && h) {
-                 
-                    fetchblogs()
-                }
-            }, {
-                threshold: 1.0
-            })
 
-            if (bottomref.current) {
-                observer.observe(bottomref.current)
+    useEffect(() => {
+        if (loading) return;
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && h) {
+
+                fetchblogs()
             }
+        }, {
+            threshold: 1.0
+        })
 
-            return () => {
-                if (bottomref.current) observer.unobserve(bottomref.current)
-            }
-        }, [loading, h, fetchinfo])
-    
+        if (bottomref.current) {
+            observer.observe(bottomref.current)
+        }
+
+        return () => {
+            if (bottomref.current) observer.unobserve(bottomref.current)
+        }
+    }, [loading, h, fetchinfo])
+
 
 
 
@@ -109,9 +111,9 @@ export default function Homecards() {
     const fetchblogs = async () => {
         setloading(true)
         try {
-          
-                await fetchinfo()
-            
+
+            await fetchinfo()
+
 
         } catch (error) {
             console.log(error);
@@ -120,12 +122,12 @@ export default function Homecards() {
         }
     }
 
-     const fetchfblogs = async () => {
+    const fetchfblogs = async () => {
         setloading(true)
         try {
-          
-                await followingblogs()
-            
+
+            await followingblogs()
+
 
         } catch (error) {
             console.log(error);
@@ -179,9 +181,24 @@ export default function Homecards() {
     };
 
 
+    const bloglikenotification = async (username, owner, blogid,blogtitle) => {
+        try {
+            if (blogid && username && owner) {
+                const res = await api.post(`/notify/bln`, { username, owner, blogid,blogtitle }, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                })
 
 
+            }
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+  
     return (
 
         <div className="">
@@ -198,7 +215,7 @@ export default function Homecards() {
                             const issaved = userinfo?.savedblogs?.includes(b._id)
 
                             return (
-                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl cursor-pointer  " key={b._id} >
+                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl cursor-pointer  " key={b._id}  >
 
 
                                     <div className="">
@@ -264,6 +281,7 @@ export default function Homecards() {
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                             getlike(b._id)
+                                                            bloglikenotification(user?.name, b.creator?._id, b?._id,b?.title)
                                                         }}><FaRegHeart className="text-2xl" /></motion.button>
                                                 )}
 
@@ -345,9 +363,9 @@ export default function Homecards() {
 
                     <div ref={bottomref} className="h-[20px]" />
                     <div className="text-center">
-                        { loading && (<span className="loading loading-xl  loading-spinner"></span>)}
+                        {loading && (<span className="loading loading-xl  loading-spinner"></span>)}
 
-                        { !h && (<p className="font-sans text-xl font-semibold">No more blogs</p>)}
+                        {!h && (<p className="font-sans text-xl font-semibold">No more blogs</p>)}
                     </div>
 
 

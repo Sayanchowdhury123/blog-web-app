@@ -1,7 +1,7 @@
 import useHomestore from "@/store/homestore"
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading2 from "./Loadin2";
 import toast from "react-hot-toast"
 import { FcApprove } from "react-icons/fc";
@@ -43,7 +43,7 @@ export default function Sblogs() {
     const [option, setoption] = useState(null)
     const bottomref = useRef(null)
     const [showlink, setshowlink] = useState(null)
-
+   const location = useLocation()
 
   
    
@@ -129,7 +129,21 @@ export default function Sblogs() {
     };
 
 
+  useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const blogId = params.get("blogId")
+        
+        if (blogId) {
+            const element = document.getElementById(blogId);
+          
+            if (element) {
 
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 400);
+            }
+        }
+    }, [location.search])
 
 
     return (
@@ -148,7 +162,7 @@ export default function Sblogs() {
                             const issaved = userinfo?.savedblogs?.includes(b._id)
 
                             return (
-                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} >
+                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} id={b._id} >
 
 
                                     <div className="">
