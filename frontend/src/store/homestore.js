@@ -34,6 +34,7 @@ const useHomestore = create((set, get) => ({
   setcomid: (id) => {
     set({ comid: id });
   },
+  cid: null,
 
   togglelike: async (id) => {
     const res = await api.patch(
@@ -115,6 +116,11 @@ const useHomestore = create((set, get) => ({
         headers: { Authorization: `Bearer ${localuser.token}` },
       }
     );
+    
+     const newComment = res.data;
+    
+      set({ cid: newComment?._id });
+   
 
     set((state) => {
       const blogState = state.commentsByBlog[blogId] || {
@@ -132,6 +138,7 @@ const useHomestore = create((set, get) => ({
             comments: [res.data, ...blogState.comments],
           },
         },
+        
       };
     });
   },
@@ -208,16 +215,13 @@ const useHomestore = create((set, get) => ({
     const res = await api.post(`/home/search`, { searchtext: searchtext });
     set({ searchedblog: res.data });
     console.log(res.data);
-   
   },
   editorpicks: [],
   fetchep: async () => {
     const res = await api.get(`/editor/epblog-fetch`);
- 
+
     set({ editorpicks: res.data });
   },
-
-
 }));
 
 export default useHomestore;

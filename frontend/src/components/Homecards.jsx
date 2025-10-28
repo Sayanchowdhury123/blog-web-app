@@ -36,7 +36,7 @@ export default function Homecards() {
     const [loading, setloading] = useState(false)
     const { blogs, fetchinfo, h } = useHomestore()
     const navigate = useNavigate()
-    const { togglelike, removelike, commentsByBlog } = useHomestore()
+    const { togglelike, removelike, commentsByBlog,cid } = useHomestore()
     const { user } = useAuthstore()
     const { userinfo, tblog } = useProfilestore()
     const [openBlogId, setOpenBlogId] = useState(null);
@@ -343,7 +343,7 @@ export default function Homecards() {
 
 
                                         {openBlogId === b._id && (
-                                            <Comments blogId={b._id} />
+                                            <Comments blogId={b?._id} blogtitle={b?.title} owner={b.creator?._id}  />
                                         )}
 
 

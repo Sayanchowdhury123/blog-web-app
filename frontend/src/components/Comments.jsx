@@ -6,16 +6,21 @@ import { BsThreeDots } from "react-icons/bs";
 import { RiEdit2Fill } from "react-icons/ri";
 import { AiFillDelete } from "react-icons/ai";
 import toast from "react-hot-toast";
+import useAuthstore from "@/store/authstore";
+import api from "@/axios";
+import { useLocation } from "react-router-dom";
 
 
-export default function Comments({ blogId }) {
-    const { commentsByBlog, fetchComments, addComment, delcom, editcom } = useHomestore();
+export default function Comments({ blogId, blogtitle, owner }) {
+    const { commentsByBlog, fetchComments, addComment, delcom, editcom, cid } = useHomestore();
     const blogState = commentsByBlog[blogId] || { comments: [], hasMore: true };
     const [newComment, setNewComment] = useState('');
     const [option, setoption] = useState(null)
     const inputref = useRef(null)
     const [edit, setedit] = useState(false)
     const [editid, seteditid] = useState(null)
+    const { user } = useAuthstore();
+    const location = useLocation()
 
     useEffect(() => {
         if (blogState.comments.length === 0) {
@@ -23,11 +28,35 @@ export default function Comments({ blogId }) {
         }
     }, [blogId]);
 
-    const handleAddComment = () => {
+
+    const blogcommentnotification = async (username, owner, blogId, blogtitle) => {
+
+        try {
+            if (blogId && username && owner && cid) {
+                const res = await api.post(`/notify/commented`, { username, owner, blogid: blogId, blogtitle, cid }, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                })
+
+                console.log(res.data);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleAddComment = async () => {
         if (!newComment.trim()) return;
-        addComment(blogId, newComment);
+        await addComment(blogId, newComment);
+        blogcommentnotification(user?.name, owner, blogId, blogtitle)
+
         setNewComment('');
+
     };
+
+
 
     const handledelcomment = async (commentid) => {
         try {
@@ -58,7 +87,7 @@ export default function Comments({ blogId }) {
     const handleeditcomment = async () => {
         try {
             if (editid) {
-               
+
                 await editcom(blogId, editid, newComment)
 
                 toast('Comment Edited',
@@ -98,7 +127,23 @@ export default function Comments({ blogId }) {
     }
 
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const cid = params.get("cid")
+      
 
+        if (cid) {
+            const element = document.getElementById(cid);
+             console.log(element);
+            if (element) {
+
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element?.classList.add("bg-yellow-50");
+                }, 400);
+            }
+        }
+    }, [cid])
 
 
 
@@ -139,7 +184,7 @@ export default function Comments({ blogId }) {
 
             <div>
                 {blogState?.comments?.map((c, i) => (
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: i * 0.1 }} key={c._id} className="p-4 flex justify-between items-center">
+                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: i * 0.1 }} key={c._id} className="p-4 flex justify-between items-center" id={c._id}>
                         <div>
                             <div className="flex gap-2 items-center">
                                 <img src={c?.user?.profilepic} alt="profile" className="w-8 h-8 rounded-full mt-1" />

@@ -111,6 +111,30 @@ exports.liked = async (req, res) => {
   }
 };
 
+exports.commented = async (req,res) => {
+  const { username, owner, blogid,blogtitle,cid} = req.body;
+  try {
+    if (!username || !owner || !blogid ) {
+      return res.status(400).json({ msg: "Missing required fields" });
+    }
+
+    let newMessage = `💬 ${username} commented on your blog ${blogtitle}`;
+
+    const newnotification = await Notification.create({
+      user: owner,
+      message: newMessage,
+      link: `/search?blogId=${blogid}&openComment=${"true"}&cid=${cid}`,
+      read: false,
+      type: "newcomment",
+    });
+
+    res.status(200).json(newnotification);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+}
+
 exports.getnotification = async (req, res) => {
   try {
     const allnotifications = await Notification.find({

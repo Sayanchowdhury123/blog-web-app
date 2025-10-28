@@ -145,6 +145,23 @@ export default function Sblogs() {
         }
     }, [location.search])
 
+      useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const blogId = params.get("blogId")
+        const openComment = params.get("openComment")
+         
+        if (blogId && openComment === "true") {
+            const element = document.getElementById(blogId);
+          
+            if (element) {
+                setOpenBlogId(blogId)
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 400);
+            }
+        }
+    }, [location.search])
+
 
     return (
 
@@ -289,7 +306,7 @@ export default function Sblogs() {
 
 
                                         {openBlogId === b._id && (
-                                            <Comments blogId={b._id} />
+                                            <Comments blogId={b._id} blogtitle={b.title} owner={b.creator?.id}  />
                                         )}
 
 
