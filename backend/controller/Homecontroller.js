@@ -139,6 +139,28 @@ exports.rendercomments = async (req, res) => {
   }
 };
 
+exports.renderallcomments = async (req, res) => {
+  const { id } = req.params;
+
+
+  try {
+    const blog = await Blogs.findById(id).populate("comments.user");
+    if (!blog) {
+      return res.status(404).json({ msg: "Blog not found" });
+    }
+
+    const sortedcom = blog.comments.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+
+    res.status(200).json(sortedcom)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
 exports.editcomments = async (req, res) => {
   try {
     const { text } = req.body;

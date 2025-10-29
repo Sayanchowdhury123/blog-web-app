@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 
 
 export default function Comments({ blogId, blogtitle, owner }) {
-    const { commentsByBlog, fetchComments, addComment, delcom, editcom, cid } = useHomestore();
+    const { commentsByBlog, fetchComments, addComment, delcom, editcom,cid} = useHomestore();
     const blogState = commentsByBlog[blogId] || { comments: [], hasMore: true };
     const [newComment, setNewComment] = useState('');
     const [option, setoption] = useState(null)
@@ -127,23 +127,7 @@ export default function Comments({ blogId, blogtitle, owner }) {
     }
 
 
-    useEffect(() => {
-        const params = new URLSearchParams(location.search)
-        const cid = params.get("cid")
-      
 
-        if (cid) {
-            const element = document.getElementById(cid);
-             console.log(element);
-            if (element) {
-
-                setTimeout(() => {
-                    element.scrollIntoView({ behavior: "smooth", block: "center" });
-                    element?.classList.add("bg-yellow-50");
-                }, 400);
-            }
-        }
-    }, [cid])
 
 
 

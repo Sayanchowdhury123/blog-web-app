@@ -33,9 +33,9 @@ import useSearchstore from "@/store/searchstore";
 
 export default function Sblogs() {
     const [loading, setloading] = useState(false)
-    const {   searchedblog,search} = useHomestore()
+    const { searchedblog, search,cid } = useHomestore()
     const navigate = useNavigate()
-    const {blogs,fetchinfo,h} = useSearchstore()
+    const { blogs, fetchinfo, h } = useSearchstore()
     const { togglelike, removelike, commentsByBlog } = useHomestore()
     const { user } = useAuthstore()
     const { userinfo, tblog } = useProfilestore()
@@ -43,10 +43,10 @@ export default function Sblogs() {
     const [option, setoption] = useState(null)
     const bottomref = useRef(null)
     const [showlink, setshowlink] = useState(null)
-   const location = useLocation()
+    const location = useLocation()
 
-  
-   
+
+
     const getlike = async (id) => {
         setloading(true)
         try {
@@ -82,7 +82,7 @@ export default function Sblogs() {
         }
     }
 
-  
+
 
     const copylink = (blogid) => {
 
@@ -129,13 +129,13 @@ export default function Sblogs() {
     };
 
 
-  useEffect(() => {
+    useEffect(() => {
         const params = new URLSearchParams(location.search)
         const blogId = params.get("blogId")
-        
+
         if (blogId) {
             const element = document.getElementById(blogId);
-          
+
             if (element) {
 
                 setTimeout(() => {
@@ -145,14 +145,14 @@ export default function Sblogs() {
         }
     }, [location.search])
 
-      useEffect(() => {
+    useEffect(() => {
         const params = new URLSearchParams(location.search)
         const blogId = params.get("blogId")
         const openComment = params.get("openComment")
-         
+
         if (blogId && openComment === "true") {
             const element = document.getElementById(blogId);
-          
+
             if (element) {
                 setOpenBlogId(blogId)
                 setTimeout(() => {
@@ -163,182 +163,185 @@ export default function Sblogs() {
     }, [location.search])
 
 
-    return (
-
-        <div className="">
+   
 
 
- 
-            <motion.div className="grid sm:grid-cols-[500px]  md:grid-cols-[600px] lg:grid-cols-[684px]  gap-6 p-4 bg-base-100 justify-center" >
-                <div className=" ">
-                    {
-                        blogs?.map((b, i) => {
+return (
 
-                            const approved = b.approval;
-                            const isliked = b?.likes?.includes(user.id)
-                            const issaved = userinfo?.savedblogs?.includes(b._id)
-
-                            return (
-                                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} id={b._id} >
+    <div className="">
 
 
-                                    <div className="">
+
+        <motion.div className="grid sm:grid-cols-[500px]  md:grid-cols-[600px] lg:grid-cols-[684px]  gap-6 p-4 bg-base-100 justify-center" >
+            <div className=" ">
+                {
+                    blogs?.map((b, i) => {
+
+                        const approved = b.approval;
+                        const isliked = b?.likes?.includes(user.id)
+                        const issaved = userinfo?.savedblogs?.includes(b._id)
+
+                        return (
+                            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className=" bg-white shadow-sm rounded-xl   " key={b._id} id={b._id} >
 
 
-                                        <div className="flex items-center gap-4 p-2 mt-2">
-                                            <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
-                                            <div>
-                                                <h1 className="text-xl font-semibold">{b?.creator.name}</h1>
-                                                <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>
-                                            </div>
+                                <div className="">
 
+
+                                    <div className="flex items-center gap-4 p-2 mt-2">
+                                        <img src={b?.creator?.profilepic} alt="profile picture" className="w-8 h-8 rounded-full" />
+                                        <div>
+                                            <h1 className="text-xl font-semibold">{b?.creator.name}</h1>
+                                            <p className="text-[12px] text-gray-600">Posted on: {new Date(b?.createdAt).toLocaleDateString()}</p>
                                         </div>
 
-                                        <p className="p-2 font-bold">{b?.title}</p>
+                                    </div>
+
+                                    <p className="p-2 font-bold">{b?.title}</p>
 
 
-                                        <figure>
-                                            <img
-                                                src={b?.coverimage}
-                                                alt="Shoes"
-                                                onClick={() => navigate(`/blog/${b._id}`, {
-                                                    state: { blogid: b._id }
-                                                })}
-                                            />
-                                        </figure>
+                                    <figure>
+                                        <img
+                                            src={b?.coverimage}
+                                            alt="Shoes"
+                                            onClick={() => navigate(`/blog/${b._id}`, {
+                                                state: { blogid: b._id }
+                                            })}
+                                        />
+                                    </figure>
 
 
-                                        <div className="px-4 mt-2  flex justify-between">
-                                            <div className="flex items-center gap-2">
-                                                <p>{b?.likes?.length} Likes</p>
-                                                <p>{b?.views?.length || 0} Views</p>
-                                            </div>
-
-                                            <div>
-                                                <p>{b?.comments?.length} Comments</p>
-                                            </div>
-
-
+                                    <div className="px-4 mt-2  flex justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <p>{b?.likes?.length} Likes</p>
+                                            <p>{b?.views?.length || 0} Views</p>
                                         </div>
 
-                                        <div className="px-2 my-2">
-                                            <hr className="text-gray-300" />
+                                        <div>
+                                            <p>{b?.comments?.length} Comments</p>
                                         </div>
 
 
-                                        <div className="flex justify-between p-4">
+                                    </div>
 
-                                            <motion.div
-                                                key={isliked}
-                                                initial={{ scale: 0.5 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ type: "spring", stiffness: 300 }}
-                                            >
-                                                {isliked ? (
-                                                    <motion.button whileTap={{ scale: 1.3 }} whileHover={{ scale: 1.2 }} animate={{ color: "#e0245e" }} transition={{ type: "spring", stiffness: 300 }}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            rlike(b._id)
-                                                        }}><FaHeart className="text-2xl" /></motion.button>
-                                                ) : (
-                                                    <motion.button whileTap={{ scale: 1.2 }} whileHover={{ scale: 1.1 }} animate={{ color: "#555" }} transition={{ type: "spring", stiffness: 300 }}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            getlike(b._id)
-                                                        }}><FaRegHeart className="text-2xl" /></motion.button>
-                                                )}
-
-                                            </motion.div>
-
-                                            <div>
-                                                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setOpenBlogId(openBlogId === b._id ? null : b._id)}><FaRegComment className="text-2xl" /></motion.button>
-                                            </div>
-
-                                            <div className="relative flex justify-center  ">
-
-                                                {
-                                                    showlink === b._id && (
-                                                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="absolute z-10  flex items-center  bottom-10 gap-4 bg-base-300 p-3 shadow rounded-xl">
-                                                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                                                <button className="" onClick={() => copylink(b._id)}><FaCopy className="text-2xl" /></button>
-                                                            </motion.div>
-
-                                                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                                                <button className="" onClick={() => sharetofacebook(b._id, b?.title)}><FaFacebook className="text-2xl" /></button>
-                                                            </motion.div>
+                                    <div className="px-2 my-2">
+                                        <hr className="text-gray-300" />
+                                    </div>
 
 
-                                                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                                                <button className="" onClick={() => shareOnTwitter(b._id, b?.title)}><FaSquareXTwitter className="text-2xl" /></button>
-                                                            </motion.div>
+                                    <div className="flex justify-between p-4">
 
-                                                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                                                                <button className="" onClick={() => shareOnInstagram(b._id, b?.title)}><FaInstagram className="text-2xl" /></button>
-                                                            </motion.div>
+                                        <motion.div
+                                            key={isliked}
+                                            initial={{ scale: 0.5 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ type: "spring", stiffness: 300 }}
+                                        >
+                                            {isliked ? (
+                                                <motion.button whileTap={{ scale: 1.3 }} whileHover={{ scale: 1.2 }} animate={{ color: "#e0245e" }} transition={{ type: "spring", stiffness: 300 }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        rlike(b._id)
+                                                    }}><FaHeart className="text-2xl" /></motion.button>
+                                            ) : (
+                                                <motion.button whileTap={{ scale: 1.2 }} whileHover={{ scale: 1.1 }} animate={{ color: "#555" }} transition={{ type: "spring", stiffness: 300 }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        getlike(b._id)
+                                                    }}><FaRegHeart className="text-2xl" /></motion.button>
+                                            )}
 
+                                        </motion.div>
 
+                                        <div>
+                                            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setOpenBlogId(openBlogId === b._id ? null : b._id)}><FaRegComment className="text-2xl" /></motion.button>
+                                        </div>
 
+                                        <div className="relative flex justify-center  ">
+
+                                            {
+                                                showlink === b._id && (
+                                                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="absolute z-10  flex items-center  bottom-10 gap-4 bg-base-300 p-3 shadow rounded-xl">
+                                                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                                            <button className="" onClick={() => copylink(b._id)}><FaCopy className="text-2xl" /></button>
                                                         </motion.div>
-                                                    )
-                                                }
 
-                                                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} ><FaRegShareSquare onClick={() => setshowlink(showlink === b._id ? null : b._id)} className="text-2xl" /></motion.button>
-                                            </div>
+                                                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                                            <button className="" onClick={() => sharetofacebook(b._id, b?.title)}><FaFacebook className="text-2xl" /></button>
+                                                        </motion.div>
 
-                                            <div>
-                                                {userinfo?.savedblogs?.includes(b._id) ? (
-                                                    <motion.button whileTap={{ scale: 1.3 }} whileHover={{ scale: 1.2 }} animate={{ color: "#A9A9A9" }} transition={{ type: "spring", stiffness: 300 }} onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        toggleblog(b._id)
-                                                    }} ><FaBookmark className="text-2xl" /></motion.button>
-                                                ) : (
-                                                    <motion.button whileTap={{ scale: 1.2 }} whileHover={{ scale: 1.1 }} animate={{ color: "#555" }} transition={{ type: "spring", stiffness: 300 }} onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        toggleblog(b._id)
-                                                    }} ><FaRegBookmark className="text-2xl" /></motion.button>
-                                                )}
-                                            </div>
+
+                                                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                                            <button className="" onClick={() => shareOnTwitter(b._id, b?.title)}><FaSquareXTwitter className="text-2xl" /></button>
+                                                        </motion.div>
+
+                                                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                                            <button className="" onClick={() => shareOnInstagram(b._id, b?.title)}><FaInstagram className="text-2xl" /></button>
+                                                        </motion.div>
 
 
 
+                                                    </motion.div>
+                                                )
+                                            }
 
+                                            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} ><FaRegShareSquare onClick={() => setshowlink(showlink === b._id ? null : b._id)} className="text-2xl" /></motion.button>
+                                        </div>
+
+                                        <div>
+                                            {userinfo?.savedblogs?.includes(b._id) ? (
+                                                <motion.button whileTap={{ scale: 1.3 }} whileHover={{ scale: 1.2 }} animate={{ color: "#A9A9A9" }} transition={{ type: "spring", stiffness: 300 }} onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    toggleblog(b._id)
+                                                }} ><FaBookmark className="text-2xl" /></motion.button>
+                                            ) : (
+                                                <motion.button whileTap={{ scale: 1.2 }} whileHover={{ scale: 1.1 }} animate={{ color: "#555" }} transition={{ type: "spring", stiffness: 300 }} onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    toggleblog(b._id)
+                                                }} ><FaRegBookmark className="text-2xl" /></motion.button>
+                                            )}
                                         </div>
 
 
-                                        {openBlogId === b._id && (
-                                            <Comments blogId={b._id} blogtitle={b.title} owner={b.creator?.id}  />
-                                        )}
 
 
                                     </div>
 
 
+                                    {openBlogId === b._id && (
+                                        <Comments blogId={b._id} blogtitle={b.title} owner={b.creator?.id} />
+                                    )}
 
 
-
-                                </motion.div>
-
-
-                            )
-
-                        })
-                    }
-
-                    <div ref={bottomref} className="h-[20px]" />
-                  
-
-
-
-                </div>
-
-
-
-            </motion.div>
-        </div>
+                                </div>
 
 
 
 
-    )
+
+                            </motion.div>
+
+
+                        )
+
+                    })
+                }
+
+                <div ref={bottomref} className="h-[20px]" />
+
+
+
+
+            </div>
+
+
+
+        </motion.div>
+    </div>
+
+
+
+
+)
 
 }
