@@ -3,18 +3,32 @@ import Notificaion from "./Notificaton"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import useProfilestore from "@/store/profilestore"
-
+import useNotificationstore from "@/store/notificationstore"
+import { socket } from "@/services/Socketp"
 
 export default function Navbar() {
     const { setshownav } = useAuthstore()
     const navigate = useNavigate()
-    const {fetchuser,userinfo} = useProfilestore()
+    const { fetchuser, userinfo } = useProfilestore()
+    const { initSocketListener } = useNotificationstore()
+
+    useEffect(() => {
+        initSocketListener()
+    }, [])
 
 
 
     useEffect(() => {
-    fetchuser()
-    },[])
+        fetchuser()
+    }, [])
+
+
+    useEffect(() => {
+        if (user?.id) {
+            socket.emit("addUser", user.id);
+        }
+    }, [user]);
+    
     return (
         <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
             <div className="">

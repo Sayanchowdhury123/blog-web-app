@@ -156,7 +156,7 @@ export default function Sblogs() {
             if (element) {
                 setOpenBlogId(blogId)
                 setTimeout(() => {
-                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element.scrollIntoView({ behavior: "smooth", block: "end" });
                 }, 400);
             }
         }

@@ -32,8 +32,8 @@ export default function Comments({ blogId, blogtitle, owner }) {
     const blogcommentnotification = async (username, owner, blogId, blogtitle) => {
 
         try {
-            if (blogId && username && owner && cid) {
-                const res = await api.post(`/notify/commented`, { username, owner, blogid: blogId, blogtitle, cid }, {
+            if (blogId && username && owner ) {
+                const res = await api.post(`/notify/commented`, { username, owner, blogid: blogId, blogtitle }, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },

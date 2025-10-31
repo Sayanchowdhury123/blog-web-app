@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import api from "../axios";
 import useAuthstore from "./authstore";
-
+import { socket } from "@/services/Socketp";
 const ls = localStorage.getItem("user");
 const localuser = JSON.parse(ls);
 
@@ -32,14 +32,13 @@ const useNotificationstore = create((set, get) => ({
           },
         }
       );
-     
+
       set((state) => {
-       
-const updated = state.notifications.map((n) => ({
+        const updated = state.notifications.map((n) => ({
           ...n,
           read: true,
         }));
-      
+
         return {
           notifications: updated,
           unreadCount: 0,
@@ -48,6 +47,14 @@ const updated = state.notifications.map((n) => ({
     } catch (error) {
       console.log(error);
     }
+  },
+   initSocketListener: () => {
+    socket.on("newNotification", (notification) => {
+      set((state) => ({
+        notifications: [notification, ...state.notifications],
+        unreadCount: state.unreadCount + 1,
+      }));
+    });
   },
 }));
 

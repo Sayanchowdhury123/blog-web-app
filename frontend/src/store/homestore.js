@@ -117,9 +117,7 @@ const useHomestore = create((set, get) => ({
       }
     );
     
-     const newComment = res.data;
     
-      set({ cid: newComment?._id });
    
 
     set((state) => {

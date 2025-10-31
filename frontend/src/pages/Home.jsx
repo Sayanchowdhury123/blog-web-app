@@ -18,6 +18,8 @@ import toast from "react-hot-toast"
 import useNotificationstore from "@/store/notificationstore"
 import Notificaion from "@/components/Notificaton"
 import Navbar from "@/components/Navbar"
+import { socket } from "@/services/Socketp"
+
 
 
 export default function Home() {
@@ -26,8 +28,9 @@ export default function Home() {
     const { userinfo, fetchuser } = useProfilestore()
     const [width, setwidth] = useState(window.innerWidth)
     const [searchtext, setsearchtext] = useState("")
-    const { notifications, fetchnotifications } = useNotificationstore()
-
+    const { notifications, fetchnotifications ,initSocketListener} = useNotificationstore()
+   
+  
 
 
 
@@ -68,6 +71,10 @@ export default function Home() {
     }, [])
 
 
+    
+
+ 
+
 
 
     if (loading) return <Loadingscrenn />
@@ -83,7 +90,7 @@ export default function Home() {
             <div className="space-y-6">
 
 
-                <Navbar/>
+                <Navbar />
 
 
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Blogs = require("../models/Blogs");
 const Notification = require("../models/Notification");
+const io = require("../index")
 
 exports.blogapprovednotify = async (req, res) => {
   const { blogtitle, creator, blogid } = req.body;
@@ -19,6 +20,11 @@ exports.blogapprovednotify = async (req, res) => {
       read: false,
       type: "approval",
     });
+
+    const reciversocketid = global.onlineUsers.get(String(creator));
+    if (reciversocketid) {
+      io.to(reciversocketid).emit("newNotification", newnotification);
+    }
 
     res.status(200).json(newnotification);
   } catch (error) {
@@ -42,6 +48,11 @@ exports.brn = async (req, res) => {
       read: false,
       type: "rejection",
     });
+
+    const reciversocketid = global.onlineUsers.get(String(creator));
+    if (reciversocketid) {
+      io.to(reciversocketid).emit("newNotification", newnotification);
+    }
 
     res.status(200).json(newnotification);
   } catch (error) {
@@ -88,7 +99,7 @@ exports.newfollower = async (req, res) => {
 };
 
 exports.liked = async (req, res) => {
-  const { username, owner, blogid,blogtitle } = req.body;
+  const { username, owner, blogid, blogtitle } = req.body;
   try {
     if (!username || !owner || !blogid) {
       return res.status(400).json({ msg: "Missing required fields" });
@@ -104,6 +115,12 @@ exports.liked = async (req, res) => {
       type: "liked",
     });
 
+    const reciversocketid = global.onlineUsers.get(String(owner));
+    console.log(reciversocketid);
+    if (reciversocketid) {
+      io.to(reciversocketid).emit("newNotification", newnotification);
+    }
+
     res.status(200).json(newnotification);
   } catch (error) {
     console.log(error);
@@ -111,10 +128,10 @@ exports.liked = async (req, res) => {
   }
 };
 
-exports.commented = async (req,res) => {
-  const { username, owner, blogid,blogtitle,cid} = req.body;
+exports.commented = async (req, res) => {
+  const { username, owner, blogid, blogtitle } = req.body;
   try {
-    if (!username || !owner || !blogid ) {
+    if (!username || !owner || !blogid) {
       return res.status(400).json({ msg: "Missing required fields" });
     }
 
@@ -123,7 +140,7 @@ exports.commented = async (req,res) => {
     const newnotification = await Notification.create({
       user: owner,
       message: newMessage,
-      link: `/search?blogId=${blogid}&openComment=${"true"}&cid=${cid}`,
+      link: `/search?blogId=${blogid}&openComment=${"true"}`,
       read: false,
       type: "newcomment",
     });
@@ -133,7 +150,7 @@ exports.commented = async (req,res) => {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
 exports.getnotification = async (req, res) => {
   try {
