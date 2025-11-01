@@ -11,6 +11,7 @@ export default function Navbar() {
     const navigate = useNavigate()
     const { fetchuser, userinfo } = useProfilestore()
     const { initSocketListener } = useNotificationstore()
+    const {user} = useAuthstore()
 
     useEffect(() => {
         initSocketListener()

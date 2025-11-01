@@ -3,7 +3,8 @@ const router = express.Router();
 const User = require("../models/User");
 const Blogs = require("../models/Blogs");
 const Notification = require("../models/Notification");
-const io = require("../index")
+const {io} = require("../index")
+const {getSocketId} = require("../socketStrore")
 
 exports.blogapprovednotify = async (req, res) => {
   const { blogtitle, creator, blogid } = req.body;
@@ -115,8 +116,9 @@ exports.liked = async (req, res) => {
       type: "liked",
     });
 
-    const reciversocketid = global.onlineUsers.get(String(owner));
-    console.log(reciversocketid);
+    
+    const reciversocketid = getSocketId(owner)
+  
     if (reciversocketid) {
       io.to(reciversocketid).emit("newNotification", newnotification);
     }

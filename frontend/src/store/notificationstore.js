@@ -50,6 +50,7 @@ const useNotificationstore = create((set, get) => ({
   },
    initSocketListener: () => {
     socket.on("newNotification", (notification) => {
+      console.log(notification);
       set((state) => ({
         notifications: [notification, ...state.notifications],
         unreadCount: state.unreadCount + 1,
