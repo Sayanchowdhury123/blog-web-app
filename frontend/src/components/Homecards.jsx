@@ -29,6 +29,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 import Trending from "./Trending";
 import useFollowingstore from "@/store/followingstore";
 import api from "@/axios";
+import { socket } from "@/services/Socketp";
 
 
 
@@ -36,7 +37,7 @@ export default function Homecards() {
     const [loading, setloading] = useState(false)
     const { blogs, fetchinfo, h } = useHomestore()
     const navigate = useNavigate()
-    const { togglelike, removelike, commentsByBlog,cid } = useHomestore()
+    const { togglelike, removelike, commentsByBlog, cid } = useHomestore()
     const { user } = useAuthstore()
     const { userinfo, tblog } = useProfilestore()
     const [openBlogId, setOpenBlogId] = useState(null);
@@ -181,10 +182,10 @@ export default function Homecards() {
     };
 
 
-    const bloglikenotification = async (username, owner, blogid,blogtitle) => {
+    const bloglikenotification = async (username, owner, blogid, blogtitle) => {
         try {
             if (blogid && username && owner) {
-                const res = await api.post(`/notify/bln`, { username, owner, blogid,blogtitle }, {
+                const res = await api.post(`/notify/bln`, { username, owner, blogid, blogtitle }, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },
@@ -193,12 +194,21 @@ export default function Homecards() {
 
             }
 
+
+            socket.emit("sendNotification", {
+                user: owner,
+                message:`❤️ ${username} liked your blog ${blogtitle}` ,
+                link: `/search?blogId=${blogid}`,
+                read: false,
+                senderid: user?.id,
+            })
+
         } catch (error) {
             console.log(error);
         }
     }
 
-  
+
     return (
 
         <div className="">
@@ -281,7 +291,7 @@ export default function Homecards() {
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                             getlike(b._id)
-                                                            bloglikenotification(user?.name, b.creator?._id, b?._id,b?.title)
+                                                            bloglikenotification(user?.name, b.creator?._id, b?._id, b?.title)
                                                         }}><FaRegHeart className="text-2xl" /></motion.button>
                                                 )}
 
@@ -343,7 +353,7 @@ export default function Homecards() {
 
 
                                         {openBlogId === b._id && (
-                                            <Comments blogId={b?._id} blogtitle={b?.title} owner={b.creator?._id}  />
+                                            <Comments blogId={b?._id} blogtitle={b?.title} owner={b.creator?._id} />
                                         )}
 
 

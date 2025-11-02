@@ -16,6 +16,7 @@ import { FaCheck } from "react-icons/fa";
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
 import api from "@/axios";
+import { socket } from "@/services/Socketp";
 
 export default function Card({ type }) {
     const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog } = useEditorstore();
@@ -26,7 +27,7 @@ export default function Card({ type }) {
     const { savedblogs, tblog } = useProfilestore()
     const savedpage = type === "savedblogs";
 
- 
+
     const getexcerpt = (text, wordlimit = 50) => {
         const words = text?.trim().split(/\s+/)
         if (words?.length <= wordlimit) {
@@ -48,7 +49,15 @@ export default function Card({ type }) {
 
 
             }
-
+  
+            socket.emit("sendNotification", {
+                user: creator,
+                message: `🎉 Your blog ${blogtitle} has been approved!`,
+                link: `/blog/${blogid}`,
+                read: false,
+                type: "approval",
+                senderid: user?.id
+            })
 
 
         } catch (error) {
@@ -68,6 +77,17 @@ export default function Card({ type }) {
 
 
             }
+
+            socket.emit("sendNotification", {
+                user: creator,
+                message: ` ❌ Your blog ${blogtitle} has been rejected.`,
+                link: `/blog/${blogid}`,
+                read: false,
+                type: "rejection",
+                senderid: user?.id
+            })
+
+
 
         } catch (error) {
             console.log(error);
@@ -91,17 +111,17 @@ export default function Card({ type }) {
 
             } else {
                 await approveblog(blogid)
-                
-                if(bloginfo?.approval === false ?  await createnotification(blogtitle, creator, blogid) : await brn(blogtitle,creator,blogid) ) 
-                toast(`${bloginfo?.approval ? "Blog Disapproved" : "Blog Approved"}`,
-                    {
-                        icon: '🎉',
-                        style: {
-                            borderRadius: '10px',
-                            background: '#333',
-                            color: '#fff',
-                        },
-                    })
+
+                if (bloginfo?.approval === false ? await createnotification(blogtitle, creator, blogid) : await brn(blogtitle, creator, blogid))
+                    toast(`${bloginfo?.approval ? "Blog Disapproved" : "Blog Approved"}`,
+                        {
+                            icon: '🎉',
+                            style: {
+                                borderRadius: '10px',
+                                background: '#333',
+                                color: '#fff',
+                            },
+                        })
             }
 
 
@@ -228,7 +248,7 @@ export default function Card({ type }) {
                                     {b?.approval ? (
                                         <button className="btn btn-error btn-sm" onClick={() => {
                                             ab(b._id, b.title, b?.creator?._id)
-                                             
+
                                         }}><FcDisapprove />Disapprove</button>
                                     ) : (
                                         <button className="btn btn-primary btn-sm" onClick={() => {

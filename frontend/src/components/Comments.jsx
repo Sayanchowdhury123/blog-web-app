@@ -9,10 +9,11 @@ import toast from "react-hot-toast";
 import useAuthstore from "@/store/authstore";
 import api from "@/axios";
 import { useLocation } from "react-router-dom";
+import { socket } from "@/services/Socketp";
 
 
 export default function Comments({ blogId, blogtitle, owner }) {
-    const { commentsByBlog, fetchComments, addComment, delcom, editcom,cid} = useHomestore();
+    const { commentsByBlog, fetchComments, addComment, delcom, editcom, cid } = useHomestore();
     const blogState = commentsByBlog[blogId] || { comments: [], hasMore: true };
     const [newComment, setNewComment] = useState('');
     const [option, setoption] = useState(null)
@@ -32,14 +33,21 @@ export default function Comments({ blogId, blogtitle, owner }) {
     const blogcommentnotification = async (username, owner, blogId, blogtitle) => {
 
         try {
-            if (blogId && username && owner ) {
+            if (blogId && username && owner) {
                 const res = await api.post(`/notify/commented`, { username, owner, blogid: blogId, blogtitle }, {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },
                 })
 
-                console.log(res.data);
+                socket.emit("sendNotification",{
+                    user: owner,
+                    message: `💬 ${username} commented on your blog ${blogtitle}`,
+                    link: `/search?blogId=${blogId}&openComment=${"true"}`,
+                    read: false,
+                    type: "newcomment",
+                    senderid: user?.id,
+                })
             }
 
         } catch (error) {

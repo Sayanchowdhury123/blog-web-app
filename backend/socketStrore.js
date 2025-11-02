@@ -14,7 +14,7 @@ const removeUser = (socketId) => {
 };
 
 const getSocketId = (userId) => {
-     console.log(onlineUsers.get(userId));
+   
   return onlineUsers.get(userId);
  
 };

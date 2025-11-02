@@ -19,6 +19,7 @@ import Pinput from "@/components/Pinput";
 import Delp from "@/components/Delp";
 import Navbar from "@/components/Navbar";
 import api from "@/axios";
+import { socket } from "@/services/Socketp";
 
 export default function Followerpage() {
 
@@ -37,7 +38,7 @@ export default function Followerpage() {
         setloading(true)
         try {
             await fetchuserinfo(userid)
-           
+
         } catch (error) {
             console.log(error);
         } finally {
@@ -112,7 +113,7 @@ export default function Followerpage() {
         }
     }
 
-     const newfollowernotification = async (username, owner, userid) => {
+    const newfollowernotification = async (username, owner, userid) => {
         try {
             if (username && owner) {
                 const res = await api.post(`/notify/new-follower`, { username, owner, userid }, {
@@ -123,6 +124,15 @@ export default function Followerpage() {
 
 
             }
+
+            socket.emit("sendNotification", {
+                user: owner,
+                message: `👥 ${username} started following you`,
+                link: `/f-page/${userid}`,
+                read: false,
+                type: "newfollower",
+                senderid: user?.id,
+            })
 
 
 
@@ -190,7 +200,7 @@ export default function Followerpage() {
 
 
             <div className="">
-<Navbar/>
+                <Navbar />
 
 
 
@@ -227,8 +237,8 @@ export default function Followerpage() {
                                 <div>
                                     {userinfoi?.followers?.includes(user.id) ? (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={followunfollow} >unfollow</button>) : (<button className="bg-blue-500 font-semibold text-white px-2 py-2 rounded-lg w-full" onClick={() => {
                                         followunfollow()
-                                        newfollowernotification(user?.name,userinfoi?._id,user?.id)
-                                        }} >Follow</button>)}
+                                        newfollowernotification(user?.name, userinfoi?._id, user?.id)
+                                    }} >Follow</button>)}
                                 </div>
                             )}
 

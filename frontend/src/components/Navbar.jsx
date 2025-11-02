@@ -15,6 +15,9 @@ export default function Navbar() {
 
     useEffect(() => {
         initSocketListener()
+
+
+        return () => socket.off("newNotification")
     }, [])
 
 
