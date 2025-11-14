@@ -16,6 +16,10 @@ import { FcCollaboration } from "react-icons/fc";
 import useBlogmstore from "@/store/Blogm";
 import Au from "@/components/Au";
 import Navbar from "@/components/Navbar";
+import { AiFillDelete } from "react-icons/ai";
+import { MdOutlineEdit } from "react-icons/md";
+import { MdContentPasteGo } from "react-icons/md";
+
 
 
 export default function Blogmanage() {
@@ -125,7 +129,7 @@ export default function Blogmanage() {
           <h1 className="text-3xl text-center font-semibold">Your Blogs</h1>
         </div>
         {showalert && (
-          <div className="absolute backdrop-blur-sm z-20 inset-0 flex justify-center items-center">
+          <div className="fixed backdrop-blur-sm z-20 inset-0 flex justify-center items-center">
             <Alert del={delblog} />
           </div>
 
@@ -133,7 +137,7 @@ export default function Blogmanage() {
 
         {
           showedit && (
-            <div className="absolute backdrop-blur-sm z-20 inset-0 flex justify-center items-center">
+            <div className="fixed backdrop-blur-sm z-20 inset-0 flex justify-center items-center ">
               <Editblog fb={fb} />
              </div>
           )
@@ -165,17 +169,17 @@ export default function Blogmanage() {
                     
                     </div>
                     <p></p>
-                  <div className="card-actions justify-end">
+                  <div className="card-actions ">
                   
-                     <button className="btn" onClick={() => {
+                     <button className="btn tooltip" data-tip="collaboration" da="true" onClick={() => {
                       setubox()
                       setroomid(b)
                     }}><FcCollaboration/></button>
-                    <button className="btn btn-success" onClick={() => navigate(`/edit-content/${b._id}`,{
+                    <button className="btn btn-success tooltip" data-tip="edit content" da="true" onClick={() => navigate(`/edit-content/${b._id}`,{
                       state: {t: b}
-                    })}>Edit Content</button>
-                    <button className="btn btn-primary" onClick={() => setshowedit(b._id,b)}>Edit Blog</button>
-                    <button className="btn btn-error" onClick={() => setshowalert(b._id)}>Delete Blog</button>
+                    })}><MdContentPasteGo/></button>
+                    <button className="btn btn-primary tooltip" data-tip="edit blog" da="true" onClick={() => setshowedit(b._id,b)}><MdOutlineEdit/></button>
+                    <button className="btn btn-error tooltip" data-tip="delete blog" da="true" onClick={() => setshowalert(b._id)}><AiFillDelete/></button>
 
                   </div>
                 </div>

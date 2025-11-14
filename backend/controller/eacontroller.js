@@ -42,7 +42,18 @@ exports.blogedited = async (req, res) => {
         (b) => String(b.blogid) === String(blogid)
       );
 
+        if (alreadedited) {
+    
       alreadedited.editedAt = new Date();
+    } else {
+      
+      analytics.blogsEdited.push({
+        blogid,
+        editedAt: new Date(),
+      });
+    }
+
+      
       await analytics.save();
     }
     res.status(200).json(analytics);
