@@ -74,11 +74,11 @@ export default function Blog({ blog }) {
       <div className="  ">
 
 
-        <motion.div className=" bg-base-100 w-5xl mx-auto mt-4 p-6 shadow-lg rounded-xl  space-y-6 " initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <div className="flex gap-2 ">
-            <div className="">
-              <h1 className="text-4xl font-bold">{blog?.title}</h1>
-              <div className=" flex gap-4 items-center mt-2">
+        <motion.div className=" bg-base-100 sm:w-5xl w-[400px] mx-auto mt-4 p-6 shadow-lg rounded-xl  space-y-6 " initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className=" ">
+            <div className="text-center">
+              <h1 className="text-4xl  font-bold">{blog?.title}</h1>
+              <div className=" flex gap-4 items-center mt-2 justify-center">
                 <div>
                   <p>By <span className="font-semibold text-md">{blog?.creator?.name}</span> </p>
                 </div>
@@ -92,24 +92,27 @@ export default function Blog({ blog }) {
                   ) : ""}
 
                 </div>
+
+
+
+              </div>
+              <div className="">
+                <p className="text-sm">{new Date(blog?.createdAt).toLocaleDateString()}</p>
               </div>
 
             </div>
 
-            <div className="mt-[10px]">
-              <p className="text-sm">{new Date(blog?.createdAt).toLocaleDateString()}</p>
-            </div>
 
           </div>
 
 
-          <div className="w-3xl mx-auto">
-            <img src={blog?.coverimage} alt="coverimage" className="  rounded-xl" />
+          <div className="sm:w-3xl w-[300px] mx-auto ">
+            <img src={blog?.coverimage} alt="coverimage" className="  rounded-xl " />
           </div>
 
           <div dangerouslySetInnerHTML={{
             __html: blog?.blogtext
-          }} className=" prose max-w-none cursor-pointer" >
+          }} className=" prose max-w-none cursor-pointer sm:w-full w-[300px] mx-auto" >
 
 
           </div>
@@ -118,7 +121,7 @@ export default function Blog({ blog }) {
 
           </div>
 
-          <div className="flex flex-wrap gap-2 " >
+          <div className="flex flex-wrap gap-2 ml-[20px]" >
             {
               blog?.tags?.map((t, i) => (
                 <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center badge badge-neutral gap-1 px-2 py-1 cursor-pointer">
