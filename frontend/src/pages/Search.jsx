@@ -153,9 +153,9 @@ export default function Search() {
                 <Navbar/>
 
 
-                <div className="mt-6 flex justify-center lg:gap-50 sm:gap-10">
-                    <div className="flex flex-col  relative">
-                        <div className="flex gap-2 ">
+                <div className="mt-6 sm:flex block   justify-center lg:gap-50 sm:gap-10">
+                    <div className="">
+                        <div className="flex gap-2 justify-center mb-4 ">
                             <input type="text" className="input " onChange={(e) => {
                                 setst(e.target.value)
                                 onChangesearch(e.target.value)
@@ -178,7 +178,7 @@ export default function Search() {
                                 <div>
                                     {
                                         searchhistory.length > 0 && (
-                                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 w-[220px] rounded-bl-xl rounded-xl absolute top-12 shadow-xl" >
+                                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 sm:w-[220px] w-[308px] rounded-bl-xl rounded-xl absolute top-[144px] sm:left-[221px] left-[32px]  shadow-xl" >
 
                                                 {
                                                     searchhistory?.map((s, i) => (
@@ -206,7 +206,7 @@ export default function Search() {
 
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex sm:gap-2 gap-[203px] justify-center  ">
                         <div>
                             <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
                                 <option value="all">All</option>

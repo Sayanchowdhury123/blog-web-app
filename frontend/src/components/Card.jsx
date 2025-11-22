@@ -17,6 +17,7 @@ import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
 import api from "@/axios";
 import { socket } from "@/services/Socketp";
+import { MdOutlineReviews } from "react-icons/md";
 
 export default function Card({ type }) {
     const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog } = useEditorstore();
@@ -238,34 +239,34 @@ export default function Card({ type }) {
                             <p></p>
                             {savedpage ? "" : (
                                 <div className="card-actions justify-end">
-                                    <button className="btn btn-sm btn-secondary" onClick={() => navigate(`/review/${b._id}`, {
+                                    <button className="btn btn-sm btn-secondary tooltip" data-tip="Review Content" da="true" onClick={() => navigate(`/review/${b._id}`, {
                                         state: { blogid: b._id }
-                                    })}><MdOutlinePreview />Review Content</button>
-                                    <button className="btn btn-sm " onClick={() => navigate(`/edit-content/${b._id}`, {
+                                    })}><MdOutlineReviews/></button>
+                                    <button className="btn btn-sm tooltip" data-tip="Edit Content" da="true" onClick={() => navigate(`/edit-content/${b._id}`, {
                                         state: { t: b, editor: "editcontent" }
-                                    })}><MdEdit />Edit Content</button>
+                                    })}><MdEdit /></button>
 
                                     {b?.approval ? (
-                                        <button className="btn btn-error btn-sm" onClick={() => {
+                                        <button className="btn btn-error btn-sm tooltip" data-tip="Disapprove" da="true" onClick={() => {
                                             ab(b._id, b.title, b?.creator?._id)
 
-                                        }}><FcDisapprove />Disapprove</button>
+                                        }}><FcDisapprove /></button>
                                     ) : (
-                                        <button className="btn btn-primary btn-sm" onClick={() => {
+                                        <button className="btn btn-primary btn-sm tooltip" data-tip="Approve" da="true"  onClick={() => {
                                             ab(b._id, b.title, b?.creator?._id)
 
-                                        }} ><FcApprove />Approve</button>
+                                        }} ><FcApprove /></button>
                                     )}
 
                                     {b?.ep ? (
-                                        <button className="btn btn-error btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleSharp /> Unpick</button>
+                                        <button className="btn btn-error btn-sm tooltip" data-tip="Unpick" da="true"  onClick={() => pickep(b._id)}><IoCheckmarkCircleSharp /></button>
                                     ) : (
-                                        <button className="btn btn-neutral btn-sm" onClick={() => pickep(b._id)}><IoCheckmarkCircleOutline /> Pick</button>
+                                        <button className="btn btn-neutral btn-sm tooltip" data-tip="Pick" da="true" onClick={() => pickep(b._id)}><IoCheckmarkCircleOutline /></button>
                                     )}
 
                                     {
                                         b.collabrators?.includes(user.id) && (
-                                            <button className="btn btn-sm" onClick={() => navigate(`/collab/${b._id}`, {
+                                            <button className="btn btn-sm tooltip" data-tip="Join" da="true"   onClick={() => navigate(`/collab/${b._id}`, {
                                                 state: { t: b }
                                             })}><MdOutlineConnectWithoutContact />Join</button>
                                         )
