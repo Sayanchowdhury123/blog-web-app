@@ -61,8 +61,8 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
         return a + pervieww;
     }, 0)
 
-    
-   
+
+
 
     const stats = {
         totalBlogs: data?.length,
@@ -98,10 +98,10 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
     const approvedata = [
         {
-            name: "Approved",value: parseFloat(editordata?.approvalRate)
+            name: "Approved", value: parseFloat(editordata?.approvalRate)
         },
-         {
-            name: "Disapproved",value: parseFloat(editordata?.disapprovalrate)
+        {
+            name: "Disapproved", value: parseFloat(editordata?.disapprovalrate)
         },
     ]
 
@@ -130,15 +130,15 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
         likes: avgdurations[blogid].likes,
     }))
 
-    
-   const totaltimeedited = editinfo[0]?.blogsEdited?.reduce((a, b) => {
+
+    const totaltimeedited = editinfo[0]?.blogsEdited?.reduce((a, b) => {
         const edittime = b?.duration;
         return a + edittime;
     }, 0)
 
-   
 
- 
+
+
     return (
         <div className="p-6 space-y-8">
 
@@ -275,39 +275,39 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
             {
                 user?.role === "editor" && (
-                      <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-                <div className="card-body">
-                    <h2 className="card-title">📈 Editing Time</h2>
-                    <div className="">
-                        <table className="table table-zebra w-full">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Views</th>
-                                    <th>Likes</th>
-                                    <th>Edit Time (sec)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    editinfo[0]?.blogsEdited?.map((blog, idx) => (
-                                        <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
-                                            <td>{blog.blogid.title}</td>
-                                            <td>{blog.blogid.views?.length}</td>
-                                            <td>{blog.blogid.likes?.length}</td>
-                                            <td>{blog.duration}</td>
-                                        </motion.tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
+                    <div className="card bg-base-200 shadow-xl  h-[40vh] overflow-y-auto  sm:w-full w-[384px]" style={{ scrollbarWidth: "none" }}>
+                        <div className="card-body">
+                            <h2 className="card-title">📈 Editing Time</h2>
+                            <div className="">
+                                <table className="table table-zebra w-full">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Views</th>
+                                            <th>Likes</th>
+                                            <th>Edit Time (sec)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            editinfo[0]?.blogsEdited?.map((blog, idx) => (
+                                                <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
+                                                    <td>{blog.blogid.title}</td>
+                                                    <td>{blog.blogid.views?.length}</td>
+                                                    <td>{blog.blogid.likes?.length}</td>
+                                                    <td>{blog.duration}</td>
+                                                </motion.tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
                 )
             }
-              
-            <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+
+            <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto  sm:w-full w-[384px]" style={{ scrollbarWidth: "none" }}>
                 <div className="card-body">
                     <h2 className="card-title">📈 Popular Blogs</h2>
                     <div className="">

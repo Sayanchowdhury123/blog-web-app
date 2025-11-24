@@ -142,7 +142,7 @@ export default function Createblogs() {
 
            <Navbar/>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-6 w-3xl mx-auto ">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="sm:p-6 p-3 sm:w-3xl w-[406px] mx-auto ">
 
 
 

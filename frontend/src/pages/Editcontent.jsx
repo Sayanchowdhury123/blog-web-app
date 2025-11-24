@@ -138,12 +138,10 @@ export default function Editcontent() {
   if (l) return <Loading2 />
 
   return (
-    <div className="  relative ">
-
-
+    <div className="  relative w-full ">
 
       <Sidebar />
-      <div className=' space-y-4'>
+      <div className=' space-y-4  w-full '>
 
         <Navbar/>
         <div className=''>
@@ -151,8 +149,11 @@ export default function Editcontent() {
         </div>
 
         <div className='flex justify-center items-center  p-4 '>
-          <form onSubmit={handlesubmit} className=" relative" >
-            <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
+          <form onSubmit={handlesubmit} className=" w-full" >
+            <div className='w-full max-w-4xl mx-auto'>
+                <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
+            </div>
+            
             <div className='text-center'>
               <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
             </div>

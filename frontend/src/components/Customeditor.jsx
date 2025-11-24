@@ -262,12 +262,12 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
   return (
 
     <EditorContext.Provider value={{ editor }}>
-      <div className=" border rounded-xl  " style={{ scrollbarWidth: "none" }}>
-        <div className="border-b ">
+      <div className=" border rounded-xl w-full overflow-y-auto" style={{ scrollbarWidth: "none" }} >
+        <div className="border-b w-full overflow-x-auto " style={{ scrollbarWidth: "none" }}>
           <Toolbar1 />
         </div>
 
-        <EditorContent editor={editor} className="p-4 h-[60vh] w-[984px] overflow-y-hidden" />
+        <EditorContent editor={editor} className="p-4 h-[60vh]  w-full max-w-full  overflow-y-auto" style={{ scrollbarWidth: "none" }} />
 
       </div>
 
