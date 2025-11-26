@@ -26,7 +26,7 @@ import Collabe from './Collabe'
 
 
 export default function Collabeditor() {
-   
+
     const { user } = useAuthstore()
     const location = useLocation()
     const { t, editor } = location.state || {};
@@ -35,28 +35,28 @@ export default function Collabeditor() {
     const navigate = useNavigate()
     const { setshownav } = useAuthstore()
     const { fetchuser, userinfo } = useProfilestore()
-    const {blogt,clearblogtext} = useBlogmstore() 
-    
-  
+    const { blogt, clearblogtext } = useBlogmstore()
 
- 
 
-  
 
-  
-  
 
-   const endcollab = async () => {
+
+
+
+
+
+
+    const endcollab = async () => {
         try {
-            const res = await api.patch(`/blogs/${t._id}/end-collab`, { blogid: t._id}, {
+            const res = await api.patch(`/blogs/${t._id}/end-collab`, { blogid: t._id }, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
             })
             console.log(res.data);
-             
+
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
     }
 
@@ -67,16 +67,7 @@ export default function Collabeditor() {
 
         try {
 
-            const res = await api.patch(`/blogs/${t._id}/edit-content`, { blogtext: blogt }, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                    "Content-Type": "multipart/form-data"
 
-                }
-            })
-
-
-           clearblogtext()
             endcollab()
 
             toast('Content Updation successful',
@@ -99,9 +90,9 @@ export default function Collabeditor() {
 
             }
 
-            
-                navigate(`/editor-page`)
-            
+
+            navigate('/yourblogs')
+
         } catch (error) {
             console.log(error);
             toast('Content updation failed',
@@ -123,6 +114,8 @@ export default function Collabeditor() {
     }, [])
 
     if (l) return <Loading2 />
+
+   
 
     return (
         <div className="  relative ">
@@ -148,13 +141,13 @@ export default function Collabeditor() {
 
                 <div className='flex justify-center items-center  p-4 '>
                     <form onSubmit={handlesubmit} className=" relative" >
-                        <Collabe intialContent={t?.blogtext} onContentChange={setblogtext} blogid={t._id} />
-                        
-                                <div className='text-center'>
-                                    <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
-                                </div>
-                            
-                    
+                        <Collabe intialContent={t?.blogtext} onContentChange={setblogtext} blogid={t._id} blog={t} />
+
+                        <div className='text-center'>
+                            <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
+                        </div>
+
+
                     </form>
 
                 </div>

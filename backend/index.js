@@ -4,8 +4,19 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { addUser, removeUser } = require("./socketStrore");
 const server = http.createServer(app);
+const {WebSocketServer} = require("ws")
+const {setupWSConnection} = require("../backend/node_modules/y-websocket/bin/utils")
+
 
 connectdb();
+
+const yjsServer = http.createServer();
+const yjsWss = new WebSocketServer({ server: yjsServer });
+
+yjsWss.on('connection', (conn, req) => {
+  console.log('✅ Yjs WebSocket connected');
+  setupWSConnection(conn, req);
+});
 
 const io = new Server(server, {
   cors: {
@@ -47,7 +58,12 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.PORT;
+const PORT_YJS = 5001; 
 
 server.listen(PORT, () => {
   console.log(`server running ${PORT}`);
+});
+
+yjsServer.listen(PORT_YJS, () => {
+  console.log(`✅ Yjs WebSocket running on ws://localhost:${PORT_YJS}`);
 });

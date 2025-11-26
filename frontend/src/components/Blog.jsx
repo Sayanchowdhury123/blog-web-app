@@ -65,7 +65,7 @@ export default function Blog({ blog }) {
 
 
 
-
+console.log(blog.blogtext);
 
   return (
     <div>
@@ -112,7 +112,7 @@ export default function Blog({ blog }) {
 
           <div dangerouslySetInnerHTML={{
             __html: blog?.blogtext
-          }} className=" prose max-w-none cursor-pointer sm:w-full w-[300px] mx-auto" >
+          }} className=" prose max-w-none cursor-pointer sm:w-full w-[300px] mx-auto text-center" >
 
 
           </div>

@@ -3,14 +3,40 @@ const router = express.Router();
 const User = require("../models/User");
 const Blogs = require("../models/Blogs");
 const cloudinary = require("cloudinary").v2;
-const santizehtml = require("sanitize-html")
+const santizehtml = require("sanitize-html");
+const Y = require("yjs");
+const { generateHTML } = require('@tiptap/html/server');
+const StarterKit = require('@tiptap/starter-kit').StarterKit;
+const Document = require('@tiptap/extension-document').Document;
+const Paragraph = require('@tiptap/extension-paragraph').Paragraph;
+const Text = require('@tiptap/extension-text').Text;
+
+const extensions = [
+  Document,
+  Paragraph,
+  Text,
+  StarterKit.configure({
+    heading: true,
+    bold: true,
+    italic: true,
+    strike: true,
+    underline: true,
+    code: true,
+    blockquote: true,
+    bulletList: true,
+    orderedList: true,
+    listItem: true,
+    codeBlock: true,
+    hardBreak: true,
+
+  })
+]
 
 exports.createblogs = async (req, res) => {
   try {
     const { title, blogtext } = req.body;
 
-    const tags = JSON.parse(req.body.tags)
-
+    const tags = JSON.parse(req.body.tags);
 
     if (!title || !blogtext || !tags) {
       return res.status(400).json({ msg: "invalid data" });
@@ -72,15 +98,14 @@ exports.editblog = async (req, res) => {
   const { blogid } = req.params;
   try {
     const { title } = req.body;
-     const tags = JSON.parse(req.body.tags)
-     
-      const b = await Blogs.findById(blogid)
-      if (!b) {
+    const tags = JSON.parse(req.body.tags);
+
+    const b = await Blogs.findById(blogid);
+    if (!b) {
       return res.status(400).json({ msg: "blog not found" });
     }
-    
+
     const file = req.files?.coverimage;
-  
 
     let result;
     if (file) {
@@ -100,18 +125,16 @@ exports.editblog = async (req, res) => {
       }
     }
 
- 
     b.title = title || b.title;
     b.tags = tags || b.tags;
     b.cid = result?.public_id || b.cid;
     b.coverimage = result?.secure_url || b.coverimage;
 
     await b.save();
-    await b.populate("creator comments.user")
-    res.status(200).json("Blog updated")
-
+    await b.populate("creator comments.user");
+    res.status(200).json("Blog updated");
   } catch (error) {
-        console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -119,25 +142,22 @@ exports.editblog = async (req, res) => {
 exports.deleteblog = async (req, res) => {
   const { blogid } = req.params;
   try {
-
-    const b = await Blogs.findById(blogid)
-      if (!b) {
+    const b = await Blogs.findById(blogid);
+    if (!b) {
       return res.status(400).json({ msg: "blog not found" });
     }
 
-  
-    
-       try {
-         if (b.cid) {
-          await cloudinary.uploader.destroy(b.cid, {
-            resource_type: "image",
-          });
-        }
-       } catch (error) {
-          console.log("image deletion error");
-       }
-      
-    await Blogs.findOneAndDelete({_id: blogid})
+    try {
+      if (b.cid) {
+        await cloudinary.uploader.destroy(b.cid, {
+          resource_type: "image",
+        });
+      }
+    } catch (error) {
+      console.log("image deletion error");
+    }
+
+    await Blogs.findOneAndDelete({ _id: blogid });
     res.status(200).json(blogid);
   } catch (error) {
     console.log(error);
@@ -145,168 +165,226 @@ exports.deleteblog = async (req, res) => {
   }
 };
 
-exports.editcontent = async (req,res) => {
-    const { blogid } = req.params;
+exports.editcontent = async (req, res) => {
+  const { blogid } = req.params;
   try {
-      const { blogtext } = req.body;
-      if(!blogtext){
-        return res.status(400).json("blogtext not found")
-      }
-     
+    const { blogtext } = req.body;
+    if (!blogtext) {
+      return res.status(400).json("blogtext not found");
+    }
 
-const sanitizedContent =  santizehtml(blogtext, {
-  allowedTags: [
-    'p', 'blockquote', 'strong', 'b', 'i', 'em', 'u', 's', 'strike', 'code',
-    'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'span',
-    'sub', 'sup', 'br','mark'
-  ],
-  allowedAttributes: {
-    a: ['href', 'target', 'rel'],
-    span: ['style'],
-    '*': ['style'], 
-    mark: ['data-color','style'],
-  },
-  allowedStyles: {
-    '*': {
-      
-      'color': [/^.*$/],
-      'background-color': [/^.*$/],
-      'text-align': [/^left$|^right$|^center$|^justify$/],
-      'font-size': [/^\d+(px|em|rem|%)$/],
-      'font-family': [/^.*$/],
-      'line-height': [/^.*$/],
- },
- },
-});
+    const sanitizedContent = santizehtml(blogtext, {
+      allowedTags: [
+        "p",
+        "blockquote",
+        "strong",
+        "b",
+        "i",
+        "em",
+        "u",
+        "s",
+        "strike",
+        "code",
+        "pre",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "ul",
+        "ol",
+        "li",
+        "a",
+        "span",
+        "sub",
+        "sup",
+        "br",
+        "mark",
+      ],
+      allowedAttributes: {
+        a: ["href", "target", "rel"],
+        span: ["style"],
+        "*": ["style"],
+        mark: ["data-color", "style"],
+      },
+      allowedStyles: {
+        "*": {
+          color: [/^.*$/],
+          "background-color": [/^.*$/],
+          "text-align": [/^left$|^right$|^center$|^justify$/],
+          "font-size": [/^\d+(px|em|rem|%)$/],
+          "font-family": [/^.*$/],
+          "line-height": [/^.*$/],
+        },
+      },
+    });
 
-     const b = await Blogs.findById(blogid);
-    
+    const b = await Blogs.findById(blogid);
+
     if (!b) {
       return res.status(400).json({ msg: "blog not found" });
     }
-    
 
     b.blogtext = sanitizedContent || b.blogtext;
-    await b.save()
-     await b.populate("creator comments.user")
+    await b.save();
+    await b.populate("creator comments.user");
 
-     res.json(b.blogtext)
-
+    res.json(b.blogtext);
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
-exports.fetchblog = async (req,res) => {
+exports.fetchblog = async (req, res) => {
   const { blogid } = req.params;
   try {
-     const b = await Blogs.findById(blogid).populate("creator comments.user")
-      if (!b) {
+    const b = await Blogs.findById(blogid).populate("creator comments.user");
+    if (!b) {
       return res.status(400).json({ msg: "blog not found" });
     }
 
-    res.json(b)
+    res.json(b);
   } catch (error) {
-     console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
-
-exports.addview = async (req,res) => {
-   const { blogid,userid } = req.params;
-   try {
-    
-    if(!userid){
-        return res.status(400).json({ msg: "invalid id" });
+exports.addview = async (req, res) => {
+  const { blogid, userid } = req.params;
+  try {
+    if (!userid) {
+      return res.status(400).json({ msg: "invalid id" });
     }
 
-      if (req.user.id !== userid) {
+    if (req.user.id !== userid) {
       return res.status(400).json({ msg: "unauthorized" });
     }
 
-         const b = await Blogs.findById(blogid)
-      if (!b) {
+    const b = await Blogs.findById(blogid);
+    if (!b) {
       return res.status(400).json({ msg: "blog not found" });
     }
 
-     const alreadyviewed = b.views.some(
+    const alreadyviewed = b.views.some(
       (id) => id.toString() === userid.toString()
     );
- 
 
-    if(alreadyviewed){
-      return res.status(200).json("already viewed")
+    if (alreadyviewed) {
+      return res.status(200).json("already viewed");
     }
-     
-    b.views.push(userid)
-    
 
-    await b.save()
-    await b.populate("views")
+    b.views.push(userid);
 
-    res.status(200).json("view added")
+    await b.save();
+    await b.populate("views");
 
-   } catch (error) {
-     console.log(error);
-    res.status(500).json({ msg: "internal server error" });
-   }
-}
-
-exports.selectusers = async (req,res) => {
-  try {
-   
-    if(req.user.id){
-       const users = await User.find({
-      role: {$in: ["editor","writer"]},
-      _id: {$ne: req.user.id}
-    }).select("name profilepic role")
-    
-
-    res.status(200).json(users)
-    }
-    
-
+    res.status(200).json("view added");
   } catch (error) {
     console.log(error);
-     res.status(500).json({ msg: "internal server error" });
+    res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
-exports.startcollab = async (req,res) => {
-  const {blogid,users} = req.body;
+exports.selectusers = async (req, res) => {
   try {
-  
+    if (req.user.id) {
+      const users = await User.find({
+        role: { $in: ["editor", "writer"] },
+        _id: { $ne: req.user.id },
+      }).select("name profilepic role");
+
+      res.status(200).json(users);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+exports.startcollab = async (req, res) => {
+  const { blogid, users } = req.body;
+  try {
     const blog = await Blogs.findById(blogid);
 
-    const uarray = [...users,req.user.id]
-    
+    const uarray = [...users, req.user.id];
+
     blog.collabrators = uarray;
 
-    await blog.save()
-    res.status(200).json(blog.collabrators)
+    await blog.save();
+    res.status(200).json(blog.collabrators);
   } catch (error) {
-         console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
-exports.endcollab = async (req,res) => {
-  const {blogid} = req.body;
+exports.endcollab = async (req, res) => {
+  const { blogid } = req.body;
 
-   try {
-  
-    const blog = await Blogs.findById(blogid);
-    
-    blog.collabrators = blog.collabrators.filter((c) => c.toString() !== req.user.id)
+  try {
+   const blog = await Blogs.findById(blogid);
+    if (!blog) {
+      return res.status(404).json({ msg: 'Blog not found' });
+    }
 
-    await blog.save()
-    res.status(200).json(blog.collabrators)
+    let finalHtml = '<p>No content.</p>';
+
+    // ✅ Use ProseMirror JSON if available (best fidelity)
+    if (blog.prosemirrorJson) {
+      try {
+        finalHtml = generateHTML(blog.prosemirrorJson, extensions);
+      } catch (err) {
+        console.error('HTML generation failed:', err);
+        finalHtml = blog.blogtext || '<p>Content unavailable.</p>';
+      }
+    } else if (blog.blogtext) {
+      // Fallback to existing blogtext
+      finalHtml = blog.blogtext;
+    }
+
+
+    // ✅ 2. Update blogtext with final HTML
+    blog.blogtext = finalHtml;
+    blog.yjsupdate = undefined; // or null
+
+    blog.collabrators = []; 
+
+    await blog.save();
+    res.status(200).json(blog.collabrators);
   } catch (error) {
-         console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
+exports.saveyjsupadte = async (req, res) => {
+  try {
+    const { yjsUpdate,prosemirrorJson } = req.body;
+    const blog = await Blogs.findById(req.params.id);
 
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    const userId = req.user.id;
+    const isAuthorized =
+      blog.creator?.toString() === userId ||
+      blog.collabrators.map((id) => id.toString()).includes(userId);
+
+    if (!isAuthorized) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    blog.yjsupdate = yjsUpdate;
+    blog.prosemirrorJson = prosemirrorJson;
+    await blog.save();
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Save Yjs error:", err);
+    res.status(500).json({ error: "Save failed" });
+  }
+};
