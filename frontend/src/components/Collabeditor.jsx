@@ -17,6 +17,7 @@ import toast from 'react-hot-toast'
 import useProfilestore from '@/store/profilestore'
 import useBlogmstore from '@/store/Blogm'
 import Collabe from './Collabe'
+import Navbar from './Navbar';
 
 
 
@@ -118,33 +119,27 @@ export default function Collabeditor() {
    
 
     return (
-        <div className="  relative ">
+        <div className="  relative w-full   ">
 
 
 
             <Sidebar />
-            <div className=' space-y-4'>
+            <div className=' space-y-4  w-full'>
 
-                <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " onClick={(e) => {
-                    e.stopPropagation()
-                    setshownav
-                }}>
-                    <h1 className="text-4xl font-bold" onClick={(e) => {
-                        e.stopPropagation()
-                        navigate("/home")
-                    }}>  BlogApp</h1>
-                    <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" />
-                </div>
+               <Navbar/>
                 <div className=''>
                     <h1 className="text-3xl text-center font-semibold">Collaboration</h1>
                 </div>
 
                 <div className='flex justify-center items-center  p-4 '>
-                    <form onSubmit={handlesubmit} className=" relative" >
-                        <Collabe intialContent={t?.blogtext} onContentChange={setblogtext} blogid={t._id} blog={t} />
+                    <form onSubmit={handlesubmit} className=" w-full" >
+                        <div className='w-full max-w-4xl mx-auto' >
+                            <Collabe intialContent={t?.blogtext} onContentChange={setblogtext} blogid={t._id} blog={t}   />
+                        </div>
+                        
 
                         <div className='text-center'>
-                            <button type='submit' className='btn btn-neutral mt-4 '>Submit</button>
+                            <button type='submit' className='btn btn-neutral mt-4 '>Exit</button>
                         </div>
 
 

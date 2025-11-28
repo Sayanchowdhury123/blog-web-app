@@ -83,27 +83,27 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
     }
   }, [intialContent, editor])
 
-  function Toolbar1() {
+function Toolbar1() {
     if (!editor) return null;
     return (
       <div className="flex gap-3 justify-between p-4 items-center">
         <button type="button" onClick={() => {
           editor.chain().focus().toggleBold().run()
-        }} className="tooltip" data-tip="Bold"  >
+        }} className="tooltip tooltip-right " data-tip="Bold"  >
           <BoldIcon className={editor.isActive("bold") ? "text-blue-500" : ""} />
         </button>
 
         <button type="button" onClick={() => {
           editor.chain().focus().toggleItalic().run()
 
-        }} className="tooltip" data-tip="Italic"  >
+        }} className="tooltip tooltip-right" data-tip="Italic"  >
           <ItalicIcon className={editor.isActive("italic") ? "text-blue-500" : ""} />
         </button>
 
         <button type="button" onClick={() => {
           editor.chain().focus().toggleStrike().run()
 
-        }} className="tooltip" data-tip="Strike" >
+        }} className="tooltip tooltip-right" data-tip="Strike" >
           < StrikeIcon className={editor.isActive("strike") ? "text-blue-500" : ""} />
         </button>
 
@@ -111,18 +111,18 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
         <button type="button" onClick={() => {
           editor.chain().focus().toggleCode().run()
 
-        }} className="tooltip" data-tip="Code"  >
+        }} className="tooltip tooltip-right" data-tip="Code"  >
           < Code2Icon className={editor.isActive("code") ? "text-blue-500" : ""} />
         </button>
 
         <button type="button" onClick={() => {
           editor.chain().focus().toggleUnderline().run()
 
-        }} className="tooltip" data-tip="Underline"  >
+        }} className="tooltip tooltip-right" data-tip="Underline"  >
           < UnderlineIcon className={editor.isActive("underline") ? "text-blue-500" : ""} />
         </button>
 
-        <div className="tooltip" data-tip="Heading">
+        <div className="tooltip tooltip-right" data-tip="Heading">
           <select name="" id="" onChange={(e) => {
             const level = Number(e.target.value)
             if (level === 0) {
@@ -159,28 +159,28 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
 
 
 
-        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className="tooltip " data-tip="Bullet List" >
+        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className="tooltip tooltip-right " data-tip="Bullet List" >
           <HiListBullet className={editor.isActive("bulletList") ? "text-blue-500" : ""} />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className="tooltip " data-tip="Ordered List">
+        <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className="tooltip tooltip-right " data-tip="Ordered List">
           < RiListOrdered2 className={editor.isActive("orderedList") ? "text-blue-500" : ""} />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setHardBreak().run()} className="tooltip " data-tip="Line Break">
+        <button type="button" onClick={() => editor.chain().focus().setHardBreak().run()} className="tooltip tooltip-right " data-tip="Line Break">
           <FaGripLines />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().undo().run()} className="tooltip " data-tip="Undo">
+        <button type="button" onClick={() => editor.chain().focus().undo().run()} className="tooltip tooltip-right " data-tip="Undo">
           <Undo2Icon />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().redo().run()} className="tooltip " data-tip="Redo">
+        <button type="button" onClick={() => editor.chain().focus().redo().run()} className="tooltip tooltip-right " data-tip="Redo">
           <Redo2Icon />
         </button>
 
 
-        <div className="tooltip" data-tip="Font Family">
+        <div className="tooltip tooltip-right" data-tip="Font Family">
           <select name="" id="" onChange={(e) => editor.chain().focus().setFontFamily(e.target.value).run()}
             value={editor.getAttributes("textStyle").fontFamily || "Arial"}
             className="select"  >
@@ -203,7 +203,7 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
           </select>
         </div>
 
-        <div className="tooltip" data-tip="Font Size">
+        <div className="tooltip tooltip-right" data-tip="Font Size">
           <select name="" id="" onChange={(e) => editor.chain().focus().setFontSize(e.target.value).run()}
             value={editor.getAttributes("textStyle").fontSize || "16px"}
             className="select" >
@@ -222,20 +222,20 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
 
 
 
-        <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()} className="tooltip " data-tip="Align Left">
+        <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()} className="tooltip tooltip-right " data-tip="Align Left">
           <AlignLeftIcon className={editor.isActive({ textAlign: "left" }) ? "text-blue-500" : ""} />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()} className="tooltip " data-tip="Align Center">
+        <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()} className="tooltip tooltip-right " data-tip="Align Center">
           <AlignCenterIcon className={editor.isActive({ textAlign: "center" }) ? "text-blue-500" : ""} />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()} className="tooltip " data-tip="Align Right">
+        <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()} className="tooltip tooltip-right " data-tip="Align Right">
           <AlignRightIcon className={editor.isActive({ textAlign: "right" }) ? "text-blue-500" : ""} />
         </button>
 
 
-        <div className="tooltip" data-tip="Highlight">
+        <div className="tooltip tooltip-right" data-tip="Highlight">
           <select onChange={(e) => {
             const color = e.target.value;
             if (color === "none") {
@@ -263,7 +263,7 @@ export default function Customeditor({ intialContent = "", onContentChange, blog
 
     <EditorContext.Provider value={{ editor }}>
       <div className=" border rounded-xl w-full overflow-y-auto" style={{ scrollbarWidth: "none" }} >
-        <div className="border-b w-full overflow-x-auto " style={{ scrollbarWidth: "none" }}>
+        <div className="border-b w-full overflow-x-auto " style={{ scrollbarWidth: "none" }} >
           <Toolbar1 />
         </div>
 

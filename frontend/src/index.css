@@ -2,16 +2,48 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake;
 }
- @import './styles/_variables.scss';
- @import './styles/_keyframe-animations.scss';
+@import "./styles/_variables.scss";
+@import "./styles/_keyframe-animations.scss";
 
- .prose li{
+.prose li {
   list-style-type: disc;
   margin-left: 1rem;
- }
+}
 
- .prose ol{
-  list-style-type:decimal;
+.prose ol {
+  list-style-type: decimal;
   margin-left: 1rem;
- }
+}
 
+.collaboration-carets__caret {
+   border-left: 2px solid currentColor;
+  margin-left: -1px;
+  margin-right: -1px;
+  position: relative; /* So the label can be positioned absolutely inside */
+  z-index: 1000;
+}
+
+.collaboration-carets__label {
+    position: absolute;
+  top: -1.2em; /* Position above the caret */
+  left: -1px;
+  background-color: currentColor;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  white-space: nowrap;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  transform: translateX(-50%); /* Center label above caret */
+  pointer-events: none; /* Don't block mouse events */
+  z-index: 1001;
+}
+
+.tiptap:focus {
+  outline: none;
+}
+
+
+.tiptap [contenteditable]:focus {
+  outline: none;
+}

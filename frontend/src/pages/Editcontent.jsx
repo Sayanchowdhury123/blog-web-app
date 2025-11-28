@@ -150,7 +150,7 @@ export default function Editcontent() {
 
         <div className='flex justify-center items-center  p-4 '>
           <form onSubmit={handlesubmit} className=" w-full" >
-            <div className='w-full max-w-4xl mx-auto'>
+            <div className='w-full max-w-4xl mx-auto' >
                 <Customeditor intialContent={blogtext} onContentChange={setblogtext} />
             </div>
             
