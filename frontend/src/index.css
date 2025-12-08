@@ -16,7 +16,7 @@
 }
 
 .collaboration-carets__caret {
-   border-left: 2px solid currentColor;
+  border-left: 2px solid currentColor;
   margin-left: -1px;
   margin-right: -1px;
   position: relative; /* So the label can be positioned absolutely inside */
@@ -24,7 +24,7 @@
 }
 
 .collaboration-carets__label {
-    position: absolute;
+  position: absolute;
   top: -1.2em; /* Position above the caret */
   left: -1px;
   background-color: currentColor;
@@ -43,7 +43,46 @@
   outline: none;
 }
 
-
 .tiptap [contenteditable]:focus {
   outline: none;
+}
+
+.font-spaceGrotesk {
+  font-family: "Space Grotesk", sans-serif;
+}
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.3),
+    rgba(139, 92, 246, 0.3)
+  );
+  backdrop-filter: blur(12px);
+  border: none;
+}
+.glass:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.4),
+    rgba(139, 92, 246, 0.4)
+  );
+}
+body {
+  overflow-x: hidden;
+}
+
+.parallax-laptop {
+  box-shadow: 0 20px 50px -20px rgba(139, 92, 246, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.main-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 249, 255, 0.5),
+    rgba(230, 247, 255, 0.5)
+  );
+  backdrop-filter: blur(10px);
 }

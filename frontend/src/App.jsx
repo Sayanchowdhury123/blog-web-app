@@ -27,6 +27,7 @@ import Customeextension from './components/Customextension';
 import Analytics from './pages/Analytics';
 import Reviewpage from './pages/Reviewpage';
 import useNotificationstore from './store/notificationstore';
+import Intropage from './pages/IntroPage';
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
     	<Router>
         <Toaster position='top-left' reverseOrder={true}/>
         <Routes>
-         
+           <Route path='/' element={<Intropage/>} />
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
            <Route path='/search' element={<Search/>} />

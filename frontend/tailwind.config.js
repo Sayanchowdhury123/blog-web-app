@@ -4,7 +4,17 @@ module.exports = {
     "./src//*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        spaceGrotesk: ['"Space Grotesk"', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
+      backdropBlur: {
+        'xs': '2px',
+        'sm': '4px',
+        'md': '12px',
+      }
+    },
   },
   plugins: [
     require("@tailwindcss/typography"),
