@@ -6,7 +6,8 @@ import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 import blogAnimation from "../assets/blog-collab.json"
 import btAnimation from "../assets/bt.json";
-
+import aiAnimation from "../assets/ai.json";
+import AIBrain3D from '@/components/Aibrain3d';
 // Register GSAP plugins ONCE (outside component)
 gsap.registerPlugin(ScrollTrigger);
 
@@ -344,7 +345,7 @@ export default function Intropage() {
                             <div className="w-full h-full bg-gradient-to-r from-purple-300/40 to-pink-300/40 rounded-full blur-xl"></div>
                         </div>
 
-                       
+
 
                         {/* Foreground: Laptop Mockup (Fastest) */}
                         <div
@@ -368,7 +369,7 @@ export default function Intropage() {
                             </Tilt>
                         </div>
 
-                         <div ref={(el) => { if (el) iconRefs.current.a = el; }} className="absolute top-[0px] left-1/4 w-14 h-14">
+                        <div ref={(el) => { if (el) iconRefs.current.a = el; }} className="absolute top-[0px] left-1/4 w-14 h-14">
                             <div className="w-full h-full bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xl">A</div>
                         </div>
 
@@ -388,7 +389,95 @@ export default function Intropage() {
                 </div>
             </div>
 
-           
+            {/* AI Integration Section */}
+            <div className="py-32">
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-col lg:flex-row items-center gap-16 max-w-6xl mx-auto">
+                        {/* 3D AI Model (Lottie) */}
+                        {/* 3D AI Brain */}
+                        <motion.div
+                            className="w-full lg:w-1/2"
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <Tilt
+                                tiltMaxAngleX={8}
+                                tiltMaxAngleY={8}
+                                scale={1.03}
+                                transitionSpeed={800}
+                                glareEnable={true}
+                                glareMaxOpacity={0.3}
+                                glareColor="rgba(255, 255, 255, 0.3)"
+                                className=" ai-model-glow rounded-3xl overflow-hidden"
+                            >
+                                <div className="bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border border-white/30 backdrop-blur-sm p-4">
+                                    <Lottie
+                                        animationData={aiAnimation}
+                                        loop={true}
+                                        className="w-full h-80"
+                                    />
+                                </div>
+                            </Tilt>
+                        </motion.div>
+
+                        {/* AI Features */}
+                        <div className="w-full lg:w-1/2">
+                            <motion.h2
+                                className="text-3xl md:text-4xl font-bold font-spaceGrotesk mb-6"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                AI-Powered Blog Writing
+                            </motion.h2>
+
+                            <motion.p
+                                className="text-gray-600 mb-8 font-inter"
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2, duration: 0.5 }}
+                            >
+                                Generate draft blog posts in seconds using OpenRouter AI models.
+                                Perfect for overcoming writer's block or creating content faster.
+                            </motion.p>
+
+                            {/* AI Workflow Steps */}
+                            <div className="space-y-6">
+                                {[
+                                    { step: "1", title: "Describe Your Idea", desc: "Enter a topic or keywords" },
+                                    { step: "2", title: "AI Generates Draft", desc: "Get a full blog post in 10 seconds" },
+                                    { step: "3", title: "Collaborate & Edit", desc: "Refine with your team in real-time" }
+                                ].map((item, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="flex items-start gap-4 p-4 bg-white/50 backdrop-blur-sm border border-white/30 rounded-xl"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-sm">
+                                            {item.step}
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold font-spaceGrotesk">{item.title}</h3>
+                                            <p className="text-gray-600 text-sm font-inter">{item.desc}</p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
         </div>
     );
 
