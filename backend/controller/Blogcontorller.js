@@ -5,11 +5,11 @@ const Blogs = require("../models/Blogs");
 const cloudinary = require("cloudinary").v2;
 const santizehtml = require("sanitize-html");
 const Y = require("yjs");
-const { generateHTML } = require('@tiptap/html/server');
-const StarterKit = require('@tiptap/starter-kit').StarterKit;
-const Document = require('@tiptap/extension-document').Document;
-const Paragraph = require('@tiptap/extension-paragraph').Paragraph;
-const Text = require('@tiptap/extension-text').Text;
+const { generateHTML } = require("@tiptap/html/server");
+const StarterKit = require("@tiptap/starter-kit").StarterKit;
+const Document = require("@tiptap/extension-document").Document;
+const Paragraph = require("@tiptap/extension-paragraph").Paragraph;
+const Text = require("@tiptap/extension-text").Text;
 
 const extensions = [
   Document,
@@ -28,9 +28,8 @@ const extensions = [
     listItem: true,
     codeBlock: true,
     hardBreak: true,
-
-  })
-]
+  }),
+];
 
 exports.createblogs = async (req, res) => {
   try {
@@ -241,11 +240,30 @@ exports.fetchblog = async (req, res) => {
   const { blogid } = req.params;
   try {
     const b = await Blogs.findById(blogid).populate("creator comments.user");
+
     if (!b) {
       return res.status(400).json({ msg: "blog not found" });
     }
 
     res.json(b);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+exports.fetchdemoblog = async (req, res) => {
+  const { blogid } = req.params;
+  try {
+    const b = await Blogs.findById(blogid).populate("creator comments.user");
+
+    if (!b) {
+      return res.status(400).json({ msg: "blog not found" });
+    }
+
+    if (b.title === "Live Collaboration Demo") {
+      return res.json(b);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "internal server error" });
@@ -325,32 +343,31 @@ exports.endcollab = async (req, res) => {
   const { blogid } = req.body;
 
   try {
-   const blog = await Blogs.findById(blogid);
+    const blog = await Blogs.findById(blogid);
     if (!blog) {
-      return res.status(404).json({ msg: 'Blog not found' });
+      return res.status(404).json({ msg: "Blog not found" });
     }
 
-    let finalHtml = '<p>No content.</p>';
+    let finalHtml = "<p>No content.</p>";
 
     // ✅ Use ProseMirror JSON if available (best fidelity)
     if (blog.prosemirrorJson) {
       try {
         finalHtml = generateHTML(blog.prosemirrorJson, extensions);
       } catch (err) {
-        console.error('HTML generation failed:', err);
-        finalHtml = blog.blogtext || '<p>Content unavailable.</p>';
+        console.error("HTML generation failed:", err);
+        finalHtml = blog.blogtext || "<p>Content unavailable.</p>";
       }
     } else if (blog.blogtext) {
       // Fallback to existing blogtext
       finalHtml = blog.blogtext;
     }
 
-
     // ✅ 2. Update blogtext with final HTML
     blog.blogtext = finalHtml;
     blog.yjsupdate = undefined; // or null
 
-    blog.collabrators = []; 
+    blog.collabrators = [];
 
     await blog.save();
     res.status(200).json(blog.collabrators);
@@ -362,7 +379,7 @@ exports.endcollab = async (req, res) => {
 
 exports.saveyjsupadte = async (req, res) => {
   try {
-    const { yjsUpdate,prosemirrorJson } = req.body;
+    const { yjsUpdate, prosemirrorJson } = req.body;
     const blog = await Blogs.findById(req.params.id);
 
     if (!blog) {

@@ -3,8 +3,10 @@ const router = express.Router();
 const User = require("../models/User")
 const Blogs = require("../models/Blogs");
 const { authmiddleware, authorizerole } = require("../middleware/auth");
-const { createblogs,fetchblogs, deleteblog, editblog, editcontent, fetchblog, addview, selectusers, startcollab, endcollab, saveyjsupadte } = require("../controller/Blogcontorller");
+const { createblogs,fetchblogs, deleteblog, editblog, editcontent, fetchblog, addview, selectusers, startcollab, endcollab, saveyjsupadte, fetchdemoblog } = require("../controller/Blogcontorller");
 
+
+router.get("/get-demo",fetchdemoblog)
 router.get("/",authmiddleware,authorizerole("writer","editor"),fetchblogs)
 router.get("/get-users",authmiddleware,authorizerole("writer","editor"),selectusers)
 router.get("/:blogid",authmiddleware,fetchblog)

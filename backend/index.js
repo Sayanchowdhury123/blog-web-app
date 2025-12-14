@@ -8,7 +8,7 @@ const {WebSocketServer} = require("ws")
 const {setupWSConnection} = require("../backend/node_modules/y-websocket/bin/utils")
 
 
-connectdb();
+
 
 const yjsServer = http.createServer();
 const yjsWss = new WebSocketServer({ server: yjsServer });
@@ -17,6 +17,11 @@ yjsWss.on('connection', (conn, req) => {
   console.log('✅ Yjs WebSocket connected');
   setupWSConnection(conn, req);
 });
+
+
+connectdb()
+
+
 
 const io = new Server(server, {
   cors: {
@@ -57,7 +62,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 const PORT_YJS = 5001; 
 
 server.listen(PORT, () => {

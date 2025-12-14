@@ -27,6 +27,7 @@ const blogschema = new mogoose.Schema(
     collabrators: [{ type: mogoose.Schema.Types.ObjectId, ref: "User" },],
     yjsupdate: {type: String},
     prosemirrorJson: Object,
+    isCollabActive: { type: Boolean, default: false}
     
   },
   { timestamps: true }
