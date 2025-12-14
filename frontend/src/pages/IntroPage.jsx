@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lottie from 'lottie-react';
@@ -39,6 +39,15 @@ export default function Intropage() {
         s: null,
         t: null
     });
+
+
+    const statsRefs = useRef({
+        time: null,
+        conflicts: null,
+        speed: null
+    });
+
+    const sectionRef = useRef(null);
 
 
     useEffect(() => {
@@ -141,13 +150,100 @@ export default function Intropage() {
         }
 
 
+
+
         // Cleanup
         return () => {
+           
             blob1Tween.kill();
             blob2Tween.kill();
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, []);
+
+
+
+    
+useLayoutEffect(() => {
+  if (!sectionRef.current) return;
+
+  // Wait for next tick to ensure DOM is ready
+  const timer = setTimeout(() => {
+    // Verify all refs are attached
+    const allReady = 
+      statsRefs.current.time && 
+      statsRefs.current.conflicts && 
+      statsRefs.current.speed;
+
+    if (!allReady) {
+      console.warn("Stats refs not ready");
+      return;
+    }
+
+       const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Reset to 0 before animating
+          statsRefs.current.time.textContent = '0%';
+          statsRefs.current.conflicts.textContent = '0x';
+          statsRefs.current.speed.textContent = '0s';
+
+          // Animate Time (70%)
+          gsap.to({}, {
+            duration: 2,
+            ease: "power2.out",
+            onUpdate: function() {
+              const value = Math.round(this.progress() * 70);
+              statsRefs.current.time.textContent = `${value}%`;
+            },
+            onComplete: () => {
+              statsRefs.current.time.textContent = '70%';
+            }
+          });
+
+           gsap.to({}, {
+            duration: 1.8,
+            delay: 0.2,
+            ease: "power2.out",
+            onUpdate: function() {
+              const value = Math.round(this.progress() * 5);
+              statsRefs.current.conflicts.textContent = `${value}x`;
+            },
+            onComplete: () => {
+              statsRefs.current.conflicts.textContent = '5x';
+            }
+          });
+
+          // Animate Speed (12s)
+          gsap.to({}, {
+            duration: 1.5,
+            delay: 0.4,
+            ease: "power2.out",
+            onUpdate: function() {
+              const value = Math.round(this.progress() * 12);
+              statsRefs.current.speed.textContent = `${value}s`;
+            },
+            onComplete: () => {
+              statsRefs.current.speed.textContent = '12s';
+            }
+          });
+
+           observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(sectionRef.current);
+
+    // Cleanup
+    return () => {
+      observer.disconnect();
+    };
+  }, 100); // Small delay to ensure DOM is ready
+
+  return () => clearTimeout(timer);
+}, []);
+
 
 
 
@@ -471,8 +567,125 @@ export default function Intropage() {
                                 ))}
                             </div>
                         </div>
+
                     </div>
                 </div>
+            </div>
+
+
+            <div className='py-32 relative'>
+                <div className='absolute inset-0 bg-gradient-to-b from-cyan-50/20 to-indigo-50/20 -z-10'>
+
+                </div>
+
+                <div className='container mx-auto px-4'>
+                    <div className='text-center mb-20'>
+                        <motion.h2 className='text-3xl md:text-4xl font-bold font-spaceGrotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-cyan-600'
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+
+                        >
+                            Built for Teams That Ship Fast
+                        </motion.h2>
+                        <motion.p className='text-gray-600 max-w-2xl font-inter mx-auto'
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                            viewport={{ once: true }}
+                        >
+                            Real metrics from teams using our platform
+                        </motion.p>
+                    </div>
+
+
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-24' ref={sectionRef}>
+                        {
+                            [
+                                { id: 'time', value: 70, suffix: '%', label: 'Faster Drafting', desc: 'Reduce writing time with AI + real-time collab' },
+                                { id: 'conflicts', value: 5, suffix: 'x', label: 'Fewer Conflicts', desc: 'No more version chaos or lost edits' },
+                                { id: 'speed', value: 12, suffix: 's', label: 'AI Draft Speed', desc: 'First draft generated in seconds' }
+                            ].map((stat, i) => (
+                                <motion.div key={stat.id} className='card bg-white/50 backdrop-blur-sm border border-white/30 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300'
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ delay: i * 0.1, duration: 0.5 }}
+                                    whileHover={{ y: -10 }}
+                                >
+                                    <div className='flex justify-center mb-4'>
+                                        <div className='w-16 h-16 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 items-center justify-center'>
+                                            <span className='text-2xl font-bold text-white'>
+                                                {stat.suffix === '%' ? '⏱️' : stat.suffix === 'x' ? '🤝' : '🤖'}
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <div className='font-spaceGrotesk'>
+                                        <span
+                                            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-cyan-600"
+                                            ref={(el) => { if (el) statsRefs.current[stat.id] = el; }}
+                                        >
+                                            0{stat.suffix}
+                                        </span>
+                                    </div>
+                                    <h3 className="font-bold text-xl my-2 font-spaceGrotesk">{stat.label}</h3>
+                                    <p className="text-gray-600 text-sm font-inter">{stat.desc}</p>
+                                </motion.div>
+                            ))}
+                    </div>
+
+                    <motion.div
+                        className="max-w-4xl mx-auto"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4, duration: 0.6 }}
+                    >
+                        <div className="bg-white/50 backdrop-blur-sm border border-white/30 rounded-2xl p-6">
+                            <h3 className="text-xl font-bold font-spaceGrotesk text-center mb-6">
+                                Collaboration: Before vs After
+                            </h3>
+                            <div className="flex flex-col md:flex-row gap-6">
+                                <div className="flex-1">
+                                    <h4 className="font-bold text-red-500 mb-2 flex items-center">
+                                        <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+                                        Before
+                                    </h4>
+                                    <div className="bg-red-50/30 border border-red-200 rounded-lg p-4 text-sm">
+                                        <div className="font-bold mb-1">final_draft_v3_REALLYFINAL.docx</div>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>12 versions of the same doc</li>
+                                            <li>Lost comments in email chains</li>
+                                            <li>4 hours spent merging edits</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className="flex-1">
+                                    <h4 className="font-bold text-green-500 mb-2 flex items-center">
+                                        <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                        After
+                                    </h4>
+                                    <div className="bg-green-50/30 border border-green-200 rounded-lg p-4 text-sm">
+                                        <div className="font-bold mb-1">Real-time collaboration</div>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Single source of truth</li>
+                                            <li>Live cursor visibility</li>
+                                            <li>AI drafts in 12 seconds</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+
+
+
+                </div>
+
             </div>
 
 
