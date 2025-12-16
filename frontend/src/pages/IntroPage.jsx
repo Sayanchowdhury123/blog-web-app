@@ -8,6 +8,7 @@ import blogAnimation from "../assets/blog-collab.json"
 import btAnimation from "../assets/bt.json";
 import aiAnimation from "../assets/ai.json";
 import AIBrain3D from '@/components/Aibrain3d';
+
 // Register GSAP plugins ONCE (outside component)
 gsap.registerPlugin(ScrollTrigger);
 
@@ -154,7 +155,7 @@ export default function Intropage() {
 
         // Cleanup
         return () => {
-           
+
             blob1Tween.kill();
             blob2Tween.kill();
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -163,86 +164,86 @@ export default function Intropage() {
 
 
 
-    
-useLayoutEffect(() => {
-  if (!sectionRef.current) return;
 
-  // Wait for next tick to ensure DOM is ready
-  const timer = setTimeout(() => {
-    // Verify all refs are attached
-    const allReady = 
-      statsRefs.current.time && 
-      statsRefs.current.conflicts && 
-      statsRefs.current.speed;
+    useLayoutEffect(() => {
+        if (!sectionRef.current) return;
 
-    if (!allReady) {
-      console.warn("Stats refs not ready");
-      return;
-    }
+        // Wait for next tick to ensure DOM is ready
+        const timer = setTimeout(() => {
+            // Verify all refs are attached
+            const allReady =
+                statsRefs.current.time &&
+                statsRefs.current.conflicts &&
+                statsRefs.current.speed;
 
-       const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Reset to 0 before animating
-          statsRefs.current.time.textContent = '0%';
-          statsRefs.current.conflicts.textContent = '0x';
-          statsRefs.current.speed.textContent = '0s';
-
-          // Animate Time (70%)
-          gsap.to({}, {
-            duration: 2,
-            ease: "power2.out",
-            onUpdate: function() {
-              const value = Math.round(this.progress() * 70);
-              statsRefs.current.time.textContent = `${value}%`;
-            },
-            onComplete: () => {
-              statsRefs.current.time.textContent = '70%';
+            if (!allReady) {
+                console.warn("Stats refs not ready");
+                return;
             }
-          });
 
-           gsap.to({}, {
-            duration: 1.8,
-            delay: 0.2,
-            ease: "power2.out",
-            onUpdate: function() {
-              const value = Math.round(this.progress() * 5);
-              statsRefs.current.conflicts.textContent = `${value}x`;
-            },
-            onComplete: () => {
-              statsRefs.current.conflicts.textContent = '5x';
-            }
-          });
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Reset to 0 before animating
+                        statsRefs.current.time.textContent = '0%';
+                        statsRefs.current.conflicts.textContent = '0x';
+                        statsRefs.current.speed.textContent = '0s';
 
-          // Animate Speed (12s)
-          gsap.to({}, {
-            duration: 1.5,
-            delay: 0.4,
-            ease: "power2.out",
-            onUpdate: function() {
-              const value = Math.round(this.progress() * 12);
-              statsRefs.current.speed.textContent = `${value}s`;
-            },
-            onComplete: () => {
-              statsRefs.current.speed.textContent = '12s';
-            }
-          });
+                        // Animate Time (70%)
+                        gsap.to({}, {
+                            duration: 2,
+                            ease: "power2.out",
+                            onUpdate: function () {
+                                const value = Math.round(this.progress() * 70);
+                                statsRefs.current.time.textContent = `${value}%`;
+                            },
+                            onComplete: () => {
+                                statsRefs.current.time.textContent = '70%';
+                            }
+                        });
 
-           observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
+                        gsap.to({}, {
+                            duration: 1.8,
+                            delay: 0.2,
+                            ease: "power2.out",
+                            onUpdate: function () {
+                                const value = Math.round(this.progress() * 5);
+                                statsRefs.current.conflicts.textContent = `${value}x`;
+                            },
+                            onComplete: () => {
+                                statsRefs.current.conflicts.textContent = '5x';
+                            }
+                        });
 
-    observer.observe(sectionRef.current);
+                        // Animate Speed (12s)
+                        gsap.to({}, {
+                            duration: 1.5,
+                            delay: 0.4,
+                            ease: "power2.out",
+                            onUpdate: function () {
+                                const value = Math.round(this.progress() * 12);
+                                statsRefs.current.speed.textContent = `${value}s`;
+                            },
+                            onComplete: () => {
+                                statsRefs.current.speed.textContent = '12s';
+                            }
+                        });
 
-    // Cleanup
-    return () => {
-      observer.disconnect();
-    };
-  }, 100); // Small delay to ensure DOM is ready
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
 
-  return () => clearTimeout(timer);
-}, []);
+            observer.observe(sectionRef.current);
+
+            // Cleanup
+            return () => {
+                observer.disconnect();
+            };
+        }, 100); // Small delay to ensure DOM is ready
+
+        return () => clearTimeout(timer);
+    }, []);
 
 
 
@@ -687,6 +688,11 @@ useLayoutEffect(() => {
                 </div>
 
             </div>
+
+
+
+
+
 
 
 

@@ -3,7 +3,7 @@ const connectdb = require("./config/db");
 const http = require("http");
 const { Server } = require("socket.io");
 const { addUser, removeUser } = require("./socketStrore");
-const server = http.createServer(app);
+
 const {WebSocketServer} = require("ws")
 const {setupWSConnection} = require("../backend/node_modules/y-websocket/bin/utils")
 
@@ -19,11 +19,12 @@ yjsWss.on('connection', (conn, req) => {
 });
 
 
-connectdb()
 
-
-
-const io = new Server(server, {
+const startsever = async () => {
+  try {
+    await connectdb()
+    const server = http.createServer(app);
+    const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173"],
     methods: ["GET", "POST"],
@@ -72,3 +73,12 @@ server.listen(PORT, () => {
 yjsServer.listen(PORT_YJS, () => {
   console.log(`✅ Yjs WebSocket running on ws://localhost:${PORT_YJS}`);
 });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+startsever()
+
+
+
