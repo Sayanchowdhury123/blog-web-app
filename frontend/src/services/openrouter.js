@@ -11,7 +11,7 @@ export const generatebog = async (userprompt) => {
   try {
     const openrouter = await getOpenRouter();
     const stream = await openrouter.chat.send({
-      model: "x-ai/grok-4.1-fast:free",
+      model: "mistralai/devstral-2512:free",
       messages: [
         {
           role: "system",
@@ -24,9 +24,7 @@ export const generatebog = async (userprompt) => {
         },
       ],
       stream: true,
-      streamOptions: {
-        includeUsage: true,
-      },
+    
     });
 
     let response = "";

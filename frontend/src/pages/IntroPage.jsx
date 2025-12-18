@@ -10,6 +10,7 @@ import aiAnimation from "../assets/ai.json";
 import AIBrain3D from '@/components/Aibrain3d';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX } from "react-icons/fi";
+import AIdemo from '@/components/Aidemo';
 
 
 
@@ -22,6 +23,7 @@ export default function Intropage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate()
 
+    const bloganimation ="../../public/assets/blog-collab.json";
 
     useEffect(() => {
         const handlescoll = () => {
@@ -279,7 +281,7 @@ export default function Intropage() {
 
 
     return (
-        <div style={{scrollBehavior:"smooth",scrollbarWidth:"none"}}>
+        <div style={{ scrollBehavior: "smooth", scrollbarWidth: "none" }}>
 
             <nav className={`fixed w-full z-50 transition-all hover:shadow-sm duration-500 ${scorlled ? "bg-white/80 backdrop-blur-sm border-b border-white/30 py-4" : "bg-transparent py-4"
                 }`}>
@@ -811,6 +813,10 @@ export default function Intropage() {
                     </div>
 
                 </div>
+
+
+
+                <AIdemo />
 
 
 
