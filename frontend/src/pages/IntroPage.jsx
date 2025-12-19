@@ -11,6 +11,7 @@ import AIBrain3D from '@/components/Aibrain3d';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX } from "react-icons/fi";
 import AIdemo from '@/components/Aidemo';
+import RealTimeCollabSection from '@/components/Realtimrcollab';
 
 
 
@@ -817,6 +818,8 @@ export default function Intropage() {
 
 
                 <AIdemo />
+
+                <RealTimeCollabSection/>
 
 
 

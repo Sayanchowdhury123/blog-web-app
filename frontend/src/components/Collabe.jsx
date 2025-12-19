@@ -19,7 +19,8 @@ import { UnderlineIcon } from "./tiptap-icons/underline-icon";
 import { RiListOrdered2 } from "react-icons/ri";
 import TextAlign from "@tiptap/extension-text-align";
 import { AlignLeftIcon } from "./tiptap-icons/align-left-icon";
-
+import { AlignCenterIcon } from "./tiptap-icons/align-center-icon";
+import { AlignRightIcon } from "./tiptap-icons/align-right-icon";
 import Highlight from "@tiptap/extension-highlight";
 import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
