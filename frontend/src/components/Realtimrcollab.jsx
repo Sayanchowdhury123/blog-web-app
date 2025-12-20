@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function RealTimeCollabSection() {
   const [activeUser, setActiveUser] = useState(0);
+  const navigate = useNavigate()
   const videourl1 = "/assets/a.mp4"
   const videourl2 = "/assets/r.mp4"
   const users = [
@@ -135,7 +137,7 @@ export default function RealTimeCollabSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <button className="btn btn-primary glass text-white py-3 px-8 rounded-xl font-spaceGrotesk font-bold">
+          <button className="btn btn-primary glass text-white py-3 px-8 rounded-xl font-spaceGrotesk font-bold" onClick={() => navigate(`/signup`)}>
             Start Collaborating →
           </button>
         </motion.div>
