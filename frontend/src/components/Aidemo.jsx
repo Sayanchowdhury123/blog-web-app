@@ -7,7 +7,7 @@ export default function Aidemo() {
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef = useRef(null);
     const containerRef = useRef(null);
-    const videoUrl ='/assets/aidemo.mp4';
+    const videoUrl = '/assets/aidemo.mp4';
     const navigate = useNavigate();
 
 
@@ -21,15 +21,15 @@ export default function Aidemo() {
                 if (!video) return;
 
                 if (entry.isIntersecting) {
-            
+
                     video.play().catch(e => console.log("Autoplay prevented:", e));
                 } else {
-                    
+
                     video.pause();
                 }
             });
         }, {
-            threshold: 0.1 
+            threshold: 0.1
         });
 
         observer.observe(container);
@@ -52,7 +52,7 @@ export default function Aidemo() {
             ref={containerRef}
             className="py-24 relative overflow-hidden"
         >
-     
+
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-cyan-50/30 -z-10"></div>
 
             <div className="container mx-auto px-4">
@@ -78,9 +78,9 @@ export default function Aidemo() {
                     </motion.p>
                 </div>
 
-                
+
                 <div className="max-w-4xl mx-auto bg-white/60 backdrop-blur-sm border border-white/30 rounded-3xl p-6 md:p-8 shadow-xl">
-            
+
                     <div className="mb-8">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
@@ -104,7 +104,7 @@ export default function Aidemo() {
                     </div>
 
                     <div className="glass relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-900">
-                   
+
                         <div className="flex items-center px-4 py-2 bg-gray-800 text-gray-300 text-sm">
                             <div className="flex space-x-1.5">
                                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -124,8 +124,9 @@ export default function Aidemo() {
                                 playsInline
                                 onPlay={handlePlay}
                                 onPause={handlePause}
-                             
-                                preload="metadata"
+                                loading="lazy"
+                                preload="none"
+
                             />
 
                             {/* Fake terminal text overlay */}
@@ -137,7 +138,7 @@ export default function Aidemo() {
                         </div>
                     </div>
 
-                
+
                     <motion.div
                         className="mt-8 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100"
                         initial={{ opacity: 0, y: 20 }}
@@ -161,13 +162,13 @@ export default function Aidemo() {
                         </ul>
                     </motion.div>
 
-            
+
                     <motion.button
                         className="w-full mt-8 btn btn-primary glass text-white py-4 rounded-xl font-spaceGrotesk font-bold text-lg"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => {
-                          
+
                             navigate(`/signup`)
                         }}
                     >
@@ -175,7 +176,7 @@ export default function Aidemo() {
                     </motion.button>
                 </div>
 
-     
+
                 <motion.div
                     className="mt-12 text-center"
                     initial={{ opacity: 0 }}

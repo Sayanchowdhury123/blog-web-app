@@ -12,10 +12,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX } from "react-icons/fi";
 import AIdemo from '@/components/Aidemo';
 import RealTimeCollabSection from '@/components/Realtimrcollab';
+import Footer from '@/components/Footer';
 
 
 
-// Register GSAP plugins ONCE (outside component)
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Intropage() {
@@ -24,7 +25,7 @@ export default function Intropage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate()
 
-    const bloganimation ="../../public/assets/blog-collab.json";
+    const bloganimation = "../../public/assets/blog-collab.json";
 
     useEffect(() => {
         const handlescoll = () => {
@@ -384,7 +385,7 @@ export default function Intropage() {
             </div>
 
 
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 font-sans overflow-x-hidden main-bg">
+            <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 font-sans overflow-x-hidden main-bg" style={{ scrollbarWidth: "none" }}>
 
 
 
@@ -677,11 +678,13 @@ export default function Intropage() {
                                     ].map((item, i) => (
                                         <motion.div
                                             key={i}
-                                            className="flex items-start gap-4 p-4 bg-white/50 backdrop-blur-sm border border-white/30 rounded-xl"
+                                            className="flex items-start gap-4 p-4 bg-white/50 backdrop-blur-sm border border-white/30 rounded-xl hover:shadow-md"
                                             initial={{ opacity: 0, x: 20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
-                                            transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+                                            transition={{ delay: 0.1 + i * 0.1, duration: 0.5, type: "spring", stiffness: 400, damping: 10 }}
+                                            whileHover={{x:10}}
+                                        
                                         >
                                             <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-sm">
                                                 {item.step}
@@ -712,6 +715,7 @@ export default function Intropage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6 }}
                                 viewport={{ once: true }}
+
 
                             >
                                 Built for Teams That Ship Fast
@@ -819,11 +823,11 @@ export default function Intropage() {
 
                 <AIdemo />
 
-                <RealTimeCollabSection/>
+                <RealTimeCollabSection />
 
 
 
-
+                <Footer />
 
 
 

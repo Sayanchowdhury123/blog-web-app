@@ -25,10 +25,10 @@ export default function RealTimeCollabSection() {
     <section className="py-24 relative overflow-hidden">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-cyan-50/30 -z-10"></div>
-      
+
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-4xl font-bold font-spaceGrotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +37,7 @@ export default function RealTimeCollabSection() {
           >
             Real-Time Collaboration, Reimagined
           </motion.h2>
-          <motion.p 
+          <motion.p
             className="text-gray-600 max-w-2xl mx-auto text-lg"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -60,7 +60,7 @@ export default function RealTimeCollabSection() {
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
-                <div 
+                <div
                   className={`w-8 h-8 rounded-full ${users[0].color} flex items-center justify-center text-white text-xs`}
                 >
                   {users[0].avatar}
@@ -69,9 +69,9 @@ export default function RealTimeCollabSection() {
               </div>
               <div className="text-xs text-gray-500">Editing...</div>
             </div>
-            
+
             <div className="border border-gray-200 p-4 min-h-[300px]">
-              <video src={videourl1} autoPlay muted loop>
+              <video src={videourl1} autoPlay muted loop loading="lazy" preload="none">
 
 
               </video>
@@ -88,7 +88,7 @@ export default function RealTimeCollabSection() {
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
-                <div 
+                <div
                   className={`w-8 h-8 rounded-full ${users[1].color} flex items-center justify-center text-white text-xs`}
                 >
                   {users[1].avatar}
@@ -97,9 +97,10 @@ export default function RealTimeCollabSection() {
               </div>
               <div className="text-xs text-gray-500">Commenting...</div>
             </div>
-            
+
             <div className="border border-gray-200 p-4 min-h-[300px]">
-              <video src={videourl2} loop autoPlay muted></video>
+              <video src={videourl2} loop autoPlay muted loading="lazy"
+                preload="none"></video>
             </div>
           </motion.div>
         </div>
