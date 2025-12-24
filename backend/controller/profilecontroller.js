@@ -63,8 +63,6 @@ exports.updateprofile = async (req, res) => {
 
     await user.save();
 
-
-
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -196,6 +194,8 @@ exports.getrecommdations = async (req, res) => {
 
     let tagcount = {};
     user.readinghistory.forEach((r) => {
+      if (!r.blogid || !r.blogid.tags) return;
+
       r.blogid.tags.forEach((t) => {
         tagcount[t] = (tagcount[t] || 0) + 1;
       });
@@ -205,10 +205,11 @@ exports.getrecommdations = async (req, res) => {
       .sort((a, b) => tagcount[b] - tagcount[a])
       .slice(0, 3);
 
-    const alreadyReadIds = user.readinghistory.map(
-      (r) => new mongoose.Types.ObjectId(r.blogid._id)
-    );
+      const alreadyReadIds = user.readinghistory
+      .filter((r) => r.blogid)
+      .map((r) => r.blogid._id);
 
+      
     const recommended = await Blogs.find({
       tags: { $in: topTags },
       _id: { $nin: alreadyReadIds },
@@ -267,7 +268,6 @@ exports.geteditorpicks = async (req, res) => {
 };
 
 exports.editemail = async (req, res) => {
-
   const { pass, newemail } = req.body;
   try {
     const user = await User.findById(req.user.id);
@@ -279,16 +279,14 @@ exports.editemail = async (req, res) => {
     if (!ismatch) {
       return res.status(400).json({ message: "invalid crediatials" });
     }
-         user.email = newemail;
-          await user.save()
-          res.status(200).json("email updated")
-    
+    user.email = newemail;
+    await user.save();
+    res.status(200).json("email updated");
   } catch (error) {
-        console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
 };
-
 
 exports.editpassword = async (req, res) => {
   const { oldpass, newpass } = req.body;
@@ -299,19 +297,19 @@ exports.editpassword = async (req, res) => {
     }
 
     const ismatch = await bcrypts.compare(oldpass, user.password);
-    
+
     if (!ismatch) {
       return res.status(400).json({ message: "invalid crediatials" });
     }
-   
-     const salt = await bcrypts.genSalt(10);
+
+    const salt = await bcrypts.genSalt(10);
     user.password = await bcrypts.hash(newpass, salt);
-     
-    await user.save()
-   
-    res.status(200).json("password updated")
+
+    await user.save();
+
+    res.status(200).json("password updated");
   } catch (error) {
-        console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -328,22 +326,17 @@ exports.delp = async (req, res) => {
     if (!ismatch) {
       return res.status(400).json({ message: "invalid crediatials" });
     }
-     if (user.pid) {
-          await cloudinary.uploader.destroy(user.pid, {
-            resource_type: "image",
-          });
-        }
-    await Blogs.deleteMany({creator: req.user.id})
-   await User.findByIdAndDelete(req.user.id)
-   
-     
-    res.status(200).json("account deleted")
+    if (user.pid) {
+      await cloudinary.uploader.destroy(user.pid, {
+        resource_type: "image",
+      });
+    }
+    await Blogs.deleteMany({ creator: req.user.id });
+    await User.findByIdAndDelete(req.user.id);
+
+    res.status(200).json("account deleted");
   } catch (error) {
-        console.log(error);
+    console.log(error);
     res.status(500).json({ msg: "internal server error" });
   }
 };
-
-
-
-

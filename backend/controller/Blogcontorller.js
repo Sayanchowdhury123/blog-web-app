@@ -61,7 +61,7 @@ exports.createblogs = async (req, res) => {
         folder: "coverimages",
       });
     } catch (error) {
-      console.log(error);
+      
       return res.status(500).json({ msg: "image upload error" });
     }
 
@@ -76,7 +76,7 @@ exports.createblogs = async (req, res) => {
 
     res.status(201).json(newblog);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -88,7 +88,7 @@ exports.fetchblogs = async (req, res) => {
     );
     res.status(200).json(blogs);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -119,7 +119,7 @@ exports.editblog = async (req, res) => {
           folder: "coverimages",
         });
       } catch (error) {
-        console.log(error);
+        
         return res.status(500).json({ msg: "image upload error" });
       }
     }
@@ -133,7 +133,7 @@ exports.editblog = async (req, res) => {
     await b.populate("creator comments.user");
     res.status(200).json("Blog updated");
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -153,13 +153,14 @@ exports.deleteblog = async (req, res) => {
         });
       }
     } catch (error) {
-      console.log("image deletion error");
+      return res.status(500).json({ msg: "image deletion error" });
+      
     }
 
     await Blogs.findOneAndDelete({ _id: blogid });
     res.status(200).json(blogid);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -231,7 +232,7 @@ exports.editcontent = async (req, res) => {
 
     res.json(b.blogtext);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -247,7 +248,7 @@ exports.fetchblog = async (req, res) => {
 
     res.json(b);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -265,7 +266,7 @@ exports.fetchdemoblog = async (req, res) => {
       return res.json(b);
     }
   } catch (error) {
-    console.log(error);
+   
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -301,7 +302,7 @@ exports.addview = async (req, res) => {
 
     res.status(200).json("view added");
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -317,7 +318,7 @@ exports.selectusers = async (req, res) => {
       res.status(200).json(users);
     }
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -334,7 +335,7 @@ exports.startcollab = async (req, res) => {
     await blog.save();
     res.status(200).json(blog.collabrators);
   } catch (error) {
-    console.log(error);
+
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -355,8 +356,10 @@ exports.endcollab = async (req, res) => {
       try {
         finalHtml = generateHTML(blog.prosemirrorJson, extensions);
       } catch (err) {
-        console.error("HTML generation failed:", err);
+
+        
         finalHtml = blog.blogtext || "<p>Content unavailable.</p>";
+         return res.status(500).json("HTML generation failed:") 
       }
     } else if (blog.blogtext) {
       // Fallback to existing blogtext
@@ -372,7 +375,7 @@ exports.endcollab = async (req, res) => {
     await blog.save();
     res.status(200).json(blog.collabrators);
   } catch (error) {
-    console.log(error);
+
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -401,7 +404,7 @@ exports.saveyjsupadte = async (req, res) => {
 
     res.json({ success: true });
   } catch (err) {
-    console.error("Save Yjs error:", err);
+   
     res.status(500).json({ error: "Save failed" });
   }
 };
