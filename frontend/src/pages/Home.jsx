@@ -32,11 +32,6 @@ export default function Home() {
    
   
 
-
-
-
-
-
     useEffect(() => {
         const handlesize = () => setwidth(window.innerWidth)
         window.addEventListener("resize", handlesize)
@@ -83,9 +78,6 @@ export default function Home() {
         <div className="  relative bg-base-100 ">
 
             <Sidebar />
-
-
-
 
             <div className="space-y-6">
 

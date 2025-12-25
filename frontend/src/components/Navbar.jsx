@@ -24,7 +24,7 @@ export default function Navbar() {
 
     useEffect(() => {
         fetchuser()
-    }, [])
+    }, [user])
 
 
     useEffect(() => {
@@ -32,6 +32,10 @@ export default function Navbar() {
             socket.emit("addUser", user.id);
         }
     }, [user]);
+
+
+    console.log(user)
+    console.log(userinfo)
     
     return (
         <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >
@@ -55,7 +59,7 @@ export default function Navbar() {
                 </div>
 
 
-                <img src={userinfo.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
+                <img src={userinfo?.profilepic} alt="img" className="w-8 h-8 bg-black rounded-full" onClick={(e) => {
                     e.stopPropagation()
                     setshownav()
                 }} />

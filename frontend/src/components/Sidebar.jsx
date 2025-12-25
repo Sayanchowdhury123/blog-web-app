@@ -25,7 +25,7 @@ export default function Sidebar() {
     <motion.div initial={{opacity:0 }} animate={{ opacity:  shownav ? 1 : 0 }} transition={{ duration: 0.3, type:"spring", stiffness:100 }} className={`bg-base-200 p-4  ${shownav === true ? "": "hidden"}  w-[300px] h-screen z-50 fixed right-0 `}>
       <div className=" flex justify-between   mb-6">
         <div className="flex  items-center gap-2">
-          <img src={userinfo.profilepic} alt="profile picture" className="w-8 h-8  rounded-full" />
+          <img src={userinfo?.profilepic} alt="profile picture" className="w-8 h-8  rounded-full" />
           <div>
             <p className="font-bold">{user.name}</p>
             <p className="font-semibold text-sm">{user.email}</p>

@@ -11,15 +11,18 @@ const useProfilestore = create((set, get) => ({
   savedblogs: [],
   ui: {},
   fetchuser: async () => {
-    const res = await api.get(`/profile/${localuser.id}`, {
+    const {user} = useAuthstore.getState()
+    if(!user) return;
+    const res = await api.get(`/profile/${user.id}`, {
       headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
 
     set({ userinfo: res.data });
     set({ ui: res.data });
   },
+  resetProfile: () => set({ userinfo: null }),
   showedit: false,
   setshowedit: () => {
     set((state) => {
@@ -224,6 +227,7 @@ const useProfilestore = create((set, get) => ({
     
    
   },
+   
 }));
 
 export default useProfilestore;

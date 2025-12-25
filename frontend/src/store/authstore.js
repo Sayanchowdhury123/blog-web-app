@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import api from "../axios";
+import useProfilestore from "./profilestore";
 
 const ls = localStorage.getItem("user");
 const localuser = JSON.parse(ls);
@@ -16,6 +17,7 @@ const useAuthstore = create((set) => ({
     localStorage.removeItem("user");
 
     set({ user: null });
+    useProfilestore.getState().resetProfile();
   },
   shownav: false,
   blogid: "",
