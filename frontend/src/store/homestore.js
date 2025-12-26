@@ -4,7 +4,7 @@ import useAuthstore from "./authstore";
 
 const ls = localStorage.getItem("user");
 const localuser = JSON.parse(ls);
-// console.log(localuser)
+
 const useHomestore = create((set, get) => ({
   blogs: [],
   s: 0,

@@ -19,7 +19,7 @@ exports.getprofile = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -54,7 +54,7 @@ exports.updateprofile = async (req, res) => {
           folder: "profilepics",
         });
       } catch (error) {
-        console.log(error);
+        
         return res.status(500).json({ msg: "image upload error" });
       }
     }
@@ -65,7 +65,7 @@ exports.updateprofile = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -86,7 +86,7 @@ exports.delprofile = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -119,7 +119,7 @@ exports.saveblog = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -144,7 +144,7 @@ exports.getsavedblogs = async (req, res) => {
 
     res.status(200).json(user.savedblogs);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -179,7 +179,7 @@ exports.trackhistory = async (req, res) => {
     await user.save();
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -219,7 +219,7 @@ exports.getrecommdations = async (req, res) => {
 
     res.status(200).json(recommended);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -246,7 +246,7 @@ exports.editorpicks = async (req, res) => {
 
     res.status(200).json(existingep);
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -262,7 +262,7 @@ exports.geteditorpicks = async (req, res) => {
     }
     res.status(200).json(eps);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -283,7 +283,7 @@ exports.editemail = async (req, res) => {
     await user.save();
     res.status(200).json("email updated");
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -309,7 +309,7 @@ exports.editpassword = async (req, res) => {
 
     res.status(200).json("password updated");
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -336,7 +336,7 @@ exports.delp = async (req, res) => {
 
     res.status(200).json("account deleted");
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ msg: "internal server error" });
   }
 };

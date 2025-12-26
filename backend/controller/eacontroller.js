@@ -23,8 +23,8 @@ exports.blogreviewed = async (req, res) => {
 
     res.status(200).json(analytics);
   } catch (error) {
-    res.status(500).json({ msg: "internal server error" });
-    console.log(error);
+    res.status(500).json({ msg: "blog review error" });
+
   }
 };
 
@@ -58,8 +58,8 @@ exports.blogedited = async (req, res) => {
     }
     res.status(200).json(analytics);
   } catch (error) {
-    res.status(500).json({ msg: "internal server error" });
-    console.log(error);
+    res.status(500).json({ msg: "blog edited error" });
+ 
   }
 };
 
@@ -90,8 +90,8 @@ exports.editexit = async (req, res) => {
 
     res.status(200).json(findblog);
   } catch (error) {
-    res.status(500).json({ msg: "internal server error" });
-    console.log(error);
+    res.status(500).json({ msg: "edit exit api error" });
+    
   }
 };
 
@@ -110,7 +110,8 @@ exports.geteditedbloginfo = async (req, res) => {
 
     res.status(200).json(alldata);
   } catch (error) {
-    console.log(error);
+   
+    res.status(500).json("internal server error");
   }
 };
 
@@ -149,7 +150,7 @@ exports.getApprovalRate = async (req, res) => {
       disapprovalrate: disapprovalRate,
     });
   } catch (error) {
-    console.error("Error getting approval rate:", error);
+
     res.status(500).json({ msg: "Internal server error" });
   }
 };

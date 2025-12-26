@@ -5,7 +5,8 @@ const { Server } = require("socket.io");
 const { addUser, removeUser } = require("./socketStrore");
 
 const {WebSocketServer} = require("ws")
-const {setupWSConnection} = require("../backend/node_modules/y-websocket/bin/utils")
+const {setupWSConnection} = require("../backend/node_modules/y-websocket/bin/utils");
+const logger = require("./utils/logger");
 
 
 
@@ -14,7 +15,7 @@ const yjsServer = http.createServer();
 const yjsWss = new WebSocketServer({ server: yjsServer });
 
 yjsWss.on('connection', (conn, req) => {
-  console.log('✅ Yjs WebSocket connected');
+  logger.info(' Yjs WebSocket connected');
   setupWSConnection(conn, req);
 });
 
@@ -34,7 +35,8 @@ const startsever = async () => {
 const onlineUsers = new Map();
 
 io.on("connection", (socket) => {
-  console.log("🟢 User connected:", socket.id);
+
+  logger.info("Socket connected", { socketId: socket.id });
 
   socket.on("addUser", (userId) => {
     onlineUsers.set(userId, socket.id);
@@ -67,15 +69,15 @@ const PORT = process.env.PORT || 5000;
 const PORT_YJS = 5001; 
 
 server.listen(PORT, () => {
-  console.log(`server running ${PORT}`);
+  logger.info(`server running ${PORT}`);
 });
 
 yjsServer.listen(PORT_YJS, () => {
-  console.log(`✅ Yjs WebSocket running on ws://localhost:${PORT_YJS}`);
+  logger.info(` Yjs WebSocket running on ws://localhost:${PORT_YJS}`);
 });
 
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 startsever()

@@ -24,8 +24,8 @@ exports.signup = async (req, res) => {
 
     res.status(201).json({ message: "user signed up successfully" });
   } catch (error) {
-    res.status(500).json({ message: "registration error", error });
-    console.log(error);
+    res.status(500).json({ message: "registration error" });
+    
   }
 };
 
@@ -53,7 +53,7 @@ exports.login = async (req,res) => {
         })
 
     } catch (error) {
-          res.status(500).json({message: "server error"})
-        console.log(error);
+          res.status(500).json({message: "login error"})
+        
     }
 }

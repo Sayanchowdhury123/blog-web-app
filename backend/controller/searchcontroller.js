@@ -30,7 +30,7 @@ exports.searchblog = async (req, res) => {
 
     res.status(200).json(blogs);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -40,7 +40,7 @@ exports.allblogs = async (req, res) => {
     const blogs = await Blogs.find().populate("creator comments.user");
     res.json(blogs);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -80,7 +80,7 @@ exports.sorting = async (req, res) => {
       return res.status(200).json({ msg: "invalid sorting option" });
     }
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -112,7 +112,7 @@ exports.addsh = async (req, res) => {
 
     res.status(200).json(user.sh);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -128,7 +128,7 @@ exports.getsh = async (req, res) => {
 
     res.status(200).json(searchhis);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -158,7 +158,7 @@ exports.filterblog = async (req, res) => {
     res.status(200).json(blogs)
     
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };

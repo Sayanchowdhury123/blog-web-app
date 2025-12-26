@@ -13,7 +13,7 @@ exports.fetchblogall = async (req, res) => {
     }
     res.status(200).json(blogs);
   } catch (error) {
-    console.log(error);
+ 
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -31,7 +31,7 @@ exports.changeapproval = async (req, res) => {
 
     res.status(200).json(b);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -53,7 +53,7 @@ exports.epblogs = async (req, res) => {
 
     res.status(200).json(b);
   } catch (error) {
-    console.log(error);
+ 
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -81,7 +81,7 @@ exports.fetchepblogs = async (req, res) => {
 
     res.status(200).json(editorpicks)
   } catch (error) {
-     console.log(error);
+     
     res.status(500).json({ msg: "internal server error" });
   }
 };

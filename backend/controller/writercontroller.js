@@ -16,7 +16,8 @@ exports.onlywrittenbywriter = async (req, res) => {
       res.status(200).json(blogs);
     }
   } catch (error) {
-    console.log(error);
+    
+      res.status(500).json({ msg: "internal server error" });
   }
 };
 
@@ -42,7 +43,7 @@ exports.popularblogs = async (req, res) => {
 
     res.status(200).json(trending);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -70,7 +71,7 @@ exports.trackview = async (req, res) => {
 
     res.status(200).json(newa);
   } catch (error) {
-    console.log(error);
+      res.status(500).json({ msg: "internal server error" });
   }
 };
 
@@ -83,7 +84,7 @@ exports.traceentry = async (req, res) => {
 
     res.json(entry);
   } catch (error) {
-    console.log(error);
+      res.status(500).json({ msg: "internal server error" });
   }
 };
 
@@ -101,7 +102,7 @@ exports.traceexit = async (req, res) => {
 
     res.json({ success: true });
   } catch (error) {
-    console.log(error);
+      res.status(500).json({ msg: "internal server error" });
   }
 };
 
@@ -119,7 +120,7 @@ exports.getwriterinfo = async (req, res) => {
 
     res.status(200).json(filteredanalytics)
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };

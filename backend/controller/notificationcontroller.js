@@ -25,7 +25,7 @@ exports.blogapprovednotify = async (req, res) => {
 
     res.status(200).json(newnotification);
   } catch (error) {
-    console.log(error);
+    (error);
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -50,7 +50,7 @@ exports.brn = async (req, res) => {
 
     res.status(200).json(newnotification);
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -64,7 +64,7 @@ exports.banr = async (req, res) => {
 
     res.status(200).json("notifications read");
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -87,7 +87,7 @@ exports.newfollower = async (req, res) => {
 
     res.status(200).json(newnotification);
   } catch (error) {
-    console.log(error);
+   
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -112,7 +112,7 @@ exports.liked = async (req, res) => {
  
     res.status(200).json(newnotification);
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -136,7 +136,7 @@ exports.commented = async (req, res) => {
 
     res.status(200).json(newnotification);
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -149,7 +149,7 @@ exports.getnotification = async (req, res) => {
 
     res.status(200).json(allnotifications);
   } catch (error) {
-    console.log(error);
+ 
     res.status(500).json({ msg: "internal server error" });
   }
 };

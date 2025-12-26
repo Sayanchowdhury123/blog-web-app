@@ -8,7 +8,7 @@ const Blog = require("../models/Blogs"); // Adjust path to your Blog model
     // Check if demo blog already exists
     const existingDemo = await Blog.findOne({ title: "Live Collaboration Demo" });
     if (existingDemo) {
-      console.log("✅ Demo blog already exists:", existingDemo._id);
+    
       process.exit(0);
     }
 
@@ -23,9 +23,7 @@ const Blog = require("../models/Blogs"); // Adjust path to your Blog model
       tags: ["demo", "collaboration"]
     });
     await demoBlog.save();
-    console.log("✅ Demo blog created successfully!");
-    console.log("📝 Demo Blog ID:", demoBlog._id.toString());
-    console.log("🔑 Add this to your .env file as DEMO_BLOG_ID");
+   
     
     process.exit(0);
   } catch (error) {

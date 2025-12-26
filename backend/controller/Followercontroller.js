@@ -30,7 +30,7 @@ exports.following = async (req,res) => {
         res.status(200).json({msg: alreadyfollowing ? "unfollowd" : "followed"})
 
     } catch (error) {
-          console.log(error);
+          
       res.status(500).json({ msg: "internal server error" });
     }
 }
@@ -54,7 +54,7 @@ exports.getuserinfo = async (req,res) => {
             userinfo: userinfo
         })
     } catch (error) {
-         console.log(error);
+       
       res.status(500).json({ msg: "internal server error" });
     }
 }
@@ -72,7 +72,7 @@ exports.getfollowerinfo = async (req,res) => {
 
         res.status(200).json(userinfo)
     } catch (error) {
-         console.log(error);
+        
       res.status(500).json({ msg: "internal server error" });
     }
 }
@@ -90,7 +90,7 @@ exports.getfollowinginfo = async (req,res) => {
 
         res.status(200).json(userinfo)
     } catch (error) {
-         console.log(error);
+         
       res.status(500).json({ msg: "internal server error" });
     }
 }

@@ -24,7 +24,7 @@ exports.getallblogs = async (req, res) => {
       h: s + l < blogs.length,
     });
   } catch (error) {
-    console.log(error);
+ 
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -47,7 +47,7 @@ exports.togglelikes = async (req, res) => {
 
     res.status(200).json(blog);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -72,7 +72,7 @@ exports.removelikes = async (req, res) => {
 
     res.status(200).json(blog);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -108,7 +108,7 @@ exports.addcomment = async (req, res) => {
 
     res.status(200).json(latestcom);
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -134,7 +134,7 @@ exports.rendercomments = async (req, res) => {
       hasmore: skip + limit < sortedcom.length,
     });
   } catch (error) {
-    console.log(error);
+   
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -156,7 +156,7 @@ exports.renderallcomments = async (req, res) => {
 
     res.status(200).json(sortedcom)
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -189,7 +189,7 @@ exports.editcomments = async (req, res) => {
 
     res.status(200).json("comment edited");
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -215,7 +215,7 @@ exports.delcomments = async (req, res) => {
 
     res.status(200).json("comment edited");
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -243,7 +243,7 @@ exports.trending = async (req, res) => {
 
     res.status(200).json(trending);
   } catch (error) {
-    console.log(error);
+   
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -271,7 +271,7 @@ exports.popularaauthors = async (req, res) => {
 
     res.status(200).json(trending);
   } catch (error) {
-    console.log(error);
+
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -301,7 +301,7 @@ exports.searching = async (req, res) => {
 
     res.status(200).json(filterblogs);
   } catch (error) {
-    console.log(error);
+ 
     res.status(500).json({ msg: "internal server error" });
   }
 };
@@ -340,7 +340,7 @@ exports.followingpage = async (req, res) => {
       });
     
   } catch (error) {
-    console.log(error);
+   
     res.status(500).json({ msg: "internal server error" });
   }
 };
