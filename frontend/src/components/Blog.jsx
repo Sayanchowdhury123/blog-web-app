@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Loadingscrenn from "./Loadingscreen";
 import Loading2 from "./Loadin2";
 import useProfilestore from "@/store/profilestore";
+import toast from "react-hot-toast";
 
 
 
@@ -27,7 +28,7 @@ export default function Blog({ blog }) {
 
 
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
@@ -55,7 +56,7 @@ export default function Blog({ blog }) {
 
 
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
@@ -65,7 +66,6 @@ export default function Blog({ blog }) {
 
 
 
-console.log(blog.blogtext);
 
   return (
     <div>

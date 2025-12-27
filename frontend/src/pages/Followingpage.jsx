@@ -17,6 +17,7 @@ import useFollowingstore from "@/store/followingstore"
 import Fcards from "@/components/Fcards"
 import { SlUserFollowing } from "react-icons/sl"
 import Navbar from "@/components/Navbar"
+import toast from "react-hot-toast"
 
 
 export default function Followingpage() {
@@ -38,7 +39,7 @@ export default function Followingpage() {
             await fetchuser()
         
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }

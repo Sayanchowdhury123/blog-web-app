@@ -34,8 +34,7 @@ export default function Navbar() {
     }, [user]);
 
 
-    console.log(user)
-    console.log(userinfo)
+   
     
     return (
         <div className="flex items-center justify-between sticky top-0  shadow p-4 bg-white z-20 " >

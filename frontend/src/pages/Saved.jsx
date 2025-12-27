@@ -5,6 +5,7 @@ import Sidebar from "@/components/Sidebar"
 import useAuthstore from "@/store/authstore"
 import useProfilestore from "@/store/profilestore"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 
 
@@ -20,7 +21,7 @@ export default function Saved(){
     try {
       await getsavedblogs()
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setloading(false)
     }
@@ -44,7 +45,7 @@ export default function Saved(){
         
         
         
-                <div>
+                <div className="">
                   <h1 className="text-3xl text-center font-semibold">Saved Blogs</h1>
                 </div>
         

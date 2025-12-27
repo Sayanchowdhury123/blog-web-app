@@ -25,7 +25,8 @@ export default function Updatep() {
             await editpassword(values.oldpass, values.newpass)
 
         } catch (error) {
-            console.log(error);
+           toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setSubmitting(false)
         }

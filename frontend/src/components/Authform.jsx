@@ -26,7 +26,7 @@ export default function Authform({ type }) {
     const handlesubmit = async (values, { setSubmitting, setErrors }) => {
         try {
             const res = await api.post(`auth/${type}`, values)
-            console.log(res.data);
+        
             login(res.data)
             if (islogin) {
                   toast('Logged in',

@@ -62,7 +62,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -91,7 +91,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -127,7 +127,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-            console.log(error);
+        
             toast('Status upation failed',
                 {
                     icon: '❌',
@@ -173,7 +173,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-            console.log(error);
+            
             toast('Action failed',
                 {
                     icon: '❌',

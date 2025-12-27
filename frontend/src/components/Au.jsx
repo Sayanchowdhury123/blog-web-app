@@ -4,8 +4,10 @@ import useBlogmstore from "@/store/Blogm";
 import useSearchstore from "@/store/searchstore";
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+
 export default function Au() {
     const { setfopen, allblog, filters, togglefilters, fetchfilteredblogs, setload, load } = useSearchstore()
     const [ua, setua] = useState([])
@@ -26,7 +28,7 @@ export default function Au() {
           
              
         } catch (error) {
-          console.log(error);
+           toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -40,7 +42,7 @@ export default function Au() {
             
              
         } catch (error) {
-          console.log(error);
+           toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 

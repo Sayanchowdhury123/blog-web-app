@@ -54,7 +54,7 @@ export default function Home() {
             await fetchep()
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }

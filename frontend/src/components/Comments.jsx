@@ -51,7 +51,7 @@ export default function Comments({ blogId, blogtitle, owner }) {
             }
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 

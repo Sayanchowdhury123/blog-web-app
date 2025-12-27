@@ -19,6 +19,7 @@ import Navbar from "@/components/Navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 import { MdContentPasteGo } from "react-icons/md";
+import ErrorButton from "@/components/Errorbutton";
 
 
 
@@ -45,7 +46,7 @@ export default function Blogmanage() {
       setblogs(res.data)
 
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setloading(false)
     }
@@ -67,7 +68,7 @@ export default function Blogmanage() {
           Authorization: `Bearer ${user.token}`,
         }
       })
-      console.log((await res).data);
+
       setblogs((prev) => prev.filter(b => b._id !== blogid))
       toast('Blog deleted',
         {
@@ -82,7 +83,7 @@ export default function Blogmanage() {
       setblogid()
 
     } catch (error) {
-      console.log(error);
+
       toast('Blog deletion failed',
         {
           icon: '❌',
@@ -125,7 +126,7 @@ export default function Blogmanage() {
 
 
 
-        <div>
+        <div className="mt-[50px] mb-[20px]">
           <h1 className="text-3xl text-center font-semibold">Your Blogs</h1>
         </div>
 

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import { IoMdSettings } from "react-icons/io";
 import { FaUserCog } from "react-icons/fa";
 import Navbar from "@/components/Navbar"
+import toast from "react-hot-toast"
 
 
 export default function Userprofile() {
@@ -20,7 +21,7 @@ export default function Userprofile() {
         try {
             await fetchuser()
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }

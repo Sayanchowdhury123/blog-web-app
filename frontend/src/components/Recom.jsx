@@ -14,7 +14,7 @@ export default function Recom() {
 
 
 
-  console.log(recomdations);
+ 
 
     return (
 

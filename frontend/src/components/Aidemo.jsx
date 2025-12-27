@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { log } from '@/utils/loggerfrontend';
 
 export default function Aidemo() {
     const [userTopic, setUserTopic] = useState('cybersecurity');
@@ -22,7 +23,7 @@ export default function Aidemo() {
 
                 if (entry.isIntersecting) {
 
-                    video.play().catch(e => console.log("Autoplay prevented:", e));
+                    video.play().catch(e => log("Autoplay prevented:", e));
                 } else {
 
                     video.pause();

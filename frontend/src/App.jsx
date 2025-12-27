@@ -28,14 +28,14 @@ import Analytics from './pages/Analytics';
 import Reviewpage from './pages/Reviewpage';
 import useNotificationstore from './store/notificationstore';
 import Intropage from './pages/IntroPage';
-
+import * as Sentry from "@sentry/react";
 
 function App() {
 
 
   return (
     <>
-    	<Router>
+    <Router>
         <Toaster position='top-left' reverseOrder={true}/>
         <Routes>
            <Route path='/' element={<Intropage/>} />
@@ -59,6 +59,10 @@ function App() {
         </Routes>
       </Router>
     </>
+    
+
+    
+    
   )
 }
 

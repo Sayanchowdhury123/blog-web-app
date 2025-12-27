@@ -117,7 +117,7 @@ const useProfilestore = create((set, get) => ({
       });
       setupdatebox()
     } catch (error) {
-      console.log(error);
+      
       toast("Email updation failed", {
         icon: "❌",
         style: {
@@ -154,7 +154,7 @@ const useProfilestore = create((set, get) => ({
       setupdatebox()
       
     } catch (error) {
-      console.log(error);
+   
       toast("Password updation failed", {
         icon: "❌",
         style: {
@@ -190,7 +190,7 @@ const useProfilestore = create((set, get) => ({
       });
       setupdatebox()
     } catch (error) {
-      console.log(error);
+      
       toast("Profile Deletion Failed", {
         icon: "❌",
         style: {
@@ -220,7 +220,7 @@ const useProfilestore = create((set, get) => ({
      set({ userinfo: res.data });
      await fetchuser()
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }finally{
       setload(false)
     }

@@ -212,7 +212,7 @@ const useHomestore = create((set, get) => ({
   search: async (searchtext) => {
     const res = await api.post(`/home/search`, { searchtext: searchtext });
     set({ searchedblog: res.data });
-    console.log(res.data);
+   
   },
   editorpicks: [],
   fetchep: async () => {

@@ -53,7 +53,7 @@ export default function Fcards() {
         await followingblogs()
          
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -94,7 +94,7 @@ export default function Fcards() {
             }
         }, [loading, h, followingblogs])
     
-console.log(userinfo.following);
+
 
 
     const getlike = async (id) => {
@@ -103,7 +103,7 @@ console.log(userinfo.following);
             await togglelike(id)
 
         } catch (error) {
-            console.log(error);
+           toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -115,7 +115,7 @@ console.log(userinfo.following);
             await removelike(id)
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -128,7 +128,7 @@ console.log(userinfo.following);
 
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 

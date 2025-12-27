@@ -27,7 +27,8 @@ export default function Pinput() {
             await editemail(values.pass,values.newemail)
             await fetchuserinfo(userid)
         } catch (error) {
-            console.log(error);
+          toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setSubmitting(false)
         }

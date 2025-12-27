@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import api from "../axios";
 import useAuthstore from "./authstore";
+import toast from "react-hot-toast";
 
 const ls = localStorage.getItem("user");
 const localuser = JSON.parse(ls);
@@ -64,7 +65,7 @@ const useEditorstore = create((set) => ({
         }
       })
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 

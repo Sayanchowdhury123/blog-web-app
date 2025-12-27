@@ -2,6 +2,7 @@ import { create } from "zustand";
 import api from "../axios";
 import useAuthstore from "./authstore";
 import { socket } from "@/services/Socketp";
+import toast from "react-hot-toast";
 const ls = localStorage.getItem("user");
 const localuser = JSON.parse(ls);
 
@@ -18,7 +19,7 @@ const useNotificationstore = create((set, get) => ({
       const unread = res.data.filter((n) => !n.read);
       set({ notifications: unread, unreadCount: unread?.length });
     } catch (error) {
-      console.log(error);
+     toast.error(error.response?.data?.msg || "Something went wrong");
     }
   },
   markasread: async () => {
@@ -45,7 +46,7 @@ const useNotificationstore = create((set, get) => ({
         };
       });
     } catch (error) {
-      console.log(error);
+     toast.error(error.response?.data?.msg || "Something went wrong");
     }
   },
    initSocketListener: () => {

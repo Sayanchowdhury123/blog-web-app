@@ -40,7 +40,7 @@ export default function Search() {
         try {
             await fetchinfo()
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -61,7 +61,7 @@ export default function Search() {
 
             }
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setload(false)
         }
@@ -93,7 +93,7 @@ export default function Search() {
             await sorting(e.target.value)
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setload(false)
         }
@@ -107,7 +107,7 @@ export default function Search() {
             await getsh()
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -178,7 +178,7 @@ export default function Search() {
                                 <div>
                                     {
                                         searchhistory.length > 0 && (
-                                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 sm:w-[220px] w-[308px] rounded-bl-xl rounded-xl absolute top-[144px] sm:left-[221px] left-[32px]  shadow-xl" >
+                                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 sm:w-[187px] w-[308px] rounded-bl-xl rounded-xl absolute top-[144px] sm:left-[440px] left-[32px]  shadow-xl" >
 
                                                 {
                                                     searchhistory?.map((s, i) => (

@@ -51,7 +51,7 @@ const { fetchuserinfo } = useFpagestore()
 
 
         } catch (error) {
-            console.log(error);
+         
             toast('Profile updation failed',
                 {
                     icon: '❌',

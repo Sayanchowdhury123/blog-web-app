@@ -30,11 +30,11 @@ export default function Editblog({ fb }) {
         setloading(true)
         try {
             const blog = await generatebog(result);
-            console.log(blog);
+            
             const cleanblog = blog?.replace(/[#*_`~>()]+/g, "").replace(/\n{2,}/g, "\n\n").replace(/-{2,}/g, "").replace(/"([^"]+)"/g, '$1').replace(/(?<=\s)-+(?=\s)/g, "").trim()
             setresult(cleanblog)
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
             setresult("failed to generate blogs")
         } finally {
             setloading(false)
@@ -108,7 +108,7 @@ export default function Editblog({ fb }) {
 
 
         } catch (error) {
-            console.log(error);
+         
             toast('Blog updation failed',
                 {
                     icon: '❌',

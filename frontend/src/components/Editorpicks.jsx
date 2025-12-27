@@ -9,7 +9,7 @@ export default function Editorpicks() {
     const { trendingblogs,editorpicks } = useHomestore()
     const navigate = useNavigate()
 
-    console.log(editorpicks);
+ 
 
     return (
 

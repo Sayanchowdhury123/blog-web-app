@@ -30,7 +30,7 @@ const useSearchstore = create((set, get) => ({
     set({ blogs: res.data || [] });
     toast.success(`${res.data.length} results found`);
     } catch (error) {
-      console.log(error);
+     toast.error(error.response?.data?.msg || "Something went wrong");
     }finally{
       setload(false)
     }
@@ -126,7 +126,7 @@ const useSearchstore = create((set, get) => ({
         set({ blogs: res.data });
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setload(false);
     }

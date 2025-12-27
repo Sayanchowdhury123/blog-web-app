@@ -28,7 +28,7 @@ export default function Delp() {
             await delprofile(values.p)
             navigate("/signup")
         } catch (error) {
-            console.log(error);
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setSubmitting(false)
         }

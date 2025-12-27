@@ -8,6 +8,7 @@ import useAuthstore from "@/store/authstore";
 import useEditorstore from "@/store/editorstore"
 import useProfilestore from "@/store/profilestore";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useActionData, useNavigate } from "react-router-dom";
 
 
@@ -23,7 +24,7 @@ export default function Collabpage() {
     try {
       await fetchall()
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setloading(false)
     }

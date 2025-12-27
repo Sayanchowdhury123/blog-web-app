@@ -68,7 +68,7 @@ export default function Collabcard({ type }) {
 
 
         } catch (error) {
-            console.log(error);
+            
             toast('Status upation failed',
                 {
                     icon: '❌',
@@ -114,7 +114,7 @@ export default function Collabcard({ type }) {
 
 
         } catch (error) {
-            console.log(error);
+            
             toast('Action failed',
                 {
                     icon: '❌',

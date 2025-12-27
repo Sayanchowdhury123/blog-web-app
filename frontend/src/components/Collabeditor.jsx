@@ -54,10 +54,9 @@ export default function Collabeditor() {
                     Authorization: `Bearer ${user.token}`,
                 },
             })
-            console.log(res.data);
-
+           
         } catch (error) {
-            console.log(error);
+            toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -95,7 +94,7 @@ export default function Collabeditor() {
             navigate('/yourblogs')
 
         } catch (error) {
-            console.log(error);
+         
             toast('Content updation failed',
                 {
                     icon: '❌',

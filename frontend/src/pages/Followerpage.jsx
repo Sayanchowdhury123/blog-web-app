@@ -40,7 +40,7 @@ export default function Followerpage() {
             await fetchuserinfo(userid)
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -94,7 +94,7 @@ export default function Followerpage() {
 
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -109,7 +109,7 @@ export default function Followerpage() {
 
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -137,7 +137,7 @@ export default function Followerpage() {
 
 
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 

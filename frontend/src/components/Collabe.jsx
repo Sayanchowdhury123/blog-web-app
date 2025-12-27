@@ -38,6 +38,7 @@ import Text from "@tiptap/extension-text";
 import Paragraph from "@tiptap/extension-paragraph";
 import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
+import toast from "react-hot-toast";
 
 
 const yjsInstances = new Map();
@@ -124,9 +125,11 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
             headers: { Authorization: `Bearer ${user.token}` }
           }
         );
-        console.log('✅ Auto-saved collaborative state');
+
+        
+
       } catch (err) {
-        console.error('Auto-save failed:', err);
+        toast.error(err.response?.data?.msg || "Something went wrong");
       }
     };
 

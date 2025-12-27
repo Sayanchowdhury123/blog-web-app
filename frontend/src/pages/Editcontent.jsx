@@ -44,7 +44,7 @@ export default function Editcontent() {
       })
    
   } catch (error) {
-     console.log(error); 
+      toast.error(error.response?.data?.msg || "Something went wrong");
   }
  }
 
@@ -59,7 +59,7 @@ export default function Editcontent() {
       })
      
   } catch (error) {
-     console.log(error); 
+      toast.error(error.response?.data?.msg || "Something went wrong");
   }
  }
 
@@ -109,7 +109,7 @@ export default function Editcontent() {
 
 
     } catch (error) {
-      console.log(error);
+      
       toast('Content updation failed',
         {
           icon: '❌',

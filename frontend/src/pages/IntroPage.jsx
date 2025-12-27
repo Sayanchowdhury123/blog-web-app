@@ -208,7 +208,7 @@ export default function Intropage() {
                 statsRefs.current.speed;
 
             if (!allReady) {
-                console.warn("Stats refs not ready");
+                
                 return;
             }
 

@@ -1,4 +1,6 @@
+import { log } from "@/utils/loggerfrontend";
 import axios from "axios";
+import toast from "react-hot-toast";
 //
 async function getOpenRouter() {
   const { OpenRouter } = await import("@openrouter/sdk");
@@ -37,12 +39,13 @@ export const generatebog = async (userprompt) => {
 
     
       if (chunk.usage) {
-        console.log("\nReasoning tokens:", chunk.usage.reasoningTokens);
+        log("\nReasoning tokens:", chunk.usage.reasoningTokens);
       }
     }
 
     return response;
   } catch (error) {
-    console.log("AI generation error:", error);
+ 
+    toast.error(error.response?.data?.msg || "Something went wrong");
   }
 };

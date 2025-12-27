@@ -1,6 +1,7 @@
 import useSearchstore from "@/store/searchstore";
 import { motion } from "framer-motion"
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 export default function Filterbox() {
     const { setfopen, allblog ,filters, togglefilters, fetchfilteredblogs,setload,load} = useSearchstore()
@@ -32,7 +33,7 @@ const handleapply = () => {
         fetchfilteredblogs()
     setfopen()
     } catch (error) {
-        console.log(error);
+        toast.error(error.response?.data?.msg || "Something went wrong");
     }
 }
 
@@ -57,7 +58,8 @@ const handleapply = () => {
                                 
                                 <input type="checkbox" checked={filters?.creators?.includes(u?.creator?._id)}
                                 onChange={() => {
-                                    console.log("adding/removing",u.creator._id);
+                                   
+                                 
                                     togglefilters("creators",u?.creator?._id) 
                                 } }
                               

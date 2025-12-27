@@ -6,6 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import useAuthstore from "@/store/authstore";
 import useProfilestore from "@/store/profilestore";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
@@ -35,7 +36,7 @@ export default function Blogpage() {
 
 
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setloading(false)
     }
@@ -62,7 +63,7 @@ export default function Blogpage() {
        seteid(res.data._id)
       
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
@@ -77,7 +78,7 @@ export default function Blogpage() {
 
      
     } catch (error) {
-      console.log(error);
+       toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 

@@ -53,7 +53,8 @@ export default function Sblogs() {
             await togglelike(id)
 
         } catch (error) {
-            console.log(error);
+          toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setloading(false)
         }
@@ -65,7 +66,8 @@ export default function Sblogs() {
             await removelike(id)
 
         } catch (error) {
-            console.log(error);
+           toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setloading(false)
         }
@@ -78,7 +80,8 @@ export default function Sblogs() {
 
 
         } catch (error) {
-            console.log(error);
+            toast.error(error.response?.data?.msg || "Something went wrong");
+
         }
     }
 

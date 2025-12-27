@@ -6,6 +6,7 @@ import Writeranalytics from "@/components/Writeranalytics";
 import useAuthstore from "@/store/authstore";
 import useProfilestore from "@/store/profilestore";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 
@@ -45,7 +46,8 @@ export default function Analytics() {
             setwdata(res.data)
 
         } catch (error) {
-            console.log(error);
+         toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setloading(false)
         }
@@ -61,7 +63,8 @@ export default function Analytics() {
             })
             setpb(res.data)
         } catch (error) {
-            console.log(error);
+            toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setloading(false)
         }
@@ -77,7 +80,8 @@ export default function Analytics() {
             })
             setpa(res.data)
         } catch (error) {
-            console.log(error);
+            toast.error(error.response?.data?.msg || "Something went wrong");
+
         } finally {
             setloading(false)
         }
@@ -94,7 +98,8 @@ export default function Analytics() {
        
             setedata(res.data)
         } catch (error) {
-            console.log(error);
+           
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -111,7 +116,7 @@ export default function Analytics() {
             
             seteditinfo(res.data)
         } catch (error) {
-            console.log(error);
+             toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
