@@ -77,7 +77,8 @@ export default function Blog({ blog }) {
         <motion.div className=" bg-base-100 sm:w-5xl w-[400px] mx-auto mt-4 p-6 shadow-lg rounded-xl  space-y-6 " initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div className=" ">
             <div className="text-center">
-              <h1 className="text-4xl  font-bold">{blog?.title}</h1>
+              {blog?.title?.length > 34 ? (<h1 className="text-4xl  font-bold" >{blog.title?.slice(0,34) + "..."}</h1>) : (<h1 className="text-4xl  font-bold" >{blog.title}</h1>)}
+              {/* <h1 className="text-4xl  font-bold">{blog?.title}</h1> */}
               <div className=" flex gap-4 items-center mt-2 justify-center">
                 <div>
                   <p>By <span className="font-semibold text-md">{blog?.creator?.name}</span> </p>

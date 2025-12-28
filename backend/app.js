@@ -13,11 +13,24 @@ const followersroute = require("./routes/followerroute")
 const writerroutes = require("./routes/writerroutes")
 const earoutes = require("./routes/Eanalytics")
 const notificationroutes = require("./routes/notificationroutes")
+const rateLimit = require("express-rate-limit")
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max:100,
+  message:{
+    message:"too many requests"
+  },
+  standardHeaders:true,
+  legacyHeaders:true
+})
+
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(fileupload({useTempFiles: true}))
+app.use(limiter)
 
 
 cloudinary.config({

@@ -29,7 +29,7 @@ export default function Recom() {
                                 state: { blogid: t._id }
                             })} className="hover:bg-base-200 py-2 px-4 transition-all transition-300" >
 
-                            <p className="font-semibold flex items-center  whitespace-wrap" >{t.title}</p>
+                    {t?.title?.length > 34 ? (<p className="font-semibold flex items-center  truncate" >{t.title?.slice(0,34) + "..."}</p>) : (<p className="font-semibold flex items-center  truncate" >{t.title}</p>)}
                             <div className="flex items-center  text-sm text-gray-400 gap-4">
                                 <p>{t?.creator?.name}</p>
                               

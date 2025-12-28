@@ -5,7 +5,9 @@ const Blogs = require("../models/Blogs");
 const { authmiddleware, authorizerole } = require("../middleware/auth");
 const { createblogs,fetchblogs, deleteblog, editblog, editcontent, fetchblog, addview, selectusers, startcollab, endcollab, saveyjsupadte, fetchdemoblog } = require("../controller/Blogcontorller");
 const rateLimit = require("express-rate-limit")
-const {ipKeyGenerator} = require("express-rate-limit")
+const {ipKeyGenerator} = require("express-rate-limit");
+const { validate } = require("../middleware/validator");
+const { createblogzod } = require("../validators/blogValidator");
 
 const yjslimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

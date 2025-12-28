@@ -42,11 +42,11 @@ export default function Createblogs() {
         setloading(true)
         try {
             const blog = await generatebog(result);
-       
+
             const cleanblog = blog?.replace(/[#*_`~>()]+/g, "").replace(/\n{2,}/g, "\n\n").replace(/-{2,}/g, "").replace(/"([^"]+)"/g, '$1').replace(/(?<=\s)-+(?=\s)/g, "").trim()
             typewritereffect(cleanblog)
         } catch (error) {
-         toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
             setresult("failed to generate blogs")
         } finally {
             setloading(false)
@@ -55,15 +55,19 @@ export default function Createblogs() {
 
 
     const addt = () => {
+        const cleantag = tag.trim().toLowerCase();
+        if (!cleantag) return;
 
-        if (tag) {
-            settags((prev) => {
-                return [...prev, tag]
-            })
-            settag("")
-
+        if (tags.includes(cleantag)) {
+            toast.error("Tag already added")
+            return;
         }
 
+        settags((prev) => {
+            return [...prev, cleantag]
+        })
+
+        settag("")
     }
 
     const removet = (i) => {
@@ -82,6 +86,9 @@ export default function Createblogs() {
 
     }
 
+
+
+
     const createblogs = async () => {
         setl(true)
         const formdata = new FormData()
@@ -90,47 +97,68 @@ export default function Createblogs() {
         formdata.append("tags", JSON.stringify(tags))
         formdata.append("coverimage", file)
 
+
+        
+        if (!file) {
+            toast.error("Cover image is required");
+            setl(false);
+            return;
+        }
+
+        // if (!Array.isArray(tags) || tags.length === 0) {
+        //     toast.error("Please add at least one tag");
+        //     setl(false)
+        //     return;
+        // }
+
+
         try {
 
-            if (file && Array.isArray(tags) && title && result) {
-                const res = await api.post("/blogs/create-blog", formdata, {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                        "Content-Type": "multipart/form-data"
 
-                    }
-                })
+            const res = await api.post("/blogs/create-blog", formdata, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                    "Content-Type": "multipart/form-data"
 
-                
-                toast('Blog creation successful',
-                    {
-                        icon: '🎉',
-                        style: {
-                            borderRadius: '10px',
-                            background: '#333',
-                            color: '#fff',
-                        },
-                    })
+                }
+            })
 
-                navigate("/yourblogs")
-            }
-        } catch (error) {
-        
-            toast('Blog creation failed',
+
+            toast('Blog creation successful',
                 {
-                    icon: '❌',
+                    icon: '🎉',
                     style: {
                         borderRadius: '10px',
                         background: '#333',
                         color: '#fff',
                     },
                 })
+
+            navigate("/yourblogs")
+
+        } catch (error) {
+            // console.log(error?.response?.data?.error)
+            // toast('Blog creation failed',
+            //     {
+            //         icon: '❌',
+            //         style: {
+            //             borderRadius: '10px',
+            //             background: '#333',
+            //             color: '#fff',
+            //         },
+            //     })
+
+            error?.response?.data?.error?.forEach((msg) => {
+                toast.error(
+                    `${msg.replace(/^\w/, c => c.toUpperCase())}`
+                );
+            });
         } finally {
             setl(false)
         }
     }
 
-    
+
 
     if (l) return <Loadingscrenn />
 
@@ -140,7 +168,7 @@ export default function Createblogs() {
 
 
 
-           <Navbar/>
+            <Navbar />
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="sm:p-6 p-3 sm:w-3xl w-[406px] mx-auto ">
 
