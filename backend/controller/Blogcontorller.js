@@ -415,3 +415,31 @@ exports.saveyjsupadte = async (req, res) => {
     res.status(500).json({ error: "Save failed" });
   }
 };
+
+exports.related = async (req, res) => {
+  try {
+  const {blogid} = req.params;
+    
+    if (!blogid) {
+      return res.status(404).json({ error: "invalid blogid" });
+    }
+    const tags = JSON.parse(req.query.tags);
+
+    if (!tags) {
+      return res.status(404).json({ error: "invalid tags" });
+    }
+
+    const related = await Blogs.find({ tags: { $in: tags },_id: { $nin: blogid }, })
+      .limit(3)
+      .populate("creator");
+
+    if (!related) {
+      return res.status(404).json({ error: "no related blogs found" });
+    }
+    
+
+    res.status(200).json(related);
+  } catch (error) {
+    res.status(500).json({ error: "Save failed" });
+  }
+};

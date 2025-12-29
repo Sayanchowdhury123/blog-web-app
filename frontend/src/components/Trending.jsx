@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 
-export default function Trending() {
+export default function Trending({page}) {
+   
     const { trendingblogs } = useHomestore()
     const navigate = useNavigate()
+     const isper = page === "per";
 
 
     return (
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white  rounded-xl  absolute top-[22px] left-[70px] cursor-pointer shadow-lg">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className={`bg-white   rounded-xl ${!isper ? "absolute top-[22px] left-[70px]" : "pt-1"}  cursor-pointer shadow-lg`}>
             <div>
                 <h1 className="text-xl font-bold  mt-3 px-4 flex items-center gap-2">Trending Blogs<IoIosTrendingUp className=" text-xl" /> </h1>
             </div>

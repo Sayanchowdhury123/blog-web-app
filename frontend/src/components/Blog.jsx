@@ -1,7 +1,7 @@
 import api from "@/axios";
 import useAuthstore from "@/store/authstore";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion";
 import Loadingscrenn from "./Loadingscreen";
 import Loading2 from "./Loadin2";
@@ -13,8 +13,8 @@ import toast from "react-hot-toast";
 export default function Blog({ blog }) {
   const { user } = useAuthstore()
   const { fetchuser, userinfo } = useProfilestore()
-
-
+const [related, setrelated] = useState([])
+const navigate = useNavigate()
 
   const addview = async () => {
     try {
@@ -64,7 +64,44 @@ export default function Blog({ blog }) {
     readhistory()
   }, [])
 
+const getexcerpt = (text, wordlimit = 50) => {
+    const words = text?.trim().split(/\s+/)
+    if (words.length <= wordlimit) {
+      return text
+    } else {
+      return words.slice(0, wordlimit).join(" ") + "..."
+    }
+  }
 
+  const getrelated = async () => {
+    try {
+      
+
+      const tags = JSON.stringify(blog.tags);
+     
+      if (!tags) {
+        toast.error(error.response?.data?.msg || "Something went wrong");
+      }
+
+      const res = await api.get(`/blogs/related/${blog._id}/r?tags=${tags}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
+
+      setrelated(res.data)
+
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Something went wrong");
+    } 
+      
+    
+  }
+
+
+  useEffect(() => {
+    getrelated()
+  },[blog._id])
 
 
   return (
@@ -132,6 +169,36 @@ export default function Blog({ blog }) {
               ))
             }
           </div>
+        </motion.div>
+      </div>
+
+      <div className="mt-5 w-5xl mx-auto  " style={{scrollbarWidth:"none"}}>
+         <h1 className="text-xl font-bold px-4 flex items-center gap-2 ">Related Blogs</h1>
+        <motion.div className="flex items-center  gap-4 mt-5 overflow-x-hidden" style={{scrollbarWidth:"none"}}>
+          {
+            related?.map((b, i) => (
+              <motion.div  whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100 w-[399px] h-[265px] image-full  shadow-sm" key={b._id} >
+                <figure>
+                  <img
+                    src={`${b.coverimage}`}
+                    alt="Shoes" />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{b?.title}</h2>
+
+                  <div dangerouslySetInnerHTML={{
+                    __html: getexcerpt(b.blogtext)
+                  }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
+                    state: { blogid: b._id }
+                  })}>
+
+                  </div>
+                  <p></p>
+
+                </div>
+              </motion.div>
+            ))
+          }
         </motion.div>
       </div>
     </div>

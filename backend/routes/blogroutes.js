@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/User")
 const Blogs = require("../models/Blogs");
 const { authmiddleware, authorizerole } = require("../middleware/auth");
-const { createblogs,fetchblogs, deleteblog, editblog, editcontent, fetchblog, addview, selectusers, startcollab, endcollab, saveyjsupadte, fetchdemoblog } = require("../controller/Blogcontorller");
+const { createblogs,fetchblogs, deleteblog, editblog, editcontent, fetchblog, addview, selectusers, startcollab, endcollab, saveyjsupadte, fetchdemoblog, related } = require("../controller/Blogcontorller");
 const rateLimit = require("express-rate-limit")
 const {ipKeyGenerator} = require("express-rate-limit");
 const { validate } = require("../middleware/validator");
@@ -132,6 +132,7 @@ const deletelimiter = rateLimit({
 
 
 router.get("/get-demo",getLimiter,fetchdemoblog)
+router.get("/related/:blogid/r",authmiddleware,getlimiter,related)
 router.get("/",authmiddleware,getlimiter,authorizerole("writer","editor"),fetchblogs)
 router.get("/get-users",authmiddleware,selectuserlimiter,authorizerole("writer","editor"),selectusers)
 router.get("/:blogid",authmiddleware,getlimiter,fetchblog)

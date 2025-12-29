@@ -5,10 +5,11 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import useAuthstore from "@/store/authstore";
 import useProfilestore from "@/store/profilestore";
+import { assign } from "lodash";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
+import { motion } from "framer-motion";
 
 export default function Blogpage() {
   const { setshownav } = useAuthstore()
@@ -21,6 +22,9 @@ export default function Blogpage() {
   const [viewed, setviewed] = useState(false)
   const { fetchuser, userinfo } = useProfilestore()
   const [eid, seteid] = useState("")
+  
+  const [tags, settags] = useState([])
+
 
 
   const fb = async () => {
@@ -32,11 +36,13 @@ export default function Blogpage() {
           Authorization: `Bearer ${user.token}`,
         }
       })
+      settags(res.data.tags)
+
       setblog(res.data)
 
 
     } catch (error) {
-       toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setloading(false)
     }
@@ -50,8 +56,8 @@ export default function Blogpage() {
   useEffect(() => {
     fb()
 
-
-  }, [])
+    
+  }, [blogid])
 
   const trackview = async () => {
     try {
@@ -60,14 +66,14 @@ export default function Blogpage() {
           Authorization: `Bearer ${user.token}`,
         }
       })
-       seteid(res.data._id)
-      
+      seteid(res.data._id)
+
     } catch (error) {
-       toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
-    let entryid;
+  let entryid;
   const tryackentry = async () => {
     try {
       const res = await api.post(`/writers/entry/${blogid}`, {}, {
@@ -76,35 +82,39 @@ export default function Blogpage() {
         }
       })
 
-     
+
     } catch (error) {
-       toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
   useEffect(() => {
     trackview()
+
   }, [blogid])
 
 
-const handleExit =  () => {
+  const handleExit = () => {
     if (eid) {
 
-     api.post(`/writers/exit/${eid}`, { exitat: Date.now() });
+      api.post(`/writers/exit/${eid}`, { exitat: Date.now() });
     }
   };
 
 
-useEffect(() => {
-  
-    
-  window.addEventListener("pagehide", handleExit);
+  useEffect(() => {
 
-  return () => {
-    handleExit()
-    window.removeEventListener("pagehide", handleExit);
-  };
-}, [eid]);
+
+    window.addEventListener("pagehide", handleExit);
+
+    return () => {
+      handleExit()
+      window.removeEventListener("pagehide", handleExit);
+    };
+  }, [eid]);
+
+  
+
 
 
 
@@ -115,11 +125,13 @@ useEffect(() => {
     <div className="relative">
       <Sidebar />
       <div className=" ">
-       <Navbar/>
+        <Navbar />
 
         <Blog blog={blog} />
 
       </div>
+
+      
 
     </div>
   )

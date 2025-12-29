@@ -15,6 +15,7 @@ import { SlUserFollowing } from "react-icons/sl";
 import { RiTeamFill } from "react-icons/ri";
 import { MdOutlineAnalytics } from "react-icons/md";
 import Notificaion from "./Notificaton";
+import { FaHeart } from "react-icons/fa6";
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -134,6 +135,14 @@ export default function Sidebar() {
             setshownav()}}>
           <RiTeamFill/>
         <p>Collaborate</p>
+        </div>
+
+        <div className="flex items-center gap-2 sm:hidden " onClick={(e) => {
+               e.stopPropagation()
+            navigate('/personalized')
+            setshownav()}}>
+          <FaHeart/>
+        <p>Personalized</p>
         </div>
 
 

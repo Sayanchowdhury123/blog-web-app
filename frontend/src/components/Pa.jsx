@@ -7,9 +7,10 @@ import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 import { CgProfile } from "react-icons/cg";
 
-export default function Pa() {
+export default function Pa({page}) {
   const {pa} = useHomestore()
     const navigate = useNavigate()
+        const isper = page === "per";
     const uniqueauthors =[];
     const seen = new Set();
 
@@ -25,7 +26,7 @@ export default function Pa() {
 
     return (
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className="bg-white w-[320px]  rounded-xl absolute top-[380px] left-[70px] cursor-pointer shadow-lg">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 1 }} className={`bg-white   rounded-xl ${!isper ? "w-[320px] absolute top-[380px] left-[70px]" : "pt-1"}  cursor-pointer shadow-lg`}>
             <div>
                 <h1 className="text-xl font-bold  mt-3 px-5 flex items-center gap-2">Popular Authors<CgProfile className=" text-xl" /> </h1>
             </div>

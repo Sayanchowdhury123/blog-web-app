@@ -29,6 +29,7 @@ import Reviewpage from './pages/Reviewpage';
 import useNotificationstore from './store/notificationstore';
 import Intropage from './pages/IntroPage';
 import * as Sentry from "@sentry/react";
+import Personalized from './pages/Personalized';
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
           <Route path='/collabrate' element={<Privateroute><Collabpage/></Privateroute>} />
           <Route path='/analytics' element={<Privateroute><Analytics/></Privateroute>}  />
           <Route path='/review/:blogid' element={<Privateroute><Reviewpage/></Privateroute>} />
+          <Route path='/personalized' element={<Privateroute><Personalized/></Privateroute>} />
         </Routes>
       </Router>
     </>
