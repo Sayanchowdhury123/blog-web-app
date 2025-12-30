@@ -13,8 +13,8 @@ import toast from "react-hot-toast";
 export default function Blog({ blog }) {
   const { user } = useAuthstore()
   const { fetchuser, userinfo } = useProfilestore()
-const [related, setrelated] = useState([])
-const navigate = useNavigate()
+  const [related, setrelated] = useState([])
+  const navigate = useNavigate()
 
   const addview = async () => {
     try {
@@ -28,7 +28,7 @@ const navigate = useNavigate()
 
 
     } catch (error) {
-       toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
@@ -56,7 +56,7 @@ const navigate = useNavigate()
 
 
     } catch (error) {
-       toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   }
 
@@ -64,7 +64,7 @@ const navigate = useNavigate()
     readhistory()
   }, [])
 
-const getexcerpt = (text, wordlimit = 50) => {
+  const getexcerpt = (text, wordlimit = 50) => {
     const words = text?.trim().split(/\s+/)
     if (words.length <= wordlimit) {
       return text
@@ -75,13 +75,10 @@ const getexcerpt = (text, wordlimit = 50) => {
 
   const getrelated = async () => {
     try {
-      
+
 
       const tags = JSON.stringify(blog.tags);
-     
-      if (!tags) {
-        toast.error(error.response?.data?.msg || "Something went wrong");
-      }
+
 
       const res = await api.get(`/blogs/related/${blog._id}/r?tags=${tags}`, {
         headers: {
@@ -92,16 +89,19 @@ const getexcerpt = (text, wordlimit = 50) => {
       setrelated(res.data)
 
     } catch (error) {
-      toast.error(error.response?.data?.msg || "Something went wrong");
-    } 
       
-    
+      toast.error(error.response?.data?.msg || "Something went wrong");
+    }
+
+
   }
 
 
   useEffect(() => {
-    getrelated()
-  },[blog._id])
+     if (blog?._id && blog?.tags) {
+    getrelated();
+  }
+  }, [blog._id])
 
 
   return (
@@ -114,7 +114,7 @@ const getexcerpt = (text, wordlimit = 50) => {
         <motion.div className=" bg-base-100 sm:w-5xl w-[400px] mx-auto mt-4 p-6 shadow-lg rounded-xl  space-y-6 " initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div className=" ">
             <div className="text-center">
-              {blog?.title?.length > 34 ? (<h1 className="text-4xl  font-bold" >{blog.title?.slice(0,34) + "..."}</h1>) : (<h1 className="text-4xl  font-bold" >{blog.title}</h1>)}
+              {blog?.title?.length > 34 ? (<h1 className="text-4xl  font-bold" >{blog.title?.slice(0, 34) + "..."}</h1>) : (<h1 className="text-4xl  font-bold" >{blog.title}</h1>)}
               {/* <h1 className="text-4xl  font-bold">{blog?.title}</h1> */}
               <div className=" flex gap-4 items-center mt-2 justify-center">
                 <div>
@@ -172,12 +172,12 @@ const getexcerpt = (text, wordlimit = 50) => {
         </motion.div>
       </div>
 
-      <div className="mt-5 w-5xl mx-auto  " style={{scrollbarWidth:"none"}}>
-         <h1 className="text-xl font-bold px-4 flex items-center gap-2 ">Related Blogs</h1>
-        <motion.div className="flex items-center  gap-4 mt-5 overflow-x-hidden" style={{scrollbarWidth:"none"}}>
+      <div className="mt-5 w-5xl mx-auto p-4 " style={{ scrollbarWidth: "none" }}>
+        <h1 className="text-xl font-bold px-4 flex items-center gap-2 ">Related Blogs</h1>
+        <motion.div className="flex items-center  gap-4 mt-5 overflow-x-hidden " style={{ scrollbarWidth: "none" }}>
           {
             related?.map((b, i) => (
-              <motion.div  whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100 w-[399px] h-[265px] image-full  shadow-sm" key={b._id} >
+              <motion.div whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100 w-[399px] h-[265px] image-full  shadow-sm" key={b._id} >
                 <figure>
                   <img
                     src={`${b.coverimage}`}
@@ -186,13 +186,9 @@ const getexcerpt = (text, wordlimit = 50) => {
                 <div className="card-body">
                   <h2 className="card-title">{b?.title}</h2>
 
-                  <div dangerouslySetInnerHTML={{
-                    __html: getexcerpt(b.blogtext)
-                  }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
-                    state: { blogid: b._id }
-                  })}>
+               
 
-                  </div>
+                  
                   <p></p>
 
                 </div>

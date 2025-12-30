@@ -53,9 +53,9 @@ exports.trackview = async (req, res) => {
     const ip =
       process.env.NODE_ENV === "development"
         ? "8.8.8.8"
-        : req.headers["x-forwarded-for"]?.split(",")[0];
+        : req.headers["x-forwarded-for"]?.split(",")[0] || req?.socket?.remoteAddress;
 
-    const geo = geoip.lookup(ip);
+    const geo = geoip.lookup(ip) || {};
     const parser = new UAParser(req.headers["user-agent"]);
     const devicetype = parser.getResult().device.type || "Dekstop";
 
@@ -110,7 +110,7 @@ exports.getwriterinfo = async (req, res) => {
   try {
     const analytics = await Analytics.find().populate("postid").sort({ createdAt: -1 });
     const filteredanalytics = analytics.filter(
-      (a) => String(a.postid.creator) === String(req.user.id)
+      (a) => String(a?.postid?.creator) === String(req.user.id)
     );
 
     if(!filteredanalytics.length === 0){
@@ -120,7 +120,7 @@ exports.getwriterinfo = async (req, res) => {
 
     res.status(200).json(filteredanalytics)
   } catch (error) {
-    
+    console.log(error)
     res.status(500).json({ msg: "internal server error" });
   }
 };

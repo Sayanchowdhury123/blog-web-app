@@ -12,10 +12,12 @@ const useFollowingstore = create((set, get) => ({
   h: true,
 
   followingblogs: async () => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const { s, l } = get();
     const res = await api.get(`/home/followingpage?s=${s}&l=${l}`,{
          headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
  

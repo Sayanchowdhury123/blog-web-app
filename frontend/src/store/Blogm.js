@@ -8,9 +8,11 @@ const localuser = JSON.parse(ls);
 const useBlogmstore = create((set,get) => ({
   users: [],
   fetchusers: async () => {
+          const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.get("/blogs/get-users", {
       headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
 

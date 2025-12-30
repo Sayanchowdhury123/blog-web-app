@@ -67,7 +67,7 @@ export default function Blogpage() {
         }
       })
       seteid(res.data._id)
-
+     
     } catch (error) {
       toast.error(error.response?.data?.msg || "Something went wrong");
     }
@@ -122,7 +122,7 @@ export default function Blogpage() {
 
 
   return (
-    <div className="relative">
+    <div className="relative overflow-x-hidden">
       <Sidebar />
       <div className=" ">
         <Navbar />

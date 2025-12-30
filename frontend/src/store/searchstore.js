@@ -43,20 +43,24 @@ const useSearchstore = create((set, get) => ({
     }
   },
   addsh: async (st) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
       `/sp/addsh`,
       { searchtext: st },
       {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
   },
   getsh: async () => {
+     const {user} = useAuthstore.getState()
+        if(!user) return;
     const res = await api.get(`/sp/getsh`, {
       headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
 

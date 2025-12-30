@@ -33,12 +33,14 @@ const useProfilestore = create((set, get) => ({
 
 
   tblog: async (blogid) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
-      `/profile/${blogid}/togglesave/${localuser.id}`,
+      `/profile/${blogid}/togglesave/${user.id}`,
       {},
       {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
@@ -62,9 +64,11 @@ const useProfilestore = create((set, get) => ({
   hasmore: true,
   load: false,
   getsavedblogs: async () => {
-    const res = await api.get(`/profile/${localuser.id}/savedblogs`, {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
+    const res = await api.get(`/profile/${user.id}/savedblogs`, {
       headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
 
@@ -98,12 +102,14 @@ const useProfilestore = create((set, get) => ({
     const { setload,setboxopen,setupdatebox } = get();
     setload(true);
     try {
+       const {user} = useAuthstore.getState()
+    if(!user) return;
       const res = await api.patch(
         `/profile/edit-email`,
         { pass, newemail },
         {
           headers: {
-            Authorization: `Bearer ${localuser.token}`,
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
@@ -134,12 +140,14 @@ const useProfilestore = create((set, get) => ({
     const { setload,setboxopen,setupdatebox } = get();
     setload(true);
     try {
+       const {user} = useAuthstore.getState()
+    if(!user) return;
       const res = await api.patch(
         `/profile/edit-pass`,
         { oldpass,newpass },
         {
           headers: {
-            Authorization: `Bearer ${localuser.token}`,
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
@@ -171,12 +179,14 @@ const useProfilestore = create((set, get) => ({
     const { setload,setboxopen,setupdatebox } = get();
     setload(true);
     try {
+       const {user} = useAuthstore.getState()
+          if(!user) return;
       const res = await api.delete(
         `/profile/delp/${p}`,
         
         {
           headers: {
-            Authorization: `Bearer ${localuser.token}`,
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
@@ -207,12 +217,14 @@ const useProfilestore = create((set, get) => ({
     const {setload,fetchuser} = get()
     setload(true)
     try {
+       const {user} = useAuthstore.getState()
+    if(!user) return;
       const res = await api.patch(
-      `/profile/${localuser.id}/updateprofile`,
+      `/profile/${user.id}/updateprofile`,
       formdata,
       {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
           "Content-Type": "multipart/form-data",
         },
       } );

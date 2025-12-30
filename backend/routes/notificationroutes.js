@@ -97,7 +97,7 @@ const deletelimiter = rateLimit({
 
 
 
-router.get("/get-notification",authmiddleware,getlimiter,getnotification)
+router.get("/get-notification",authmiddleware,getnotification)
 router.post("/ban",authmiddleware,postlimiter,blogapprovednotify)
 router.post("/brn",authmiddleware,postlimiter,brn)
 router.post("/new-follower",authmiddleware,postlimiter,newfollower)

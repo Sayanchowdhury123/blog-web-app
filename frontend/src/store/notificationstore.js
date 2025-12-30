@@ -11,25 +11,29 @@ const useNotificationstore = create((set, get) => ({
   unreadCount: 0,
   fetchnotifications: async () => {
     try {
+      const { user } = useAuthstore.getState();
+      if (!user) return;
       const res = await api.get("/notify/get-notification", {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const unread = res.data.filter((n) => !n.read);
       set({ notifications: unread, unreadCount: unread?.length });
     } catch (error) {
-     toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   },
   markasread: async () => {
     try {
+      const { user } = useAuthstore.getState();
+      if (!user) return;
       const res = await api.put(
         "/notify/banr",
         {},
         {
           headers: {
-            Authorization: `Bearer ${localuser.token}`,
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
@@ -46,12 +50,11 @@ const useNotificationstore = create((set, get) => ({
         };
       });
     } catch (error) {
-     toast.error(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   },
-   initSocketListener: () => {
+  initSocketListener: () => {
     socket.on("newNotification", (notification) => {
-      
       set((state) => ({
         notifications: [notification, ...state.notifications],
         unreadCount: state.unreadCount + 1,

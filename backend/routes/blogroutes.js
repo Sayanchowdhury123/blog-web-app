@@ -132,7 +132,7 @@ const deletelimiter = rateLimit({
 
 
 router.get("/get-demo",getLimiter,fetchdemoblog)
-router.get("/related/:blogid/r",authmiddleware,getlimiter,related)
+router.get("/related/:blogid/r",authmiddleware,related)
 router.get("/",authmiddleware,getlimiter,authorizerole("writer","editor"),fetchblogs)
 router.get("/get-users",authmiddleware,selectuserlimiter,authorizerole("writer","editor"),selectusers)
 router.get("/:blogid",authmiddleware,getlimiter,fetchblog)

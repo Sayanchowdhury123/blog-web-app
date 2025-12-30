@@ -7,7 +7,7 @@ const {ipKeyGenerator} = require("express-rate-limit")
 
 const postlimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: 100,
   keyGenerator: (req) => {
     if (req.user && req.user.id) {
       return `user:${req.user.id.toString()}`;
@@ -45,7 +45,7 @@ const getlimiter = rateLimit({
 
 const updatelimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: 100,
   keyGenerator: (req) => {
     if (req.user && req.user.id) {
       return `user:${req.user.id.toString()}`;
@@ -62,7 +62,7 @@ const updatelimiter = rateLimit({
 
 const deletelimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: 100,
   keyGenerator: (req) => {
     if (req.user && req.user.id) {
       return `user:${req.user.id.toString()}`;
@@ -96,13 +96,13 @@ const deletelimiter = rateLimit({
 });
 
 router.get("/editorpicks",getLimiter,geteditorpicks)
-router.get("/:id",authmiddleware,getLimiter,getprofile)
+router.get("/:id",authmiddleware,getprofile)
 router.get("/:userid/recom",authmiddleware,getlimiter,getrecommdations)
 router.get("/:userid/savedblogs",authmiddleware,getlimiter,getsavedblogs)
 router.post("/:blogid/ep/:userid",authmiddleware,postlimiter,authorizerole("editor"),editorpicks)
 router.patch("/edit-email",authmiddleware,updatelimiter,editemail)
 router.patch("/edit-pass",authmiddleware,updatelimiter,editpassword)
-router.patch("/:blogid/togglesave/:userid",updatelimiter,authmiddleware,saveblog)
+router.patch("/:blogid/togglesave/:userid",authmiddleware,updatelimiter,saveblog)
 router.patch("/:userid/readh",authmiddleware,updatelimiter,trackhistory)
 router.patch("/:id/updateprofile",authmiddleware,updatelimiter,updateprofile)
 router.delete("/delp/:p",authmiddleware,deletelimiter,delp)

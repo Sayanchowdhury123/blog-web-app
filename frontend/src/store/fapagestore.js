@@ -9,9 +9,11 @@ const useFpagestore = create((set) => ({
   blogs: [],
   userinfoi: {},
   fetchuserinfo: async (userid) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.get(`/fpage/${userid}`, {
       headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
 
@@ -19,12 +21,14 @@ const useFpagestore = create((set) => ({
     set({ userinfoi: res.data.userinfo });
   },
   fu: async (fid) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
-      `/fpage/${fid}/uf/${localuser.id}`,
+      `/fpage/${fid}/uf/${user.id}`,
       {},
       {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
@@ -33,8 +37,8 @@ const useFpagestore = create((set) => ({
       return {
         userinfoi: {
           ...state.userinfoi,
-          followers: state.userinfoi.followers?.includes(localuser.id)
-            ? state.userinfoi.followers.filter((f) => f !== localuser.id)
+          followers: state.userinfoi.followers?.includes(user.id)
+            ? state.userinfoi.followers.filter((f) => f !== user.id)
             : [...state.userinfoi.followers, fid],
         },
       };
@@ -50,9 +54,11 @@ const useFpagestore = create((set) => ({
   },
   followerinfo: [],
   getfinfo: async (followerid) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
      const res = await api.get(`/fpage/${followerid}/followers`, {
       headers: {
-        Authorization: `Bearer ${localuser.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
   

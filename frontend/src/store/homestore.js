@@ -37,12 +37,14 @@ const useHomestore = create((set, get) => ({
   cid: null,
 
   togglelike: async (id) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
-      `/home/${id}/likes/${localuser.id}`,
+      `/home/${id}/likes/${user.id}`,
       {},
       {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
@@ -50,18 +52,20 @@ const useHomestore = create((set, get) => ({
     set((state) => {
       return {
         blogs: state.blogs.map((b) =>
-          b._id === id ? { ...b, likes: [...b.likes, localuser.id] } : b
+          b._id === id ? { ...b, likes: [...b.likes, user.id] } : b
         ),
       };
     });
   },
   removelike: async (id) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
-      `/home/${id}/rlikes/${localuser.id}`,
+      `/home/${id}/rlikes/${user.id}`,
       {},
       {
         headers: {
-          Authorization: `Bearer ${localuser.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
@@ -70,7 +74,7 @@ const useHomestore = create((set, get) => ({
       return {
         blogs: state.blogs.map((b) =>
           b._id === id
-            ? { ...b, likes: b.likes.filter((id) => id !== localuser.id) }
+            ? { ...b, likes: b.likes.filter((id) => id !== user.id) }
             : b
         ),
       };
@@ -79,6 +83,8 @@ const useHomestore = create((set, get) => ({
 
   commentsByBlog: {},
   fetchComments: async (blogId) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const blogState = get().commentsByBlog[blogId] || {
       comments: [],
       skip: 0,
@@ -91,7 +97,7 @@ const useHomestore = create((set, get) => ({
     const res = await api.get(
       `/home/${blogId}/comments?skip=${blogState.skip}&limit=${blogState.limit}`,
       {
-        headers: { Authorization: `Bearer ${localuser.token}` },
+        headers: { Authorization: `Bearer ${user.token}` },
       }
     );
 
@@ -109,11 +115,13 @@ const useHomestore = create((set, get) => ({
   },
 
   addComment: async (blogId, text) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
-      `/home/${blogId}/add-comment/${localuser.id}`,
+      `/home/${blogId}/add-comment/${user.id}`,
       { text },
       {
-        headers: { Authorization: `Bearer ${localuser.token}` },
+        headers: { Authorization: `Bearer ${user.token}` },
       }
     );
     
@@ -142,10 +150,12 @@ const useHomestore = create((set, get) => ({
   },
 
   delcom: async (blogid, commentid) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.delete(
-      `/home/${blogid}/comments/${localuser.id}/del/${commentid}`,
+      `/home/${blogid}/comments/${user.id}/del/${commentid}`,
       {
-        headers: { Authorization: `Bearer ${localuser.token}` },
+        headers: { Authorization: `Bearer ${user.token}` },
       }
     );
 
@@ -165,11 +175,13 @@ const useHomestore = create((set, get) => ({
   },
 
   editcom: async (blogid, editid, newComment) => {
+     const {user} = useAuthstore.getState()
+    if(!user) return;
     const res = await api.patch(
-      `/home/${blogid}/comments/${localuser.id}/edit/${editid}`,
+      `/home/${blogid}/comments/${user.id}/edit/${editid}`,
       { text: newComment },
       {
-        headers: { Authorization: `Bearer ${localuser.token}` },
+        headers: { Authorization: `Bearer ${user.token}` },
       }
     );
 
@@ -202,8 +214,10 @@ const useHomestore = create((set, get) => ({
   },
   recomdations: [],
   fetchr: async () => {
-    const res = await api.get(`/profile/${localuser.id}/recom`, {
-      headers: { Authorization: `Bearer ${localuser.token}` },
+     const {user} = useAuthstore.getState()
+    if(!user) return;
+    const res = await api.get(`/profile/${user.id}/recom`, {
+      headers: { Authorization: `Bearer ${user.token}` },
     });
 
     set({ recomdations: res.data });

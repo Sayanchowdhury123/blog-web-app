@@ -275,65 +275,131 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
             {
                 user?.role === "editor" && (
-                    <div className="card bg-base-200 shadow-xl  h-[40vh] overflow-y-auto  sm:w-full w-[384px]" style={{ scrollbarWidth: "none" }}>
-                        <div className="card-body">
+                    <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-scroll w-full" style={{ scrollbarWidth: "none" }}>
+                        <div className="card-body h-full p-4 flex flex-col">
                             <h2 className="card-title">📈 Editing Time</h2>
-                            <div className="">
-                                <table className="table table-zebra w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Views</th>
-                                            <th>Likes</th>
-                                            <th>Edit Time (sec)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            editinfo[0]?.blogsEdited?.map((blog, idx) => (
-                                                <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
-                                                    <td>{blog.blogid.title}</td>
-                                                    <td>{blog.blogid.views?.length}</td>
-                                                    <td>{blog.blogid.likes?.length}</td>
-                                                    <td>{blog.duration}</td>
+
+                            <div className="flex-1 overflow-y-auto mt-3"
+                                style={{ scrollbarWidth: "none" }}>
+                                <div className="hidden md:block">
+                                    <table className="table table-zebra w-full">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Views</th>
+                                                <th>Likes</th>
+                                                <th>Edit Time (sec)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {editinfo[0]?.blogsEdited?.map((blog, idx) => (
+                                                <motion.tr
+                                                    key={idx}
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: idx * 0.1 }}
+                                                >
+                                                    <td className="max-w-[200px] truncate">
+                                                        {blog?.blogid?.title}
+                                                    </td>
+                                                    <td>{blog?.blogid?.views?.length}</td>
+                                                    <td>{blog?.blogid?.likes?.length}</td>
+                                                    <td>{ Math.trunc(blog?.duration)}s</td>
                                                 </motion.tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="md:hidden space-y-4">
+                                    {editinfo[0]?.blogsEdited?.map((blog, idx) => (
+                                        <motion.div
+                                            key={idx}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: idx * 0.1 }}
+                                            className="bg-base-100 p-4 rounded-xl shadow"
+                                        >
+                                            <h3 className="font-semibold text-sm mb-3 line-clamp-2">
+                                                {blog?.blogid?.title}
+                                            </h3>
+
+                                            <div className="flex justify-between text-xs text-base-content/80">
+                                                <span>👁 {blog?.blogid?.views?.length}</span>
+                                                <span>❤️ {blog?.blogid?.likes?.length}</span>
+                                                <span>⏱ {Math.trunc(blog?.duration)}s</span>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+
                             </div>
+
+
+
+
+
                         </div>
                     </div>
                 )
             }
 
-            <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto  sm:w-full w-[384px]" style={{ scrollbarWidth: "none" }}>
-                <div className="card-body">
+
+            <div className="card bg-base-200 shadow-xl h-[40vh] overflow-y-auto  sm:w-full " style={{ scrollbarWidth: "none" }}>
+                <div className="card-body h-full p-4 flex flex-col">
                     <h2 className="card-title">📈 Popular Blogs</h2>
-                    <div className="">
-                        <table className="table table-zebra w-full">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Views</th>
-                                    <th>Likes</th>
-                                    <th>Avg Duration (sec)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    avgdurationdata?.map((blog, idx) => (
-                                        <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
-                                            <td>{blog.title}</td>
-                                            <td>{blog.views}</td>
-                                            <td>{blog.likes}</td>
-                                            <td>{blog.avgduration}</td>
-                                        </motion.tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
+                    <div className="flex-1 overflow-y-auto mt-3"
+                        style={{ scrollbarWidth: "none" }}>
+                        <div className="hidden md:block">
+                            <table className="table table-zebra w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Views</th>
+                                        <th>Likes</th>
+                                        <th>Edit Time (sec)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        avgdurationdata?.map((blog, idx) => (
+                                            <motion.tr initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} key={idx}>
+                                                <td>{blog?.title}</td>
+                                                <td>{blog?.views}</td>
+                                                <td>{blog?.likes}</td>
+                                                <td>{Math.trunc(blog?.avgduration)}s</td>
+                                            </motion.tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="md:hidden space-y-4">
+                            {avgdurationdata?.map((blog, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className="bg-base-100 p-4 rounded-xl shadow"
+                                >
+                                    <h3 className="font-semibold text-sm mb-3 line-clamp-2">
+                                        {blog?.title}
+                                    </h3>
+
+                                    <div className="flex justify-between text-xs text-base-content/80">
+                                        <p>👁 {blog?.views}</p>
+                                        <p>❤️ {blog?.likes}</p>
+                                        <p>⏱ {Math.trunc(blog?.avgduration)}s</p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
+
+
+
+
                 </div>
             </div>
 
