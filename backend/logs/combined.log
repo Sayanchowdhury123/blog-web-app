@@ -622,3 +622,13 @@
 {"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2025-12-29 20:13:20"}
 {"level":"info","message":"Socket connected","socketId":"DTRVqqsB8-HUEUoiAAAB","timestamp":"2025-12-29 20:13:25"}
 {"level":"info","message":"Socket connected","socketId":"RbBdznkwx37nyMSyAAAD","timestamp":"2025-12-29 20:13:39"}
+{"level":"info","message":"database connected","timestamp":"2025-12-30 13:53:45"}
+{"level":"info","message":"server running 5000","timestamp":"2025-12-30 13:53:45"}
+{"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2025-12-30 13:53:45"}
+{"level":"info","message":"Socket connected","socketId":"aofjtIJZz017z0hmAAAB","timestamp":"2025-12-30 13:54:23"}
+{"level":"info","message":"Socket connected","socketId":"ecHSn5STIxKzJRAUAAAD","timestamp":"2025-12-30 13:55:02"}
+{"level":"info","message":"Socket connected","socketId":"P-5fBSW-FUknUT5tAAAF","timestamp":"2025-12-30 13:58:21"}
+{"level":"info","message":"Socket connected","socketId":"3OYM-SsWOBK0AOvMAAAH","timestamp":"2025-12-30 13:59:29"}
+{"level":"info","message":"Socket connected","socketId":"O-1vYf_CFgz5_vHiAAAJ","timestamp":"2025-12-30 14:01:10"}
+{"level":"info","message":"Socket connected","socketId":"ux_h9kU0-Jxa8rodAAAL","timestamp":"2025-12-30 14:01:18"}
+{"level":"info","message":"Socket connected","socketId":"1qqiPlfW3JNR3C_8AAAN","timestamp":"2025-12-30 14:06:26"}

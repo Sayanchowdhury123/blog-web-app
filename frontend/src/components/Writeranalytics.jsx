@@ -23,7 +23,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
     const viewstrenddata = [].slice(0, 7)
 
-    postanalytics.reduce((acc, record) => {
+    postanalytics?.reduce((acc, record) => {
         const date = dayjs(record.entryat).format("YYYY-MM-DD");
         const existing = viewstrenddata.find((d) => d.date === date)
 
@@ -74,7 +74,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
     const devicecount = {};
 
-    postanalytics.forEach((record) => {
+    postanalytics?.forEach((record) => {
         const device = record.device;
         if (devicecount[device]) {
             devicecount[device] += 1
@@ -88,6 +88,21 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
         value: devicecount[key],
     }))
 
+
+const countrycount = {};
+   postanalytics?.forEach((record) => {
+        const location = record.location.country;
+        if (countrycount[location]) {
+            countrycount[location] += 1
+        } else {
+            countrycount[location] = 1;
+        }
+    })
+
+     const ct = Object.keys(countrycount).map((key) => ({
+        name: key,
+        value: countrycount[key],
+    }))
 
 
     const locationData = [
@@ -110,7 +125,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
 
     const avgdurations = {};
 
-    postanalytics.forEach((session) => {
+    postanalytics?.forEach((session) => {
         const blogid = session.postid._id;
         if (!avgdurations[blogid]) {
             avgdurations[blogid] = {
@@ -254,7 +269,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
-                                data={locationData}
+                                data={ct}
                                 dataKey="value"
                                 nameKey="name"
                                 cx="50%"
@@ -262,7 +277,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
                                 outerRadius={100}
                                 label
                             >
-                                {locationData.map((entry, idx) => (
+                                {ct.map((entry, idx) => (
                                     <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
                                 ))}
                             </Pie>
