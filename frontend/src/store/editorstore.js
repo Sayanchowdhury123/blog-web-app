@@ -16,8 +16,9 @@ const useEditorstore = create((set) => ({
         Authorization: `Bearer ${user.token}`,
       },
     });
-
-    set({ blogs: res.data });
+    
+      set({ blogs: res.data })
+    
   },
   bloginfo: "",
   approveblog: async (blogid) => {

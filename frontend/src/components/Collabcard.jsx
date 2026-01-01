@@ -20,7 +20,7 @@ import useBlogmstore from "@/store/Blogm";
 import api from "@/axios";
 
 export default function Collabcard({ type }) {
-    const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog,notjoin } = useEditorstore();
+    const { fetchall, blogs, approveblog, bid, setbid, bloginfo, epblog, notjoin } = useEditorstore();
     const { setshownav, user } = useAuthstore()
     const [loading, setloading] = useState(false)
     const [id, setid] = useState(null)
@@ -68,7 +68,7 @@ export default function Collabcard({ type }) {
 
 
         } catch (error) {
-            
+
             toast('Status upation failed',
                 {
                     icon: '❌',
@@ -114,7 +114,7 @@ export default function Collabcard({ type }) {
 
 
         } catch (error) {
-            
+
             toast('Action failed',
                 {
                     icon: '❌',
@@ -132,7 +132,27 @@ export default function Collabcard({ type }) {
 
 
 
-    const collabblogs = blogs.filter((b) => b.collabrators?.includes(user.id))
+    const collabblogs = blogs?.filter((b) => b.collabrators?.includes(user.id))
+
+    if (collabblogs?.length === 0) {
+        return (
+            <>
+                <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center justify-center h-[60vh]">
+                    <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full mx-auto">
+                        <p className="text-lg font-semibold text-base-content ">
+                            You Are Not Collabrating With Anyone
+                        </p>
+
+
+                    </div>
+                </motion.div>
+
+            </>
+        )
+    }
 
 
     return (

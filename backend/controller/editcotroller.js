@@ -8,12 +8,13 @@ exports.fetchblogall = async (req, res) => {
     const blogs = await Blogs.find()
       .sort({ createdAt: -1 })
       .populate("creator comments.user");
+
     if (!blogs) {
       return res.status(400).json("no blogs found");
     }
     res.status(200).json(blogs);
   } catch (error) {
- 
+    
     res.status(500).json({ msg: "internal server error" });
   }
 };

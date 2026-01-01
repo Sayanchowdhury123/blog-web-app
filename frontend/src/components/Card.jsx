@@ -50,7 +50,7 @@ export default function Card({ type }) {
 
 
             }
-  
+
             socket.emit("sendNotification", {
                 user: creator,
                 message: `🎉 Your blog ${blogtitle} has been approved!`,
@@ -62,7 +62,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -91,7 +91,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -127,7 +127,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-        
+
             toast('Status upation failed',
                 {
                     icon: '❌',
@@ -173,7 +173,7 @@ export default function Card({ type }) {
 
 
         } catch (error) {
-            
+
             toast('Action failed',
                 {
                     icon: '❌',
@@ -189,11 +189,58 @@ export default function Card({ type }) {
         }
     }
 
+    const list = savedpage ? savedblogs : blogs;
+
+    if (!list || list.length === 0 && savedpage) {
+        return (
+            <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }} className="flex items-center justify-center h-[60vh]">
+                <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full">
+                    <p className="text-lg font-semibold mb-2">
+                         🔖 No Saved Blogs
+                    </p>
+
+                    <p className="text-sm text-gray-500 mb-6">
+                         You haven’t saved any blogs yet.
+                    
+                    </p>
+
+                  
+                        <button
+                            className="btn btn-primary w-full"
+                            onClick={() => navigate("/home")}
+                        >
+                            Explore Blog
+                        </button>
+                    
+                </div>
+            </motion.div>
+        );
+    }
+
+    
+    if (!list || list.length === 0 && !savedpage) {
+        return (
+            <motion.div  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }} className="flex items-center justify-center h-[60vh]">
+                <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full">
+                    <p className="text-lg font-semibold mb-2">
+                         ✍️ No Blogs Created Yet
+                    </p>
+
+                </div>
+            </motion.div>
+        );
+    }
+
     return (
         <motion.div className={`grid grid-cols-1 ${savedpage ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4 p-4 `} >
 
             {
-                (savedpage ? savedblogs : blogs)?.map((b, i) => (
+
+                list?.map((b, i) => (
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
                         {
                             id === b._id && (
@@ -241,7 +288,7 @@ export default function Card({ type }) {
                                 <div className="card-actions justify-end">
                                     <button className="btn btn-sm btn-secondary tooltip" data-tip="Review Content" da="true" onClick={() => navigate(`/review/${b._id}`, {
                                         state: { blogid: b._id }
-                                    })}><MdOutlineReviews/></button>
+                                    })}><MdOutlineReviews /></button>
                                     <button className="btn btn-sm tooltip" data-tip="Edit Content" da="true" onClick={() => navigate(`/edit-content/${b._id}`, {
                                         state: { t: b, editor: "editcontent" }
                                     })}><MdEdit /></button>
@@ -252,21 +299,21 @@ export default function Card({ type }) {
 
                                         }}><FcDisapprove /></button>
                                     ) : (
-                                        <button className="btn btn-primary btn-sm tooltip" data-tip="Approve" da="true"  onClick={() => {
+                                        <button className="btn btn-primary btn-sm tooltip" data-tip="Approve" da="true" onClick={() => {
                                             ab(b._id, b.title, b?.creator?._id)
 
                                         }} ><FcApprove /></button>
                                     )}
 
                                     {b?.ep ? (
-                                        <button className="btn btn-error btn-sm tooltip" data-tip="Unpick" da="true"  onClick={() => pickep(b._id)}><IoCheckmarkCircleSharp /></button>
+                                        <button className="btn btn-error btn-sm tooltip" data-tip="Unpick" da="true" onClick={() => pickep(b._id)}><IoCheckmarkCircleSharp /></button>
                                     ) : (
                                         <button className="btn btn-neutral btn-sm tooltip" data-tip="Pick" da="true" onClick={() => pickep(b._id)}><IoCheckmarkCircleOutline /></button>
                                     )}
 
                                     {
                                         b.collabrators?.includes(user.id) && (
-                                            <button className="btn btn-sm tooltip" data-tip="Join" da="true"   onClick={() => navigate(`/collab/${b._id}`, {
+                                            <button className="btn btn-sm tooltip" data-tip="Join" da="true" onClick={() => navigate(`/collab/${b._id}`, {
                                                 state: { t: b }
                                             })}><MdOutlineConnectWithoutContact />Join</button>
                                         )

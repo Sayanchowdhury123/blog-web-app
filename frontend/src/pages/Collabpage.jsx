@@ -24,6 +24,7 @@ export default function Collabpage() {
     try {
       await fetchall()
     } catch (error) {
+     
        toast.error(error.response?.data?.msg || "Something went wrong");
     } finally {
       setloading(false)

@@ -95,7 +95,7 @@ const deletelimiter = rateLimit({
 });
 
 router.get("/epblog-fetch",getLimiter,fetchepblogs)
-router.get("/fetch-all",authmiddleware,getlimiter,authorizerole("editor"),fetchblogall)
+router.get("/fetch-all",authmiddleware,getlimiter,authorizerole("editor","writer"),fetchblogall)
 router.patch("/:blogid/approval",authmiddleware,upadtelimiter,authorizerole("editor"),changeapproval)
 router.patch("/:blogid/epblog",authmiddleware,upadtelimiter,authorizerole("editor"),epblogs)
 

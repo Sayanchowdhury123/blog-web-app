@@ -20,7 +20,7 @@ import useAuthstore from "@/store/authstore";
 
 export default function Writeranalytics({ data, popularblogs, postanalytics, editordata, editinfo }) {
     const { user } = useAuthstore()
-
+ 
     const viewstrenddata = [].slice(0, 7)
 
     postanalytics?.reduce((acc, record) => {
@@ -75,7 +75,7 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
     const devicecount = {};
 
     postanalytics?.forEach((record) => {
-        const device = record.device;
+        const device = record?.device;
         if (devicecount[device]) {
             devicecount[device] += 1
         } else {
@@ -89,9 +89,9 @@ export default function Writeranalytics({ data, popularblogs, postanalytics, edi
     }))
 
 
-const countrycount = {};
-   postanalytics?.forEach((record) => {
-        const location = record.location.country;
+    const countrycount = {};
+    postanalytics?.forEach((record) => {
+        const location = record?.location?.country;
         if (countrycount[location]) {
             countrycount[location] += 1
         } else {
@@ -99,7 +99,7 @@ const countrycount = {};
         }
     })
 
-     const ct = Object.keys(countrycount).map((key) => ({
+    const ct = Object.keys(countrycount).map((key) => ({
         name: key,
         value: countrycount[key],
     }))
@@ -151,7 +151,38 @@ const countrycount = {};
         return a + edittime;
     }, 0)
 
+    if (user?.role === "writer" && data?.length === 0 && postanalytics?.length === 0) {
+        return (
+            <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }} className="flex items-center justify-center h-[60vh]">
+                <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full">
+                    <p className="text-lg font-semibold mb-2">
+                          No writer analytics data found yet
+                    </p>
 
+                </div>
+            </motion.div>
+        )
+
+    }
+
+    if (user?.role === "editor" && data?.length === 0 && postanalytics?.length === 0  && editordata?.length === 0) {
+        return (
+            <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                 className="flex items-center justify-center h-[60vh]">
+                <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full">
+                    <p className="text-lg font-semibold mb-2">
+                        No editor analytics data found yet
+                    </p>
+
+                </div>
+            </motion.div>
+        )
+
+    }
 
 
     return (
@@ -319,7 +350,7 @@ const countrycount = {};
                                                     </td>
                                                     <td>{blog?.blogid?.views?.length}</td>
                                                     <td>{blog?.blogid?.likes?.length}</td>
-                                                    <td>{ Math.trunc(blog?.duration)}s</td>
+                                                    <td>{Math.trunc(blog?.duration)}s</td>
                                                 </motion.tr>
                                             ))}
                                         </tbody>

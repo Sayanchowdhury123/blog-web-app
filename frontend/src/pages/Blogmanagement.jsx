@@ -150,44 +150,80 @@ export default function Blogmanage() {
           )
         }
 
-        <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4" >
+        <div >
+
           {
-            blogs?.map((b, i) => (
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id} >
-                <figure>
-                  <img
-                    src={`${b.coverimage}`}
-                    alt="Shoes" />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">{b?.title}</h2>
+            blogs?.length > 0 ? (
+              <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4" >
+                {
+                  blogs?.map((b, i) => (
+                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id} >
+                      <figure>
+                        <img
+                          src={`${b.coverimage}`}
+                          alt="Shoes" />
+                      </figure>
+                      <div className="card-body">
+                        <h2 className="card-title">{b?.title}</h2>
 
-                  <div dangerouslySetInnerHTML={{
-                    __html: getexcerpt(b.blogtext)
-                  }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
-                    state: { blogid: b._id }
-                  })}>
+                        <div dangerouslySetInnerHTML={{
+                          __html: getexcerpt(b.blogtext)
+                        }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
+                          state: { blogid: b._id }
+                        })}>
 
-                  </div>
-                  <p></p>
-                  <div className="card-actions ">
+                        </div>
+                        <p></p>
+                        <div className="card-actions ">
 
-                    <button className="btn tooltip" data-tip="collaboration" da="true" onClick={() => {
-                      setubox()
-                      setroomid(b)
-                    }}><FcCollaboration /></button>
-                    <button className="btn btn-success tooltip" data-tip="edit content" da="true" onClick={() => navigate(`/edit-content/${b._id}`, {
-                      state: { t: b }
-                    })}><MdContentPasteGo /></button>
-                    <button className="btn btn-primary tooltip" data-tip="edit blog" da="true" onClick={() => setshowedit(b._id, b)}><MdOutlineEdit /></button>
-                    <button className="btn btn-error tooltip" data-tip="delete blog" da="true" onClick={() => setshowalert(b._id)}><AiFillDelete /></button>
+                          <button className="btn tooltip" data-tip="collaboration" da="true" onClick={() => {
+                            setubox()
+                            setroomid(b)
+                          }}><FcCollaboration /></button>
+                          <button className="btn btn-success tooltip" data-tip="edit content" da="true" onClick={() => navigate(`/edit-content/${b._id}`, {
+                            state: { t: b }
+                          })}><MdContentPasteGo /></button>
+                          <button className="btn btn-primary tooltip" data-tip="edit blog" da="true" onClick={() => setshowedit(b._id, b)}><MdOutlineEdit /></button>
+                          <button className="btn btn-error tooltip" data-tip="delete blog" da="true" onClick={() => setshowalert(b._id)}><AiFillDelete /></button>
 
-                  </div>
-                </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+
+                }
               </motion.div>
-            ))
+
+            ) : (
+              (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                   className="flex items-center justify-center h-[60vh]">
+                  <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full mx-auto">
+                    <p className="text-lg font-semibold text-base-content mb-4">
+                      ✍️ No Blogs Created Yet
+                    </p>
+
+                    <p className="text-sm text-gray-500 mb-6">
+                      Start sharing your thoughts by creating your first blog.
+                    </p>
+
+                    <button
+                      className="btn btn-primary w-full"
+                      onClick={() => navigate("/create-blogs")}
+                    >
+                      Create Blog
+                    </button>
+                  </div>
+                </motion.div>
+
+              )
+            )
+
+
           }
-        </motion.div>
+        </div>
 
 
       </div>

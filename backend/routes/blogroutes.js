@@ -114,14 +114,6 @@ const deletelimiter = rateLimit({
   legacyHeaders: false,
 });
 
- const getLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-  message: { message: "Too many GET requests" },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
  const postLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 50,
@@ -130,9 +122,19 @@ const deletelimiter = rateLimit({
   legacyHeaders: false,
 });
 
+ const getLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { message: "Too many GET requests" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+
+
 
 router.get("/get-demo",getLimiter,fetchdemoblog)
-router.get("/related/:blogid/r",authmiddleware,related)
+router.get("/related/:blogid/r",getLimiter,authmiddleware,related)
 router.get("/",authmiddleware,getlimiter,authorizerole("writer","editor"),fetchblogs)
 router.get("/get-users",authmiddleware,selectuserlimiter,authorizerole("writer","editor"),selectusers)
 router.get("/:blogid",authmiddleware,getlimiter,fetchblog)

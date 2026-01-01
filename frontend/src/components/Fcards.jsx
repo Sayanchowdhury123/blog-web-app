@@ -33,7 +33,7 @@ import useFollowingstore from "@/store/followingstore";
 
 export default function Fcards() {
     const [loading, setloading] = useState(false)
-    
+
     const navigate = useNavigate()
     const { togglelike, removelike, commentsByBlog } = useHomestore()
     const { user } = useAuthstore()
@@ -42,58 +42,58 @@ export default function Fcards() {
     const [option, setoption] = useState(null)
     const bottomref = useRef(null)
     const [showlink, setshowlink] = useState(null)
-    const { followingblogs,blogs,h} = useFollowingstore()
-    const[floading,setfloading] = useState(false)
+    const { followingblogs, blogs, h } = useFollowingstore()
+    const [floading, setfloading] = useState(false)
     const location = useLocation()
 
-  const fetchfblogs = async () => {
+    const fetchfblogs = async () => {
         setloading(true)
         try {
-          
-        await followingblogs()
-         
+
+            await followingblogs()
+
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
     }
 
-  
-      useEffect(() => {
+
+    useEffect(() => {
 
         useFollowingstore.setState({
-            blogs:[],
-            s:0,
-            l:2,
-            h:true
+            blogs: [],
+            s: 0,
+            l: 2,
+            h: true
         })
         fetchfblogs()
-      },[])
-   
-        useEffect(() => {
-            if (loading) return;
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting && h) {
+    }, [])
 
-                    
-                      fetchfblogs()
-                    
-                    
-                }
-            }, {
-                threshold: 1.0
-            })
+    useEffect(() => {
+        if (loading) return;
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && h) {
 
-            if (bottomref.current) {
-                observer.observe(bottomref.current)
+
+                fetchfblogs()
+
+
             }
+        }, {
+            threshold: 1.0
+        })
 
-            return () => {
-                if (bottomref.current) observer.unobserve(bottomref.current)
-            }
-        }, [loading, h, followingblogs])
-    
+        if (bottomref.current) {
+            observer.observe(bottomref.current)
+        }
+
+        return () => {
+            if (bottomref.current) observer.unobserve(bottomref.current)
+        }
+    }, [loading, h, followingblogs])
+
 
 
 
@@ -103,7 +103,7 @@ export default function Fcards() {
             await togglelike(id)
 
         } catch (error) {
-           toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -115,7 +115,7 @@ export default function Fcards() {
             await removelike(id)
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -128,11 +128,11 @@ export default function Fcards() {
 
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
-   
+
 
     const copylink = (blogid) => {
 
@@ -179,6 +179,23 @@ export default function Fcards() {
     };
 
 
+    if (blogs.length === 0) {
+        return (
+            <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center justify-center h-[60vh]">
+                <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full mx-auto">
+                    <p className="text-lg font-semibold text-base-content ">
+                         You Are Not Following Anyone
+                    </p>
+
+                   
+                </div>
+            </motion.div>
+
+        )
+    }
 
 
 
@@ -345,9 +362,27 @@ export default function Fcards() {
 
                     <div ref={bottomref} className="h-[20px]" />
                     <div className="text-center">
-                        { loading && (<span className="loading loading-xl  loading-spinner"></span>)}
+                        {loading && (<span className="loading loading-xl  loading-spinner"></span>)}
 
-                        { !h && (<p className="font-sans text-xl font-semibold">No more blogs</p>)}
+                        {!h && (
+
+                            // <p className="font-sans text-xl font-semibold ">No more blogs</p>
+                            <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3 }} className="flex items-center justify-center ">
+                                <div className="text-center bg-base-200 p-4 rounded-xl shadow-md max-w-sm w-full">
+                                    <p className="text-lg font-semibold mb-2">
+                                        No More Blogs From Your Following
+                                    </p>
+
+                                </div>
+                            </motion.div>
+
+
+
+                        )
+
+                        }
                     </div>
 
 
