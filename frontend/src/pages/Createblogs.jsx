@@ -137,16 +137,7 @@ export default function Createblogs() {
             navigate("/yourblogs")
 
         } catch (error) {
-            // console.log(error?.response?.data?.error)
-            // toast('Blog creation failed',
-            //     {
-            //         icon: '❌',
-            //         style: {
-            //             borderRadius: '10px',
-            //             background: '#333',
-            //             color: '#fff',
-            //         },
-            //     })
+      
 
             error?.response?.data?.error?.forEach((msg) => {
                 toast.error(

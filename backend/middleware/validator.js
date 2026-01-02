@@ -1,5 +1,5 @@
 const validate = (schema) => (req, res, next) => {
-    console.log(req.body)
+   
   if (!req.body) {
     return res.status(400).json({
       message: "Request body is missing",

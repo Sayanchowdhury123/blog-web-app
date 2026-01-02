@@ -64,7 +64,7 @@ export default function Analytics() {
             setpb(res.data)
         } catch (error) {
             toast.error(error.response?.data?.msg || "Something went wrong");
-              console.log(error)
+            
         } finally {
             setloading(false)
         }

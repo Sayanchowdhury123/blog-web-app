@@ -100,7 +100,7 @@ export default function Blog({ blog }) {
   const getexcerpt = (text, wordlimit = 50) => {
     const words = text?.trim().split(/\s+/)
     if (words.length <= wordlimit) {
-      console.log(text)
+      
       return text
     } else {
       return words.slice(0, wordlimit).join(" ") + "..."

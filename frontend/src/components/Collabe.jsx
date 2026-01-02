@@ -39,6 +39,7 @@ const yjsInstances = new Map();
 
 export default function Collabe({ intialContent = "", onContentChange, blogid }) {
   const { user } = useAuthstore()
+  const wsUrl = import.meta.env.VITE_YJS_WS_URL || 'ws://localhost:5001';
   const { setblogtext, blogt } = useBlogmstore()
   const [initialContentApplied, setInitialContentApplied] = useState(false);
   const instanceKey = `blog-${blogid}`;
@@ -46,7 +47,7 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   if (!yjsInstances.has(instanceKey)) {
     ydoc = new Y.Doc();
     provider = new WebsocketProvider(
-      'ws://localhost:5001',
+      wsUrl,
       instanceKey,
       ydoc
     );
@@ -59,12 +60,12 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
   const getRandomColor = () => {
   const colors = [
-    "#f87171", // red
-    "#60a5fa", // blue
-    "#34d399", // green
-    "#fbbf24", // yellow
-    "#a78bfa", // purple
-    "#fb7185", // pink
+    "#f87171", 
+    "#60a5fa", 
+    "#34d399", 
+    "#fbbf24", 
+    "#a78bfa", 
+    "#fb7185", 
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 };

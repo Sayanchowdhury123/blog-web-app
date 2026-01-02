@@ -813,3 +813,29 @@
 {"level":"info","message":" Yjs WebSocket connected","timestamp":"2026-01-01 21:37:56"}
 {"level":"info","message":"Socket connected","socketId":"NNwcrLEjgq9UH3l2AAAF","timestamp":"2026-01-01 21:37:56"}
 {"level":"info","message":" Yjs WebSocket connected","timestamp":"2026-01-01 21:38:06"}
+{"level":"info","message":"database connected","timestamp":"2026-01-02 19:52:23"}
+{"level":"info","message":"server running 5000","timestamp":"2026-01-02 19:52:23"}
+{"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2026-01-02 19:52:23"}
+{"level":"info","message":"Socket connected","socketId":"R2DFc0cKzBBSq12iAAAB","timestamp":"2026-01-02 19:52:50"}
+{"level":"info","message":"Socket connected","socketId":"bkHL2ppIV4c_VyTiAAAD","timestamp":"2026-01-02 20:07:15"}
+{"level":"info","message":"Socket connected","socketId":"ybygnPjGu8IScqFnAAAF","timestamp":"2026-01-02 20:07:16"}
+{"level":"info","message":"Socket connected","socketId":"UlgK7TLjsIs-G1uDAAAH","timestamp":"2026-01-02 20:07:19"}
+{"level":"info","message":"Socket connected","socketId":"RYVk63sNDH56Zpr_AAAJ","timestamp":"2026-01-02 20:07:21"}
+{"level":"info","message":"Socket connected","socketId":"NHsLbIjj_0pV-m5eAAAL","timestamp":"2026-01-02 20:07:23"}
+{"level":"info","message":"Socket connected","socketId":"Yg0uPBVMjf7WCQbCAAAN","timestamp":"2026-01-02 20:08:33"}
+{"level":"info","message":"Socket connected","socketId":"xZnj5KLlW8uuxUH9AAAP","timestamp":"2026-01-02 20:09:05"}
+{"level":"info","message":"Socket connected","socketId":"TVo0scur0HTXBR5AAAAR","timestamp":"2026-01-02 20:09:09"}
+{"level":"info","message":"Socket connected","socketId":"hQcJAqml8P0udEvdAAAT","timestamp":"2026-01-02 20:09:14"}
+{"level":"info","message":"database connected","timestamp":"2026-01-02 20:16:32"}
+{"level":"info","message":"server running 5000","timestamp":"2026-01-02 20:16:33"}
+{"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2026-01-02 20:16:33"}
+{"level":"info","message":"Socket connected","socketId":"q48P7G7B2aRa8ln7AAAB","timestamp":"2026-01-02 20:16:44"}
+{"level":"info","message":"Socket connected","socketId":"h_XTwrz6lkOwZRWNAAAD","timestamp":"2026-01-02 20:17:34"}
+{"level":"info","message":"Socket connected","socketId":"C4Yg8BtGHxd7ZOtgAAAF","timestamp":"2026-01-02 20:17:56"}
+{"level":"info","message":"database connected","timestamp":"2026-01-02 20:19:44"}
+{"level":"info","message":"server running 5000","timestamp":"2026-01-02 20:19:44"}
+{"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2026-01-02 20:19:44"}
+{"level":"info","message":"database connected","timestamp":"2026-01-02 20:19:50"}
+{"level":"info","message":"server running 5000","timestamp":"2026-01-02 20:19:50"}
+{"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2026-01-02 20:19:50"}
+{"level":"info","message":"Socket connected","socketId":"rWyuyu03sVlxtpsWAAAB","timestamp":"2026-01-02 20:19:52"}
