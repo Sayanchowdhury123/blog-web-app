@@ -64,14 +64,7 @@ export default function Blog({ blog }) {
     readhistory()
   }, [])
 
-  const getexcerpt = (text, wordlimit = 50) => {
-    const words = text?.trim().split(/\s+/)
-    if (words.length <= wordlimit) {
-      return text
-    } else {
-      return words.slice(0, wordlimit).join(" ") + "..."
-    }
-  }
+
 
   const getrelated = async () => {
     try {
@@ -89,8 +82,8 @@ export default function Blog({ blog }) {
       setrelated(res.data)
 
     } catch (error) {
-      
-      toast.error(error.response?.data?.msg || "Something went wrong");
+
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
 
 
@@ -98,10 +91,38 @@ export default function Blog({ blog }) {
 
 
   useEffect(() => {
-     if (blog?._id && blog?.tags) {
-    getrelated();
-  }
+    if (blog?._id && blog?.tags) {
+      getrelated();
+    }
   }, [blog._id])
+
+
+  const getexcerpt = (text, wordlimit = 50) => {
+    const words = text?.trim().split(/\s+/)
+    if (words.length <= wordlimit) {
+      console.log(text)
+      return text
+    } else {
+      return words.slice(0, wordlimit).join(" ") + "..."
+    }
+  }
+
+  const getexcerpt2 = (html, wordLimit = 50) => {
+    if (!html) return "";
+
+    // Convert HTML → plain text
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    const text = tempDiv.textContent || tempDiv.innerText || "";
+
+    const words = text.trim().split(/\s+/);
+
+    if (words.length <= wordLimit) {
+      return text;
+    }
+
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
 
 
   return (
@@ -172,31 +193,47 @@ export default function Blog({ blog }) {
         </motion.div>
       </div>
 
-      <div className="mt-5 w-5xl mx-auto p-4 " style={{ scrollbarWidth: "none" }}>
-        <h1 className="text-xl font-bold px-4 flex items-center gap-2 ">Related Blogs</h1>
-        <motion.div className="flex items-center  gap-4 mt-5 overflow-x-hidden " style={{ scrollbarWidth: "none" }}>
-          {
-            related?.map((b, i) => (
-              <motion.div whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100 w-[399px] h-[265px] image-full  shadow-sm" key={b._id} >
-                <figure>
-                  <img
-                    src={`${b.coverimage}`}
-                    alt="Shoes" />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">{b?.title}</h2>
+      <div className="mt-5 max-w-5xl mx-auto p-4">
+        <h1 className="text-xl font-bold px-4 flex items-center gap-2">
+          Related Blogs
+        </h1>
 
-               
+        <motion.div
+          className="flex gap-4 mt-5 overflow-x-auto whitespace-nowrap"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {related?.map((b, i) => (
+            <motion.div key={b?._id}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.3 }} onClick={() => navigate(`/blog/${b?._id}`, {
+                state: { blogid: b?._id }
+              })}
+              className="relative card bg-base-100 w-[399px] h-[265px] shadow-sm flex-shrink-0 overflow-hidden cursor-pointer"
+            >
 
-                  
-                  <p></p>
+              <img
+                src={b?.coverimage}
+                alt={b?.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
 
-                </div>
-              </motion.div>
-            ))
-          }
+
+              <div className="absolute inset-0 bg-black/80"></div>
+
+
+              <div className="relative card-body text-white">
+                <h1 className="card-title whitespace-normal">{b?.title}</h1>
+
+      
+              </div>
+            </motion.div>
+
+          ))}
         </motion.div>
       </div>
+
     </div>
 
   )

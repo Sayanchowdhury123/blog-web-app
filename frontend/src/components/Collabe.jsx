@@ -1,14 +1,8 @@
 import { EditorContent, EditorContext, useEditor, Editor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { useEffect, useMemo, useRef, useState } from "react"
-
-import { TextStyle } from "@tiptap/extension-text-style";
-import { FontFamily } from "@tiptap/extension-text-style";
-import { FontSize } from "@tiptap/extension-text-style";
 import { HiListBullet } from "react-icons/hi2";
-
 import { FaGripLines } from "react-icons/fa";
-
 import { Undo2Icon } from "./tiptap-icons/undo2-icon";
 import { Redo2Icon } from "./tiptap-icons/redo2-icon";
 import { BoldIcon } from "./tiptap-icons/bold-icon";
@@ -17,11 +11,11 @@ import { StrikeIcon } from "./tiptap-icons/strike-icon";
 import { Code2Icon } from "./tiptap-icons/code2-icon";
 import { UnderlineIcon } from "./tiptap-icons/underline-icon";
 import { RiListOrdered2 } from "react-icons/ri";
-import TextAlign from "@tiptap/extension-text-align";
+
 import { AlignLeftIcon } from "./tiptap-icons/align-left-icon";
 import { AlignCenterIcon } from "./tiptap-icons/align-center-icon";
 import { AlignRightIcon } from "./tiptap-icons/align-right-icon";
-import Highlight from "@tiptap/extension-highlight";
+
 import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
 import { io } from "socket.io-client";
@@ -33,9 +27,7 @@ import { generateJSON } from "@tiptap/html";
 import { SocketIOProvider } from "y-socket.io";
 import { HocuspocusProvider } from "@hocuspocus/provider";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
-import Document from "@tiptap/extension-document";
-import Text from "@tiptap/extension-text";
-import Paragraph from "@tiptap/extension-paragraph";
+
 import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import toast from "react-hot-toast";
@@ -63,14 +55,24 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
     ({ ydoc, provider } = yjsInstances.get(instanceKey));
   }
 
+
+
   const getRandomColor = () => {
-    const hue = Math.floor(Math.random() * 360);
-    return `hsl(${hue}, 70%, 80%)`;
-  };
+  const colors = [
+    "#f87171", // red
+    "#60a5fa", // blue
+    "#34d399", // green
+    "#fbbf24", // yellow
+    "#a78bfa", // purple
+    "#fb7185", // pink
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ history: false }),
+      StarterKit.configure({ history: false ,undoRedo:false}),
       Collaboration.configure({ document: ydoc, field: 'content' }),
       CollaborationCaret.configure({
         provider,
@@ -88,30 +90,30 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   useEffect(() => {
     if (!editor || !ydoc || initialContentApplied) return;
 
-    // Wait a bit to let WebSocket sync happen
+
     const timer = setTimeout(() => {
       const contentFragment = ydoc.getXmlFragment('content');
       const isReallyEmpty = contentFragment.toString() === '';
 
       if (isReallyEmpty && intialContent) {
         editor.commands.setContent(intialContent);
-        setInitialContentApplied(true); // ✅ Prevent re-applying
+        setInitialContentApplied(true); 
       } else {
-        // Content already exists (from peers or sync) → mark as applied
+       
         setInitialContentApplied(true);
       }
-    }, 300); // Wait 300ms for WebSocket to sync
+    }, 300); 
 
     return () => clearTimeout(timer);
   }, [editor, ydoc, intialContent, initialContentApplied]);
 
-  // Auto-save Yjs state every 30 seconds
+
   useEffect(() => {
     if (!ydoc || !blogid || !user?.token) return;
 
     const saveToBackend = async () => {
       try {
-        // Encode the full Yjs document state
+     
         const update = Y.encodeStateAsUpdate(ydoc);
         const base64Update = btoa(
           String.fromCharCode(...new Uint8Array(update))
@@ -133,10 +135,9 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
       }
     };
 
-    // Save every 10 seconds
+   
     const interval = setInterval(saveToBackend, 10_000);
 
-    // Also save on window close
 
 
     return () => {
@@ -234,11 +235,11 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
           <FaGripLines />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().undo().run()} className="tooltip tooltip-right " data-tip="Undo">
+        <button type="button" onClick={() => editor.commands.undo()} className="tooltip tooltip-right " data-tip="Undo">
           <Undo2Icon />
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().redo().run()} className="tooltip tooltip-right " data-tip="Redo">
+        <button type="button" onClick={() => editor.commands.redo()} className="tooltip tooltip-right " data-tip="Redo">
           <Redo2Icon />
         </button>
 

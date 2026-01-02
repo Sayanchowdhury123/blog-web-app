@@ -13,9 +13,7 @@ const Paragraph = require("@tiptap/extension-paragraph").Paragraph;
 const Text = require("@tiptap/extension-text").Text;
 
 const extensions = [
-  Document,
-  Paragraph,
-  Text,
+  
   StarterKit.configure({
     heading: true,
     bold: true,
@@ -29,6 +27,10 @@ const extensions = [
     listItem: true,
     codeBlock: true,
     hardBreak: true,
+    document:true,
+    paragraph:true,
+    text:true
+    
   }),
 ];
 

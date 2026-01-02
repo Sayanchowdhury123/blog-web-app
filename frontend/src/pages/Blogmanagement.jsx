@@ -160,8 +160,8 @@ export default function Blogmanage() {
                     <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id} >
                       <figure>
                         <img
-                          src={`${b.coverimage}`}
-                          alt="Shoes" />
+                          src={`${b?.coverimage}`}
+                          alt={b?.title} />
                       </figure>
                       <div className="card-body">
                         <h2 className="card-title">{b?.title}</h2>

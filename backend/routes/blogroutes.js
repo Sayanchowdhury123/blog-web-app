@@ -1,17 +1,31 @@
-const express = require("express")
+const express = require("express");
 const router = express.Router();
-const User = require("../models/User")
+const User = require("../models/User");
 const Blogs = require("../models/Blogs");
 const { authmiddleware, authorizerole } = require("../middleware/auth");
-const { createblogs,fetchblogs, deleteblog, editblog, editcontent, fetchblog, addview, selectusers, startcollab, endcollab, saveyjsupadte, fetchdemoblog, related } = require("../controller/Blogcontorller");
-const rateLimit = require("express-rate-limit")
-const {ipKeyGenerator} = require("express-rate-limit");
+const {
+  createblogs,
+  fetchblogs,
+  deleteblog,
+  editblog,
+  editcontent,
+  fetchblog,
+  addview,
+  selectusers,
+  startcollab,
+  endcollab,
+  saveyjsupadte,
+  fetchdemoblog,
+  related,
+} = require("../controller/Blogcontorller");
+const rateLimit = require("express-rate-limit");
+const { ipKeyGenerator } = require("express-rate-limit");
 const { validate } = require("../middleware/validator");
 const { createblogzod } = require("../validators/blogValidator");
 
 const yjslimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: 5000,
   keyGenerator: (req) => {
     if (req.user && req.user.id) {
       return `user:${req.user.id.toString()}`;
@@ -60,12 +74,9 @@ const selectuserlimiter = rateLimit({
   legacyHeaders: false,
 });
 
-
-
-
 const getlimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200,
+  max: 500,
   keyGenerator: (req) => {
     if (req.user && req.user.id) {
       return `user:${req.user.id.toString()}`;
@@ -114,7 +125,7 @@ const deletelimiter = rateLimit({
   legacyHeaders: false,
 });
 
- const postLimiter = rateLimit({
+const postLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 50,
   message: { message: "Too many POST requests" },
@@ -122,30 +133,88 @@ const deletelimiter = rateLimit({
   legacyHeaders: false,
 });
 
- const getLimiter = rateLimit({
+const getLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: { message: "Too many GET requests" },
+  max: 2,
+  keyGenerator: (req) => {
+    if (req.user && req.user.id) {
+      return `user:${req.user.id.toString()}`;
+    }
+
+    return ipKeyGenerator(req);
+  },
+  message: {
+    message: "too many blog fetching requests",
+  },
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-
-
-
-router.get("/get-demo",getLimiter,fetchdemoblog)
-router.get("/related/:blogid/r",getLimiter,authmiddleware,related)
-router.get("/",authmiddleware,getlimiter,authorizerole("writer","editor"),fetchblogs)
-router.get("/get-users",authmiddleware,selectuserlimiter,authorizerole("writer","editor"),selectusers)
-router.get("/:blogid",authmiddleware,getlimiter,fetchblog)
-router.post("/saveyjs/:id",authmiddleware,yjslimiter,saveyjsupadte)
-router.post("/create-blog",authmiddleware,createbloglimiter,authorizerole("writer","editor"),createblogs)
-router.put("/:blogid/update-blog",authmiddleware,blogupadtelimiter,authorizerole("writer","editor"),editblog)
-router.patch("/:blogid/edit-content",authmiddleware,blogupadtelimiter,authorizerole("writer","editor"),editcontent)
-router.patch("/:blogid/start-collab",authmiddleware,blogupadtelimiter,authorizerole("writer","editor"),startcollab)
-router.patch("/:blogid/end-collab",authmiddleware,blogupadtelimiter,authorizerole("writer","editor"),endcollab)
-router.patch("/:blogid/add-view/:userid",authmiddleware,blogupadtelimiter,addview)
-router.delete("/:blogid/del-blog",authmiddleware,deletelimiter,authorizerole("writer","editor"),deleteblog)
-
+router.get("/get-demo", getLimiter, fetchdemoblog);
+router.get("/related/:blogid/r",authmiddleware,getlimiter,related);
+router.get(
+  "/",
+  authmiddleware,
+  getlimiter,
+  authorizerole("writer", "editor"),
+  fetchblogs
+);
+router.get(
+  "/get-users",
+  authmiddleware,
+  selectuserlimiter,
+  authorizerole("writer", "editor"),
+  selectusers
+);
+router.get("/:blogid", authmiddleware, getlimiter, fetchblog);
+router.post("/saveyjs/:id", authmiddleware, yjslimiter, saveyjsupadte);
+router.post(
+  "/create-blog",
+  authmiddleware,
+  createbloglimiter,
+  authorizerole("writer", "editor"),
+  createblogs
+);
+router.put(
+  "/:blogid/update-blog",
+  authmiddleware,
+  blogupadtelimiter,
+  authorizerole("writer", "editor"),
+  editblog
+);
+router.patch(
+  "/:blogid/edit-content",
+  authmiddleware,
+  blogupadtelimiter,
+  authorizerole("writer", "editor"),
+  editcontent
+);
+router.patch(
+  "/:blogid/start-collab",
+  authmiddleware,
+  blogupadtelimiter,
+  authorizerole("writer", "editor"),
+  startcollab
+);
+router.patch(
+  "/:blogid/end-collab",
+  authmiddleware,
+  blogupadtelimiter,
+  authorizerole("writer", "editor"),
+  endcollab
+);
+router.patch(
+  "/:blogid/add-view/:userid",
+  authmiddleware,
+  blogupadtelimiter,
+  addview
+);
+router.delete(
+  "/:blogid/del-blog",
+  authmiddleware,
+  deletelimiter,
+  authorizerole("writer", "editor"),
+  deleteblog
+);
 
 module.exports = router;
