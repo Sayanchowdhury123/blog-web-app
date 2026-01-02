@@ -839,3 +839,14 @@
 {"level":"info","message":"server running 5000","timestamp":"2026-01-02 20:19:50"}
 {"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2026-01-02 20:19:50"}
 {"level":"info","message":"Socket connected","socketId":"rWyuyu03sVlxtpsWAAAB","timestamp":"2026-01-02 20:19:52"}
+{"level":"info","message":"Socket connected","socketId":"jHNFwZUNpNYdKd96AAAD","timestamp":"2026-01-02 20:25:35"}
+{"level":"info","message":"Socket connected","socketId":"6lXFIQlMwdbKqTEaAAAF","timestamp":"2026-01-02 20:25:41"}
+{"level":"info","message":"Socket connected","socketId":"4crXYRL1Vhk8EDf6AAAH","timestamp":"2026-01-02 20:26:00"}
+{"level":"info","message":"database connected","timestamp":"2026-01-02 20:50:13"}
+{"level":"error","message":"yjsServer is not defined","stack":"ReferenceError: yjsServer is not defined\n    at startsever (C:\\Users\\ASUS\\Desktop\\blog_web_app\\backend\\index.js:69:1)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-01-02 20:50:13"}
+{"level":"info","message":"server running 5000","timestamp":"2026-01-02 20:50:13"}
+{"level":"info","message":"Socket connected","socketId":"mTZOsjH_u5k3WqiSAAAB","timestamp":"2026-01-02 20:50:14"}
+{"level":"info","message":"database connected","timestamp":"2026-01-02 20:50:21"}
+{"level":"info","message":"server running 5000","timestamp":"2026-01-02 20:50:21"}
+{"level":"info","message":" Yjs WebSocket running on ws://localhost:5001","timestamp":"2026-01-02 20:50:21"}
+{"level":"info","message":"Socket connected","socketId":"zqHhYYFbfQZmwuf_AAAB","timestamp":"2026-01-02 20:50:22"}
