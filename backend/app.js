@@ -15,20 +15,12 @@ const earoutes = require("./routes/Eanalytics")
 const notificationroutes = require("./routes/notificationroutes")
 const rateLimit = require("express-rate-limit")
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max:100000,
-  message:{
-    message:"too many requests"
-  },
-  standardHeaders:true,
-  legacyHeaders:true
-})
 const allowedOrigins = [
   "http://localhost:5173", 
   
 ];
 const app = express()
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -41,9 +33,22 @@ app.use(
     credentials: true,
   })
 );
+app.set('trust proxy', 1);
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(fileupload({useTempFiles: true}))
+
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max:100000,
+  message:{
+    message:"too many requests"
+  },
+  standardHeaders:true,
+  legacyHeaders:true
+})
+
 app.use(limiter)
 
 
