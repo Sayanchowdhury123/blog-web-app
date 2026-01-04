@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "postinstall": "npm rebuild iconv-lite",
+  
     "dev:http": "nodemon index.js",
     "start:http": "node index.js",
 
@@ -45,5 +45,8 @@
     "y-websocket": "^1.4.5",
     "yjs": "^13.6.27",
     "zod": "^4.2.1"
+  },
+  "overrides": {
+    "iconv-lite": "0.4.24"
   }
 }
