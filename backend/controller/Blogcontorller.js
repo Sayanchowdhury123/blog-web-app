@@ -13,7 +13,6 @@ const Paragraph = require("@tiptap/extension-paragraph").Paragraph;
 const Text = require("@tiptap/extension-text").Text;
 
 const extensions = [
-  
   StarterKit.configure({
     heading: true,
     bold: true,
@@ -27,10 +26,9 @@ const extensions = [
     listItem: true,
     codeBlock: true,
     hardBreak: true,
-    document:true,
-    paragraph:true,
-    text:true
-    
+    document: true,
+    paragraph: true,
+    text: true,
   }),
 ];
 
@@ -362,9 +360,10 @@ exports.endcollab = async (req, res) => {
       return res.status(404).json({ msg: "Blog not found" });
     }
 
+    const userId = req.user.id;
+
     let finalHtml = "<p>No content.</p>";
 
-    // ✅ Use ProseMirror JSON if available (best fidelity)
     if (blog.prosemirrorJson) {
       try {
         finalHtml = generateHTML(blog.prosemirrorJson, extensions);
@@ -373,15 +372,14 @@ exports.endcollab = async (req, res) => {
         return res.status(500).json("HTML generation failed:");
       }
     } else if (blog.blogtext) {
-      // Fallback to existing blogtext
       finalHtml = blog.blogtext;
     }
 
-    // ✅ 2. Update blogtext with final HTML
     blog.blogtext = finalHtml;
-    blog.yjsupdate = undefined; // or null
-
-    blog.collabrators = [];
+    blog.yjsupdate = undefined;
+    blog.collabrators = blog.collabrators.filter(
+      (id) => id?.toString() !== userId
+    );
 
     await blog.save();
     res.status(200).json(blog.collabrators);
@@ -400,8 +398,10 @@ exports.saveyjsupadte = async (req, res) => {
     }
 
     const userId = req.user.id;
-   
-    const isAuthorized = blog.creator?.toString() === userId || blog.collabrators.some(id => id?.toString() === userId);
+
+    const isAuthorized =
+      blog.creator?.toString() === userId ||
+      blog.collabrators.some((id) => id?.toString() === userId);
 
     if (!isAuthorized) {
       return res.status(403).json({ error: "Not authorized" });
@@ -413,16 +413,14 @@ exports.saveyjsupadte = async (req, res) => {
 
     res.json({ success: true });
   } catch (err) {
-     
     res.status(500).json({ error: "Save failed" });
-   
   }
 };
 
 exports.related = async (req, res) => {
   try {
-  const {blogid} = req.params;
-    
+    const { blogid } = req.params;
+
     if (!blogid) {
       return res.status(404).json({ error: "invalid blogid" });
     }
@@ -432,14 +430,16 @@ exports.related = async (req, res) => {
       return res.status(404).json({ error: "invalid tags" });
     }
 
-    const related = await Blogs.find({ tags: { $in: tags },_id: { $nin: blogid }, })
+    const related = await Blogs.find({
+      tags: { $in: tags },
+      _id: { $nin: blogid },
+    })
       .limit(3)
       .populate("creator");
 
     if (!related) {
       return res.status(404).json({ error: "no related blogs found" });
     }
-    
 
     res.status(200).json(related);
   } catch (error) {

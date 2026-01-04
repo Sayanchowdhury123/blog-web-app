@@ -142,11 +142,22 @@ export default function Collabcard({ type }) {
                     transition={{ duration: 0.3 }}
                     className="flex items-center justify-center h-[60vh]">
                     <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full mx-auto">
-                        <p className="text-lg font-semibold text-base-content ">
+                        <p className="text-lg font-semibold text-base-content mb-2">
                             You Are Not Collabrating With Anyone
                         </p>
 
+                        <p className="text-sm text-gray-500 mb-4">
+                            Click On Start Collaboration For Blog Collab
 
+                        </p>
+
+
+                        <button
+                            className="btn btn-primary w-full"
+                            onClick={() => navigate("/yourblogs")}
+                        >
+                            Start Collaboration
+                        </button>
                     </div>
                 </motion.div>
 
@@ -156,7 +167,7 @@ export default function Collabcard({ type }) {
 
 
     return (
-        <motion.div className={`grid grid-cols-1 ${savedpage ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4 p-4 `} >
+        <motion.div className={`grid grid-cols-1 md:grid-cols-3 gap-4 p-4 `} >
 
             {
                 collabblogs?.map((b, i) => {
@@ -164,50 +175,85 @@ export default function Collabcard({ type }) {
 
 
                     return (
-                        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
-                            {
-                                id === b._id && (
-                                    <Loading2 />
-                                )
-                            }
-                            <figure>
+                        // <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className={`rounded-xl overflow-hidden relative   card bg-base-100 h-[400px] text-white  shadow-sm`} key={b._id} >
+                        //     {
+                        //         id === b._id && (
+                        //             <Loading2 />
+                        //         )
+                        //     }
+                        //     <figure>
+                        //         <img
+                        //             src={`${b.coverimage}`}
+                        //             alt="coverimages" className=" object-cover absolute inset-0" />
+                        //     </figure>
+                        //     <div className="absolute inset-0 bg-black/70"></div>
+                        //     <div className="relative card-body">
+                        //         <div className="flex justify-between items-center ">
+                        //             <div>
+                        //                 <h2 className="card-title">{b?.title}</h2>
+                        //             </div>
+
+
+                        //         </div>
+
+                        //         {savedpage ? (
+                        //             <div dangerouslySetInnerHTML={{
+                        //                 __html: getexcerpt(b.blogtext)
+                        //             }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
+                        //                 state: { blogid: b._id }
+                        //             })} >
+
+                        //             </div>
+                        //         ) : (
+                        //             <div dangerouslySetInnerHTML={{
+                        //                 __html: getexcerpt(b.blogtext)
+                        //             }} className="prose max-w-none cursor-pointer"  >
+
+                        //             </div>
+                        //         )}
+
+
+
+                        //         <p></p>
+
+
+
+                        //     </div>
+                        // </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.1, duration: 0.3 }}
+                            className={`rounded-xl overflow-hidden relative card  bg-base-100 h-[300px] text-white shadow-sm`}
+                            key={b?._id}
+                        >
+                            {id === b?._id && <Loading2 />}
+
+                            <figure className="relative h-full w-full overflow-hidden">
                                 <img
-                                    src={`${b.coverimage}`}
-                                    alt="coverimages" className=" object-cover absolute inset-0" />
+                                    src={b?.coverimage || ""}
+                                    alt={b?.title || "Cover"}
+                                    className="w-full h-full object-cover"
+                                   
+                                />
+                                <div className="absolute inset-0 bg-black/70 z-10"></div>
                             </figure>
-                            <div className="absolute inset-0 bg-black/70"></div>
-                            <div className="relative card-body">
-                                <div className="flex justify-between items-center ">
-                                    <div>
-                                        <h2 className="card-title">{b?.title}</h2>
-                                    </div>
 
-
+                            <div className="absolute inset-0 flex flex-col p-4 z-20  ">
+                                <div className="flex justify-between  mb-2">
+                                    <h2 className="card-title">{b?.title}</h2>
                                 </div>
 
-                                {savedpage ? (
-                                    <div dangerouslySetInnerHTML={{
-                                        __html: getexcerpt(b.blogtext)
-                                    }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
-                                        state: { blogid: b._id }
-                                    })} >
+                                <div
+                                    dangerouslySetInnerHTML={{ __html: getexcerpt(b?.blogtext) }}
+                                    className="prose max-w-none cursor-pointer"
+                                    onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                                ></div>
 
-                                    </div>
-                                ) : (
-                                    <div dangerouslySetInnerHTML={{
-                                        __html: getexcerpt(b.blogtext)
-                                    }} className="prose max-w-none cursor-pointer"  >
+                                <div className="card-actions justify-end mt-[99px] sm:mt-[122px]">
 
-                                    </div>
-                                )}
-
-
-
-                                <p></p>
-
-                                <div className="card-actions justify-end">
-
-                                    <button className="btn btn-sm" onClick={() => navigate(`/collab/${b._id}`, {
+                                    <button className="btn btn-sm" onClick={() => navigate(`/collab/${b?._id}`, {
                                         state: { t: b }
                                     })}><MdOutlineConnectWithoutContact />Join</button>
 
@@ -216,6 +262,9 @@ export default function Collabcard({ type }) {
                                 </div>
 
                             </div>
+
+
+
                         </motion.div>
 
                     )
