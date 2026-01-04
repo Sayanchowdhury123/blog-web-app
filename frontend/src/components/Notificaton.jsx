@@ -62,8 +62,8 @@ export default function Notificaion() {
                                             No new notifications
                                         </p>
                                     ) : (
-                                        notifications?.filter((n) => !n.read).map((n) => (
-                                            <Link to={n.link || "#"} key={n._id} onClick={(e) => {
+                                        notifications?.filter((n) => !n.read).map((n,i) => (
+                                            <Link to={n.link || "#"} key={n._id || i} onClick={(e) => {
                                                 e.stopPropagation()
                                                 setopen(false)
                                             }}>

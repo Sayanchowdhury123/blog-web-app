@@ -7,8 +7,17 @@ const { addUser, removeUser } = require("./socketStrore");
 const { WebSocketServer } = require("ws");
 const {
   setupWSConnection,
-} = require("../backend/node_modules/y-websocket/bin/utils");
+} = require("y-websocket/bin/utils");
 const logger = require("./utils/logger");
+
+
+const yjsServer = http.createServer();
+const yjsWss = new WebSocketServer({ server: yjsServer });
+
+yjsWss.on('connection', (conn, req) => {
+  logger.info(' Yjs WebSocket connected');
+  setupWSConnection(conn, req);
+});
 
 const startsever = async () => {
   try {
@@ -16,7 +25,7 @@ const startsever = async () => {
     const server = http.createServer(app);
     const io = new Server(server, {
       cors: {
-        origin: ["http://localhost:5173",/\.vercel\.app$/],
+        origin: ["http://localhost:5173"],
         methods: ["GET", "POST"],
       },
     });
@@ -54,41 +63,18 @@ const startsever = async () => {
     });
 
     const PORT = process.env.PORT || 5000;
-    // const PORT_YJS = 5001;
-    // const yjsServer = http.createServer();
-    const yjsWss = new WebSocketServer({ noServer: true });
+    const PORT_YJS = 5001;
 
-    server.on("upgrade", (req, socket, head) => {
-      // Route 1: Socket.IO → /socket.io
-      if (req.url?.startsWith("/socket.io")) {
-        io.engine.ws.handleUpgrade(req, socket, head);
-        return;
-      }
 
-      // Route 2: Yjs → /yjs
-      if (req.url?.startsWith("/yjs")) {
-        yjsWss.handleUpgrade(req, socket, head, (ws) => {
-          yjsWss.emit("connection", ws, req);
-        });
-        return;
-      }
-
-      // Reject unknown WS
-      socket.destroy();
-    });
-
-    yjsWss.on("connection", (ws, req) => {
-      logger.info("Yjs WebSocket connected");
-      setupWSConnection(ws, req);
-    });
+  
 
     server.listen(PORT, () => {
       logger.info(`server running ${PORT}`);
     });
 
-    // yjsServer.listen(PORT_YJS, () => {
-    //   logger.info(` Yjs WebSocket running on ws://localhost:${PORT_YJS}`);
-    // });
+    yjsServer.listen(PORT_YJS, () => {
+      logger.info(` Yjs WebSocket running on ws://localhost:${PORT_YJS}`);
+    });
   } catch (error) {
     logger.error(error);
   }

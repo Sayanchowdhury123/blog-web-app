@@ -125,6 +125,9 @@ Showcase](https://yjs-diagram.synergy.codes/).
 editing for your IDE or custom editor
 * [Typst](https://typst.app/) - Compose, edit, and automate technical documents
 * [Kedyou](https://kedyou.com/) - Digital workspaces for tutoring
+* [Lightpage](https://lightpage.com/) - Personal living notebook
+* [reearth-flow](https://github.com/reearth/reearth-flow) -
+  Collaboratively calculate and convert various data
 
 ## Table of Contents
 
@@ -161,6 +164,10 @@ are implemented in separate modules.
 | [Slate](https://github.com/ianstormtaylor/slate) | ✔ | [slate-yjs](https://github.com/bitphinix/slate-yjs) | [demo](https://bitphinix.github.io/slate-yjs-example) |
 | [BlockSuite](https://github.com/toeverything/blocksuite) | ✔ | (native) | [demo](https://blocksuite-toeverything.vercel.app/?init) |
 | [Lexical](https://lexical.dev/) | ✔ | (native) | [demo](https://lexical.dev/docs/collaboration/react#see-it-in-action) |
+| [BlockNote](https://www.blocknotejs.org/docs/collaboration/real-time-collaboration) | ✔ | [y-prosemirror](https://github.com/yjs/y-prosemirror) | [demo](https://www.blocknotejs.org/docs/collaboration/real-time-collaboration) |
+| [Tiptap](https://tiptap.dev/) | ✔ | [y-prosemirror](https://github.com/yjs/y-prosemirror) | [demo](https://template.tiptap.dev/preview/templates/simple) |
+| [Milkdown](https://github.com/Milkdown/milkdown) | ✔ | [y-prosemirror](https://github.com/yjs/y-prosemirror) | [demo](https://milkdown.dev/playground) |
+| [Superdoc](https://superdoc.dev/) | ✔ | (native) | [demo](https://superdoc.dev/) |
 | [valtio](https://github.com/pmndrs/valtio) |  | [valtio-yjs](https://github.com/dai-shi/valtio-yjs) | [demo](https://codesandbox.io/s/valtio-yjs-demo-ox3iy) |
 | [immer](https://github.com/immerjs/immer) |  | [immer-yjs](https://github.com/sep2/immer-yjs) | [demo](https://codesandbox.io/s/immer-yjs-demo-6e0znb) |
 | React | | [react-yjs](https://github.com/nikgraf/react-yjs) | [demo](https://react-yjs-example.vercel.app/) |
@@ -248,6 +255,14 @@ A standalone extensible yjs server with sqlite persistence, webhooks, auth and m
   <dd>
 Cloud service for building multiplayer apps.
   </dd>
+  </dd>
+    <dt><a href="https://github.com/pluv-io/pluv">@pluv/crdt-yjs</a></dt>
+  <dd>
+Use <a href="https://pluv.io/docs/storage/using-yjs">pluv.io</a> as a
+full-featured backend for Yjs. pluv.io can either be be used on its
+fully-managed WebSocket infrastructure, or self-hosted on Cloudflare Workers
+and Node.js runtimes. Offers a typesafe API with authentication, webhooks,
+rooms, and more.
   <dt><a href="https://github.com/marcopolo/y-libp2p">y-libp2p</a></dt>
   <dd>
 Uses <a href="https://libp2p.io/">libp2p</a> to propagate updates via
@@ -292,7 +307,18 @@ Provider for sharing data in <a href="https://webxdc.org">webxdc chat apps</a>.
   <dd>
 An architecture to relay end-to-end encrypted CRDTs over a central service.
   </dd>
-
+  <dt><a href="https://www.npmjs.com/package/@electric-sql/y-electric">y-electric</a></dt>
+  <dd>
+    Sync Yjs over <a href="https://electric-sql.com/">ElectricSQL</a>.
+  </dd>
+  <dt><a href="https://github.com/TimoWilhelm/yjs-cf-ws-provider">yjs-cf-ws-provider</a></dt>
+  <dd>
+    Cloudflare provider for Yjs based on durable objects.
+  </dd>
+  <dt><a href="https://github.com/yousefED/nostr-crdt">nostr-crdt</a></dt>
+  <dd>
+    Sync Yjs over <a href="https://github.com/nostr-protocol/">nostr</a>.
+  </dd>
 </dl>
 
 #### Persistence Providers
@@ -337,7 +363,7 @@ A database and connection provider for Yjs based on Firestore.
 
 ### Tooling
 
-* [y-sweet debugger](https://docs.jamsocket.com/y-sweet/advanced/debugger)
+* [y-sweet debugger](https://y-sweet.cloud/advanced/debugger)
 * [liveblocks devtools](https://liveblocks.io/devtools)
 * [Yjs inspector](https://inspector.yjs.dev)
 

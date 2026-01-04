@@ -400,9 +400,8 @@ exports.saveyjsupadte = async (req, res) => {
     }
 
     const userId = req.user.id;
-    const isAuthorized =
-      blog.creator?.toString() === userId ||
-      blog.collabrators.map((id) => id.toString()).includes(userId);
+   
+    const isAuthorized = blog.creator?.toString() === userId || blog.collabrators.some(id => id?.toString() === userId);
 
     if (!isAuthorized) {
       return res.status(403).json({ error: "Not authorized" });
@@ -414,7 +413,9 @@ exports.saveyjsupadte = async (req, res) => {
 
     res.json({ success: true });
   } catch (err) {
+     
     res.status(500).json({ error: "Save failed" });
+   
   }
 };
 

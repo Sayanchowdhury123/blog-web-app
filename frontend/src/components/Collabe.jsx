@@ -59,21 +59,21 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
 
   const getRandomColor = () => {
-  const colors = [
-    "#f87171", 
-    "#60a5fa", 
-    "#34d399", 
-    "#fbbf24", 
-    "#a78bfa", 
-    "#fb7185", 
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
+    const colors = [
+      "#f87171",
+      "#60a5fa",
+      "#34d399",
+      "#fbbf24",
+      "#a78bfa",
+      "#fb7185",
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ history: false ,undoRedo:false}),
+      StarterKit.configure({ history: false, undoRedo: false }),
       Collaboration.configure({ document: ydoc, field: 'content' }),
       CollaborationCaret.configure({
         provider,
@@ -98,54 +98,87 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
 
       if (isReallyEmpty && intialContent) {
         editor.commands.setContent(intialContent);
-        setInitialContentApplied(true); 
+        setInitialContentApplied(true);
       } else {
-       
+
         setInitialContentApplied(true);
       }
-    }, 300); 
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [editor, ydoc, intialContent, initialContentApplied]);
 
+  const saveToBackend = async () => {
+    try {
+      if (!ydoc || !blogid || !user?.token) return;
+      let lastSavedStateVector = Y.encodeStateVector(ydoc);
+      const diffUpdate = Y.encodeStateAsUpdate(ydoc, lastSavedStateVector);
+      if (diffUpdate.byteLength === 0) return;
+
+      const base64Update = btoa(
+        String.fromCharCode(...new Uint8Array(diffUpdate))
+      );
+
+      const currentStateVector = Y.encodeStateVector(ydoc);
+      const base64StateVector = btoa(
+        String.fromCharCode(...new Uint8Array(currentStateVector))
+      );
+
+      await api.post(
+        `/blogs/saveyjs/${blogid}`,
+        {
+          yjsUpdate: base64Update,
+          stateVector: base64StateVector,
+          prosemirrorJson: editor.getJSON()
+        },
+        {
+          headers: { Authorization: `Bearer ${user.token}` }
+        }
+      );
+
+      lastSavedStateVector = currentStateVector;
+
+
+    } catch (err) {
+      console.log(err)
+      toast.error(err.response?.data?.msg || "Something went wrong");
+    }
+  };
+
+
+ 
 
   useEffect(() => {
-    if (!ydoc || !blogid || !user?.token) return;
+    let saveTimeout;
+    let lastSaveTime = 0;
 
-    const saveToBackend = async () => {
-      try {
-     
-        const update = Y.encodeStateAsUpdate(ydoc);
-        const base64Update = btoa(
-          String.fromCharCode(...new Uint8Array(update))
-        );
+    const scheduleSave = () => {
+      const now = Date.now();
+      const timeSinceLastSave = now - lastSaveTime;
 
-        const prosemirrorJson = editor.getJSON();
-        await api.post(
-          `/blogs/saveyjs/${blogid}`,
-          { yjsUpdate: base64Update, prosemirrorJson: prosemirrorJson },
-          {
-            headers: { Authorization: `Bearer ${user.token}` }
-          }
-        );
-
-        
-
-      } catch (err) {
-        toast.error(err.response?.data?.msg || "Something went wrong");
+   
+      if (timeSinceLastSave >= 5000) {
+        saveToBackend();
+        lastSaveTime = now;
+      } else {
+       
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          saveToBackend();
+          lastSaveTime = Date.now();
+        }, 5000 - timeSinceLastSave);
       }
     };
 
-   
-    const interval = setInterval(saveToBackend, 10_000);
 
-
+    const editorChangeHandler = () => scheduleSave();
+    editor?.on('transaction', editorChangeHandler);
 
     return () => {
-      clearInterval(interval);
-
+      editor?.off('transaction', editorChangeHandler);
+      clearTimeout(saveTimeout);
     };
-  }, [ydoc, blogid, user?.token]);
+  }, [editor, ydoc, blogid, user?.token]);
 
 
   function Toolbar1() {
