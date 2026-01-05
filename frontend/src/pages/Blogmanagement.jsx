@@ -98,7 +98,7 @@ export default function Blogmanage() {
     }
   }
 
-  const getexcerpt = (text, wordlimit = 50) => {
+  const getexcerpt = (text, wordlimit = 20) => {
     const words = text?.trim().split(/\s+/)
     if (words.length <= wordlimit) {
       return text
@@ -157,38 +157,94 @@ export default function Blogmanage() {
               <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4" >
                 {
                   blogs?.map((b, i) => (
-                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm" key={b._id} >
-                      <figure>
+                    //       <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1, duration: 0.3 }} className="card bg-base-100  image-full  shadow-sm min-h-[300px] " key={b._id} >
+                    //         <figure>
+                    //           <img
+                    //             src={`${b?.coverimage}`}
+                    //             alt={b?.title} />
+                    //         </figure>
+                    //         <div className="card-body ">
+                    //           <h2 className="card-title ">{b?.title}</h2>
+
+                    //           <div dangerouslySetInnerHTML={{
+                    //             __html: getexcerpt(b.blogtext)
+                    //           }} className="prose max-w-none cursor-pointer " onClick={() => navigate(`/blog/${b._id}`, {
+                    //             state: { blogid: b._id }
+                    //           })}>
+
+                    //           </div>
+                    //           <p></p>
+                    //           <div className="card-actions ">
+
+                    //             <button className="btn tooltip" data-tip="collaboration" da="true" onClick={() => {
+                    //               setubox()
+                    //               setroomid(b)
+                    //             }}><FcCollaboration /></button>
+                    //             <button className="btn btn-success tooltip" data-tip="edit content" da="true" onClick={() => navigate(`/edit-content/${b._id}`, {
+                    //               state: { t: b }
+                    //             })}><MdContentPasteGo /></button>
+                    //             <button className="btn btn-primary tooltip" data-tip="edit blog" da="true" onClick={() => setshowedit(b._id, b)}><MdOutlineEdit /></button>
+                    //             <button className="btn btn-error tooltip" data-tip="delete blog" da="true" onClick={() => setshowalert(b._id)}><AiFillDelete /></button>
+
+                    //           </div>
+                    //         </div>
+                    //       </motion.div>
+
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1, duration: 0.3 }}
+                      className="rounded-xl overflow-hidden relative card bg-base-100 h-[300px] text-white shadow-sm"
+                      key={b?._id}
+                    >
+                     
+                      <figure className="relative h-full w-full">
                         <img
-                          src={`${b?.coverimage}`}
-                          alt={b?.title} />
+                          src={b?.coverimage || ""}
+                          alt={b?.title || "Cover"}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/70"></div>
                       </figure>
-                      <div className="card-body">
-                        <h2 className="card-title">{b?.title}</h2>
 
-                        <div dangerouslySetInnerHTML={{
-                          __html: getexcerpt(b.blogtext)
-                        }} className="prose max-w-none cursor-pointer" onClick={() => navigate(`/blog/${b._id}`, {
-                          state: { blogid: b._id }
-                        })}>
-
+                     
+                      <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
+                        
+                        <div>
+                          <h2 className="card-title text-white">{b?.title}</h2>
                         </div>
-                        <p></p>
-                        <div className="card-actions ">
 
-                          <button className="btn tooltip" data-tip="collaboration" da="true" onClick={() => {
-                            setubox()
-                            setroomid(b)
-                          }}><FcCollaboration /></button>
-                          <button className="btn btn-success tooltip" data-tip="edit content" da="true" onClick={() => navigate(`/edit-content/${b._id}`, {
-                            state: { t: b }
-                          })}><MdContentPasteGo /></button>
-                          <button className="btn btn-primary tooltip" data-tip="edit blog" da="true" onClick={() => setshowedit(b._id, b)}><MdOutlineEdit /></button>
-                          <button className="btn btn-error tooltip" data-tip="delete blog" da="true" onClick={() => setshowalert(b._id)}><AiFillDelete /></button>
+                        <div className="flex-grow overflow-hidden">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: getexcerpt(b?.blogtext) }}
+                            className="prose prose-invert max-w-none cursor-pointer line-clamp-3"
+                            onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                          ></div>
+                        </div>
 
+                     
+                        <div className="card-actions flex justify-end gap-2 mt-2">
+                          <button className="btn  tooltip" data-tip="Collab" onClick={() => { setubox(); setroomid(b); }}>
+                            <FcCollaboration />
+                          </button>
+                          <button className="btn  btn-success tooltip" data-tip="Edit Content"
+                            onClick={() => navigate(`/edit-content/${b._id}`, { state: { t: b } })}>
+                            <MdContentPasteGo />
+                          </button>
+                          <button className="btn  btn-primary tooltip" data-tip="Edit Blog"
+                            onClick={() => setshowedit(b._id, b)}>
+                            <MdOutlineEdit />
+                          </button>
+                          <button className="btn  btn-error tooltip" data-tip="Delete"
+                            onClick={() => setshowalert(b._id)}>
+                            <AiFillDelete />
+                          </button>
                         </div>
                       </div>
                     </motion.div>
+
                   ))
 
                 }
@@ -199,7 +255,7 @@ export default function Blogmanage() {
                 <motion.div initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
-                   className="flex items-center justify-center h-[60vh]">
+                  className="flex items-center justify-center h-[60vh]">
                   <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full mx-auto">
                     <p className="text-lg font-semibold text-base-content mb-4">
                       ✍️ No Blogs Created Yet
