@@ -221,38 +221,95 @@ export default function Collabcard({ type }) {
                         //     </div>
                         // </motion.div>
 
+                        // <motion.div
+                        //     initial={{ opacity: 0, y: 30 }}
+                        //     animate={{ opacity: 1, y: 0 }}
+                        //     transition={{ delay: i * 0.1, duration: 0.3 }}
+                        //     className={`rounded-xl overflow-hidden relative card  bg-base-100 h-[300px] text-white shadow-sm`}
+                        //     key={b?._id}
+                        // >
+                        //     {id === b?._id && <Loading2 />}
+
+                        //     <figure className="relative h-full w-full ">
+                        //         <img
+                        //             src={b?.coverimage || ""}
+                        //             alt={b?.title || "Cover"}
+                        //             loading="lazy"
+                        //             className="w-full h-full object-cover"
+
+                        //         />
+                        //         <div className="absolute inset-0 bg-black/70"></div>
+                        //     </figure>
+
+                        //     <div className="absolute inset-0 flex flex-col justify-between p-4 z-10  ">
+                        //         <div className="">
+                        //             <h2 className="card-title text-white">{b?.title}</h2>
+                        //         </div>
+                        //         <div className="flex-grow overflow-hidden">
+                        //             <div
+                        //                 dangerouslySetInnerHTML={{ __html: getexcerpt(b?.blogtext) }}
+                        //                 className="prose prose-invert max-w-none cursor-pointer line-clamp-3"
+                        //                 onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                        //             ></div>
+
+                        //         </div>
+
+                        //         <div className="card-actions flex justify-end gap-2 mt-2">
+
+                        //             <button className="btn btn-sm" onClick={() => navigate(`/collab/${b?._id}`, {
+                        //                 state: { t: b }
+                        //             })}><MdOutlineConnectWithoutContact />Join</button>
+
+
+                        //             <button className="btn btn-sm btn-error" onClick={() => notjoin(b)}><MdCancel />Cancel</button>
+                        //         </div>
+
+                        //     </div>
+
+
+
+                        // </motion.div>
+
+
                         <motion.div
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.9 }}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1, duration: 0.3 }}
-                            className={`rounded-xl overflow-hidden relative card  bg-base-100 h-[300px] text-white shadow-sm`}
+                            className="rounded-xl overflow-hidden relative card bg-base-100 h-[300px] text-white shadow-sm"
                             key={b?._id}
                         >
+
                             {id === b?._id && <Loading2 />}
 
-                            <figure className="relative h-full w-full overflow-hidden">
+                            <figure className="relative h-full w-full">
                                 <img
                                     src={b?.coverimage || ""}
                                     alt={b?.title || "Cover"}
+                                    loading="lazy"
                                     className="w-full h-full object-cover"
-                                   
                                 />
-                                <div className="absolute inset-0 bg-black/70 z-10"></div>
+                                <div className="absolute inset-0 bg-black/70"></div>
                             </figure>
 
-                            <div className="absolute inset-0 flex flex-col p-4 z-20  ">
-                                <div className="flex justify-between  mb-2">
-                                    <h2 className="card-title">{b?.title}</h2>
+
+                            <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
+
+                                <div>
+                                    <h2 className="card-title text-white">{b?.title}</h2>
                                 </div>
 
-                                <div
-                                    dangerouslySetInnerHTML={{ __html: getexcerpt(b?.blogtext) }}
-                                    className="prose max-w-none cursor-pointer"
-                                    onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
-                                ></div>
+                                <div className="flex-grow overflow-hidden">
+                                    <div
+                                        dangerouslySetInnerHTML={{ __html: getexcerpt(b?.blogtext) }}
+                                        className="prose prose-invert max-w-none cursor-pointer line-clamp-3"
+                                        onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                                    ></div>
+                                </div>
 
-                                <div className="card-actions justify-end mt-[99px] sm:mt-[122px]">
 
+                                <div className="card-actions flex justify-end gap-2 mb-2">
                                     <button className="btn btn-sm" onClick={() => navigate(`/collab/${b?._id}`, {
                                         state: { t: b }
                                     })}><MdOutlineConnectWithoutContact />Join</button>
@@ -260,11 +317,7 @@ export default function Collabcard({ type }) {
 
                                     <button className="btn btn-sm btn-error" onClick={() => notjoin(b)}><MdCancel />Cancel</button>
                                 </div>
-
                             </div>
-
-
-
                         </motion.div>
 
                     )

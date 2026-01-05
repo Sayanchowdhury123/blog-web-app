@@ -360,6 +360,7 @@ export default function Card({ type }) {
                                 src={b?.coverimage || ""}
                                 alt={b?.title || "Cover"}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                             />
                             <div className="absolute inset-0 bg-black/70"></div>
                         </figure>

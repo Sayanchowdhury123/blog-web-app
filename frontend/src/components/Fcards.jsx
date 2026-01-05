@@ -236,10 +236,12 @@ export default function Fcards() {
                                         <figure>
                                             <img
                                                 src={b?.coverimage}
-                                                alt="Shoes"
+                                                alt={b?.title || "cover"}
+                                                loading="lazy"
                                                 onClick={() => navigate(`/blog/${b._id}`, {
                                                     state: { blogid: b._id }
                                                 })}
+
                                             />
                                         </figure>
 

@@ -166,7 +166,7 @@ export default function Blog({ blog }) {
 
 
           <div className="sm:w-3xl w-[300px] mx-auto ">
-            <img src={blog?.coverimage} alt="coverimage" className="  rounded-xl " />
+            <img src={blog?.coverimage} alt="coverimage" loading="lazy" className="  rounded-xl " />
           </div>
 
           <div dangerouslySetInnerHTML={{

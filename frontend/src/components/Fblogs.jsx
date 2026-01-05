@@ -21,6 +21,7 @@ const navigate = useNavigate()
             <figure className="">
                 <img
                     src={`${b.coverimage}`}
+                    loading="lazy"
                     alt="coverimages" className="w-full h-full object-cover absolute inset-0  " />
             </figure>
             <div className="absolute inset-0 bg-black/70"></div>

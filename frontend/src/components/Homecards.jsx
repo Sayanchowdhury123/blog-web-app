@@ -252,7 +252,8 @@ export default function Homecards() {
                                         <figure>
                                             <img
                                                 src={b?.coverimage}
-                                                alt="Shoes"
+                                                alt={b?.title}
+                                                loading="lazy"
                                                 onClick={() => navigate(`/blog/${b._id}`, {
                                                     state: { blogid: b._id }
                                                 })}

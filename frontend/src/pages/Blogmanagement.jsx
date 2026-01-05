@@ -204,6 +204,7 @@ export default function Blogmanage() {
                         <img
                           src={b?.coverimage || ""}
                           alt={b?.title || "Cover"}
+                          loading="lazy"
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-black/70"></div>
