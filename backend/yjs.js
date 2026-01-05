@@ -27,5 +27,5 @@ server.on("upgrade", (req, socket, head) => {
   });
 });
 
-const PORT = process.env.PORT_YJS || 5001
+const PORT = process.env.PORT || 5001; 
 server.listen(PORT,() => logger.info(`Yjs on ${PORT}`));
