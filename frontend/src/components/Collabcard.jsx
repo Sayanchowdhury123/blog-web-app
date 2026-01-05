@@ -29,7 +29,7 @@ export default function Collabcard({ type }) {
     const savedpage = type === "savedblogs";
 
 
-    const getexcerpt = (text, wordlimit = 50) => {
+    const getexcerpt = (text, wordlimit = 20) => {
         const words = text?.trim().split(/\s+/)
         if (words?.length <= wordlimit) {
             return text
@@ -130,7 +130,14 @@ export default function Collabcard({ type }) {
         }
     }
 
-
+   const getexcerpt2 = (text, wordlimit = 20) => {
+    const words = text?.trim().split(/\s+/)
+    if (words.length <= wordlimit) {
+      return text
+    } else {
+      return words.slice(0, wordlimit).join(" ") + "..."
+    }
+  }
 
     const collabblogs = blogs?.filter((b) => b.collabrators?.includes(user.id))
 
@@ -164,6 +171,9 @@ export default function Collabcard({ type }) {
             </>
         )
     }
+
+
+   
 
 
     return (
@@ -289,6 +299,7 @@ export default function Collabcard({ type }) {
                                     alt={b?.title || "Cover"}
                                     loading="lazy"
                                     className="w-full h-full object-cover"
+                                      onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
                                 />
                                 <div className="absolute inset-0 bg-black/70"></div>
                             </figure>
@@ -300,13 +311,13 @@ export default function Collabcard({ type }) {
                                     <h2 className="card-title text-white">{b?.title}</h2>
                                 </div>
 
-                                <div className="flex-grow overflow-hidden">
+                                {/* <div className="flex-grow overflow-hidden">
                                     <div
-                                        dangerouslySetInnerHTML={{ __html: getexcerpt(b?.blogtext) }}
+                                        dangerouslySetInnerHTML={{ __html: getexcerpt2(b?.blogtext) }}
                                         className="prose prose-invert max-w-none cursor-pointer line-clamp-3"
                                         onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
                                     ></div>
-                                </div>
+                                </div> */}
 
 
                                 <div className="card-actions flex justify-end gap-2 mb-2">
