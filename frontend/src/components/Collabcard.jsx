@@ -299,7 +299,7 @@ export default function Collabcard({ type }) {
                                     alt={b?.title || "Cover"}
                                     loading="lazy"
                                     className="w-full h-full object-cover"
-                                      onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                                     
                                 />
                                 <div className="absolute inset-0 bg-black/70"></div>
                             </figure>
@@ -308,7 +308,9 @@ export default function Collabcard({ type }) {
                             <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
 
                                 <div>
-                                    <h2 className="card-title text-white">{b?.title}</h2>
+                                    <h2 className="card-title text-white cursor-pointer z-20" 
+                                     onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                                    >{b?.title}</h2>
                                 </div>
 
                                 {/* <div className="flex-grow overflow-hidden">
