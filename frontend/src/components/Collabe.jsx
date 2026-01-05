@@ -47,7 +47,7 @@ export default function Collabe({ intialContent = "", onContentChange, blogid })
   if (!yjsInstances.has(instanceKey)) {
     ydoc = new Y.Doc();
     provider = new WebsocketProvider(wsUrl,instanceKey,ydoc,{
-      params: {token: user?.token}
+      params: {token: encodeURIComponent(user?.token)}
     });
     yjsInstances.set(instanceKey, { ydoc, provider });
   } else {

@@ -27,7 +27,7 @@ server.on("upgrade", (req, socket, head) => {
     req.url,
     `http://${req.headers.host}`
   );
-  const token = searchParams.get("token");
+  const token = decodeURIComponent(searchParams.get("token") || "");
 
   if (!token) {
     console.warn("🚫 Rejected: Missing token", { url: req.url });
@@ -37,7 +37,7 @@ server.on("upgrade", (req, socket, head) => {
 
   let payload;
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET);
+    payload = jwt.verify(token,process.env.JWT_SECRET);
   } catch (err) {
     console.warn("🚫 Rejected: Invalid/expired token", {
       token: token.substring(0, 10) + "...",
