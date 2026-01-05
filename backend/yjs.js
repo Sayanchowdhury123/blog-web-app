@@ -37,7 +37,7 @@ server.on("upgrade", (req, socket, head) => {
 
   let payload;
   try {
-    payload = jwt.verify(token,process.env.JWT_SECRET);
+    payload = jwt.verify(token,process.env.JWT);
   } catch (err) {
     console.warn("🚫 Rejected: Invalid/expired token", {
       token: token.substring(0, 10) + "...",
