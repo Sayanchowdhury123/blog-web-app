@@ -39,18 +39,16 @@ const yjsInstances = new Map();
 
 export default function Collabe({ intialContent = "", onContentChange, blogid }) {
   const { user } = useAuthstore()
-  const wsUrl = import.meta.env.VITE_YJS_WS_URL || 'ws://localhost:5001';
+  const wsUrl = import.meta.env.VITE_YJS_API;
   const { setblogtext, blogt } = useBlogmstore()
   const [initialContentApplied, setInitialContentApplied] = useState(false);
   const instanceKey = `blog-${blogid}`;
   let ydoc, provider;
   if (!yjsInstances.has(instanceKey)) {
     ydoc = new Y.Doc();
-    provider = new WebsocketProvider(
-      wsUrl,
-      instanceKey,
-      ydoc
-    );
+    provider = new WebsocketProvider(wsUrl,instanceKey,ydoc,{
+      params: {token: user?.token}
+    });
     yjsInstances.set(instanceKey, { ydoc, provider });
   } else {
     ({ ydoc, provider } = yjsInstances.get(instanceKey));
