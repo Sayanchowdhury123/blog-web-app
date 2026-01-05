@@ -23,44 +23,53 @@ yjsWss.on("connection", (ws, req) => {
 
 server.on("upgrade", (req, socket, head) => {
   try {
-     const { pathname, searchParams } = new URL(
-    req.url,
-    `http://${req.headers.host}`
-  );
-  const token = decodeURIComponent(searchParams.get("token") || "");
+    const origin = req.headers.origin;
+    const allowed = [
+      "http://localhost:5173",
+      "https://blog-app-frontend-beta-nine.vercel.app",
+    ];
 
-  if (!token) {
-    console.warn("🚫 Rejected: Missing token", { url: req.url });
-    socket.destroy();
-    return;
-  }
+    if (origin && !allowed.includes(origin)) {
+      logger.info("🚫 Blocked Yjs from:", origin);
+      socket.destroy();
+      return;
+    }
 
-  let payload;
-  try {
-    payload = jwt.verify(token,process.env.JWT);
-  } catch (err) {
-    console.warn("🚫 Rejected: Invalid/expired token", {
-      token: token.substring(0, 10) + "...",
+    const { pathname, searchParams } = new URL(
+      req.url,
+      `http://${req.headers.host}`
+    );
+    const token = decodeURIComponent(searchParams.get("token") || "");
+
+    if (!token) {
+      logger.info("🚫 Rejected: Missing token", { url: req.url });
+      socket.destroy();
+      return;
+    }
+
+    let payload;
+    try {
+      payload = jwt.verify(token, process.env.JWT);
+    } catch (err) {
+      logger.info("🚫 Rejected: Invalid/expired token", {
+        token: token.substring(0, 10) + "...",
+      });
+      socket.destroy();
+      return;
+    }
+
+    yjsWss.handleUpgrade(req, socket, head, (ws) => {
+      yjsWss.emit("connection", ws, req);
     });
-    socket.destroy();
-    return;
-  }
 
-  
-
-  yjsWss.handleUpgrade(req, socket, head, (ws) => {
-    yjsWss.emit("connection", ws, req);
-  });
-
-      logger.info("✅ Authenticated Yjs connection", {
+    logger.info("✅ Authenticated Yjs connection", {
       userId: payload.id,
       doc: pathname,
     });
   } catch (error) {
-     console.error("❌ Upgrade handler error", error.message);
+    logger.info("❌ Upgrade handler error", error.message);
     socket.destroy();
   }
- 
 });
 
 const PORT = process.env.PORT || 5001;

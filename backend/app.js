@@ -17,6 +17,7 @@ const rateLimit = require("express-rate-limit")
 
 const allowedOrigins = [
   "http://localhost:5173", 
+  "https://blog-app-frontend-beta-nine.vercel.app"
   
 ];
 const app = express()
