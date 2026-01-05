@@ -308,18 +308,18 @@ export default function Collabcard({ type }) {
                             <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
 
                                 <div>
-                                    <h2 className="card-title text-white cursor-pointer z-20" 
-                                     onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
+                                    <h2 className="card-title text-white cursor-pointer" 
+                                    
                                     >{b?.title}</h2>
                                 </div>
 
-                                {/* <div className="flex-grow overflow-hidden">
+                                <div className="flex-grow overflow-hidden">
                                     <div
                                         dangerouslySetInnerHTML={{ __html: getexcerpt2(b?.blogtext) }}
                                         className="prose prose-invert max-w-none cursor-pointer line-clamp-3"
                                         onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
                                     ></div>
-                                </div> */}
+                                </div>
 
 
                                 <div className="card-actions flex justify-end gap-2 mb-2">
