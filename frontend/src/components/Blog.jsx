@@ -100,7 +100,7 @@ export default function Blog({ blog }) {
   const getexcerpt = (text, wordlimit = 50) => {
     const words = text?.trim().split(/\s+/)
     if (words.length <= wordlimit) {
-      
+
       return text
     } else {
       return words.slice(0, wordlimit).join(" ") + "..."
@@ -135,8 +135,16 @@ export default function Blog({ blog }) {
         <motion.div className=" bg-base-100 sm:w-5xl w-[400px] mx-auto mt-4 p-6 shadow-lg rounded-xl  space-y-6 " initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div className=" ">
             <div className="text-center">
-              {blog?.title?.length > 34 ? (<h1 className="text-4xl  font-bold" >{blog.title?.slice(0, 34) + "..."}</h1>) : (<h1 className="text-4xl  font-bold" >{blog.title}</h1>)}
+              {/* {blog?.title?.length > 34 ? (<h1 className="text-4xl  font-bold" >{blog.title?.slice(0, 34) + "..."}</h1>) : (<h1 className="text-4xl  font-bold" >{blog.title}</h1>)} */}
               {/* <h1 className="text-4xl  font-bold">{blog?.title}</h1> */}
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+                {blog?.title}
+              </h1>
+
+              <div className="relative w-full">
+                <div className="absolute -bottom-1 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent dark:from-base-100 pointer-events-none"></div>
+              </div>
+
               <div className=" flex gap-4 items-center mt-2 justify-center">
                 <div>
                   <p>By <span className="font-semibold text-md">{blog?.creator?.name}</span> </p>
@@ -226,7 +234,7 @@ export default function Blog({ blog }) {
               <div className="relative card-body text-white">
                 <h1 className="card-title whitespace-normal">{b?.title}</h1>
 
-      
+
               </div>
             </motion.div>
 
