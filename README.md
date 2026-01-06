@@ -1,5 +1,3 @@
----
-
 # 🌐 BlogCollab — AI-Powered, Real-Time Collaborative Blogging Platform
 A modern, full-stack blogging platform where writers, editors, and readers collaborate in real time — powered by AI, built for scale.
 
