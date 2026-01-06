@@ -204,3 +204,74 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
 --- 
 
+## 📸 Screenshots
+Here’s a **complete, professional screenshot section** for your `README.md` — covering all key pages with consistent formatting, descriptive captions, and responsive sizing:
+
+---
+
+
+### 🏠 Home Page
+<a href="docs/screenshots/Screenshot 2026-01-06 192852.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 192852.png" alt="BlogApp Home Page - Discover trending blogs" width="700" />
+</a>
+<p><em>Discover curated blogs, trending topics, and personalized recommendations.</em></p>
+
+---
+
+### 🔍 Search & Filter Page
+<a href="docs/screenshots/Screenshot 2026-01-06 193407.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193407.png" alt="Search Blogs by Title, Author, or Tag" width="700" />
+</a>
+<p><em>Full-text search + tag filtering for quick content discovery.</em></p>
+
+---
+
+### 👥 Collaboration Dashboard
+<a href="docs/screenshots/Screenshot 2026-01-06 193239.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193239.png" alt="Collaboration Dashboard - Join or Start Sessions" width="700" />
+</a>
+<p><em>See active collaborations, join existing sessions, or start new ones.</em></p>
+
+---
+
+### ✍️ Real-Time Collaborative Editor
+<a href="docs/screenshots/Screenshot 2026-01-06 193203.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193203.png" alt="Tiptap + Yjs Real-Time Editor with Cursor Tracking" width="700" />
+</a>
+<p><em>Live collaborative editing with user cursors, presence indicators, and conflict-free sync.</em></p>
+
+---
+
+### 👤 User Profile Page
+<a href="docs/screenshots/Screenshot 2026-01-06 193028.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193028.png" alt="User Profile - Bio, Stats, Followers" width="700" />
+</a>
+<p><em>Profile view with follower count, bio, activity stats, and saved blogs.</em></p>
+
+---
+
+### 📋 Blog Approval Page (Editor View)
+<a href="docs/screenshots/Screenshot 2026-01-06 193430.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193430.png" alt="Editor Approval Queue - Accept or Reject Submissions" width="700" />
+</a>
+<p><em>Editors review drafts, approve/reject posts, and leave feedback.</em></p>
+
+---
+
+### 📊 Analytics Dashboard
+<a href="docs/screenshots/Screenshot 2026-01-06 193331.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193331.png" alt="Blog Analytics - Views, Likes, Engagement Metrics" width="700" />
+</a>
+<p><em>Track blog performance: views, likes, comments, and follower growth over time.</em></p>
+
+---
+
+
+### ✨ Create New Blog (AI-Assisted)
+<a href="docs/screenshots/Screenshot 2026-01-06 193058.png">
+  <img src="docs/screenshots/Screenshot 2026-01-06 193058.png" alt="Create Blog with AI Prompt Generator" width="700" />
+</a>
+<p><em>Generate drafts using GPT-4 prompts — then refine manually with rich editor.</em></p>
+
+
+
