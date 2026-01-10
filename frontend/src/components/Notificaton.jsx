@@ -39,7 +39,7 @@ export default function Notificaion() {
                 {
                     open && (
                         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}
-                            className="absolute right-0 mt-4 w-80 bg-base-200 shadow-xl rounded-xl overflow-hidden"
+                            className="absolute right-[-13px] sm:right-0 mt-6 w-80 bg-base-200 shadow-xl rounded-xl overflow-hidden"
                         >
                             <div className="flex justify-between items-center p-3 border-b border-base-300">
                                 <h3 className="font-semibold">Notifications</h3>
