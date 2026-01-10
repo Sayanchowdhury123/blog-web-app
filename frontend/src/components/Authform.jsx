@@ -71,8 +71,8 @@ export default function Authform({ type }) {
         }
     }
     return (
-
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+        <div className="min-h-screen bg-base-100 p-4 flex justify-center items-center">
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
             className={`w-full max-w-md mx-auto px-4 sm:px-6 py-8 `}
         >
             <div className="bg-base-100 p-6 sm:p-8 rounded-xl shadow-xl w-full">
@@ -189,6 +189,8 @@ export default function Authform({ type }) {
             </div>
 
         </motion.div>
+        </div>
+       
 
 
     )
