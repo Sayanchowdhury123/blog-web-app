@@ -265,7 +265,11 @@ export default function Blog({ blog }) {
 
 
             <div className="flex flex-wrap justify-center gap-3 mt-4">
-              <p>
+              <p onClick={(e) => {
+                e.stopPropagation()
+                navigate(`/f-page/${blog?.creator?._id}`)
+
+              }}>
                 By <span className="font-semibold">{blog?.creator?.name}</span>
               </p>
 
@@ -327,7 +331,7 @@ export default function Blog({ blog }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.3 }}
                 onClick={() => navigate(`/blog/${b?._id}`, { state: { blogid: b?._id } })}
-                className="flex-shrink-0 w-[280px] sm:w-[320px] mx-2 card bg-base-100 h-[220px] shadow-sm rounded-xl overflow-hidden cursor-pointer relative"
+                className="flex-shrink-0 w-[328px] sm:w-[320px] mx-2 card bg-base-100 h-[220px] shadow-sm rounded-xl overflow-hidden cursor-pointer relative"
               >
                 <img
                   src={b?.coverimage}
