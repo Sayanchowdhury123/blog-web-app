@@ -246,7 +246,7 @@ export default function Search() {
 
 
 
-                <div className="mt-6 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:gap-6">
+                <div className="mt-6 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-center sm:gap-6">
 
 
                     <div className="relative w-full sm:max-w-md">

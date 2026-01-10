@@ -344,7 +344,7 @@ export default function Createblogs() {
                                 required
                             />
                         </div>
-                        <button className="btn btn-neutral mt-1 sm:mt-0" onClick={addt}>
+                        <button className="btn btn-neutral mt-1 sm:mt-2" onClick={addt}>
                             Add
                         </button>
                     </div>
