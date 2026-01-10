@@ -224,7 +224,7 @@ export default function Card({ type }) {
         return (
             <motion.div initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }} className="flex items-center justify-center h-[60vh]">
+                transition={{ duration: 0.3 }} className="flex items-center justify-center h-[60vh] p-6">
                 <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full">
                     <p className="text-lg font-semibold mb-2">
                         ✍️ No Blogs Created Yet

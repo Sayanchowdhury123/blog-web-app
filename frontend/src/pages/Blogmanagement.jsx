@@ -107,6 +107,33 @@ export default function Blogmanage() {
     }
   }
 
+if (!blogs || blogs?.length === 0) {
+        return (
+            <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }} className="flex items-center justify-center h-[60vh] p-6">
+                <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full">
+                    <p className="text-lg font-semibold mb-2">
+                           ✍️ No Blogs Created Yet
+                    </p>
+
+                    <p className="text-sm text-gray-500 mb-6">
+                        You haven’t created any blogs yet.
+
+                    </p>
+
+
+                    <button
+                        className="btn btn-primary w-full"
+                        onClick={() => navigate("/create-blogs")}
+                    >
+                        Create Blog
+                    </button>
+
+                </div>
+            </motion.div>
+        );
+    }
 
   if (loading) return <Loadingscrenn />
   return (
