@@ -329,9 +329,9 @@ export default function Createblogs() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-2 ">
                         <div className="flex-1">
-                            <label htmlFor="t" className="label mb-2 sm:mb-0">
+                            <label htmlFor="t" className="label mb-2">
                                 <span className="label-text font-semibold">Add Tag</span>
                             </label>
                             <input
@@ -344,7 +344,7 @@ export default function Createblogs() {
                                 required
                             />
                         </div>
-                        <button className="btn btn-neutral mt-6 sm:mt-0" onClick={addt}>
+                        <button className="btn btn-neutral mt-1 sm:mt-0" onClick={addt}>
                             Add
                         </button>
                     </div>

@@ -238,15 +238,17 @@ export default function Search() {
         <div className="relative bg-base-100 min-h-screen">
             <Sidebar />
 
+            <Navbar />
+
             <div className="h-full p-4 sm:p-6">
-               
+
                 {fopen && <Filterbox />}
 
-                <Navbar />
+
 
                 <div className="mt-6 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:gap-6">
 
-                 
+
                     <div className="relative w-full sm:max-w-md">
                         <div className="flex gap-2">
                             <input
@@ -268,7 +270,7 @@ export default function Search() {
                             </button>
                         </div>
 
-                     
+
                         {shopen && searchhistory.length > 0 && (
                             <motion.div
                                 initial={{ opacity: 0, y: 10 }}
@@ -293,7 +295,7 @@ export default function Search() {
                         )}
                     </div>
 
-                   
+
                     <div className="flex flex-wrap gap-3 justify-end sm:justify-start">
                         <select
                             className="select select-bordered w-full sm:w-auto"
@@ -312,7 +314,7 @@ export default function Search() {
                     </div>
                 </div>
 
-                {/* Blog Content */}
+
                 {blogs?.length === 0 ? <NotFound /> : <Sblogs />}
             </div>
         </div>

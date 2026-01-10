@@ -42,7 +42,7 @@ const handleapply = () => {
     return (
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center">
+            className="z-20 backdrop-blur-sm inset-0 fixed flex justify-center items-center px-4">
             <div className="bg-base-200 w-[400px] h-[400px] p-6 rounded-xl space-y-2 overflow-scroll " style={{ scrollbarWidth: "none" }}>
 
                 <div className="flex justify-end">
