@@ -98,7 +98,7 @@ export default function Createblogs() {
         formdata.append("coverimage", file)
 
 
-        
+
         if (!file) {
             toast.error("Cover image is required");
             setl(false);
@@ -137,7 +137,7 @@ export default function Createblogs() {
             navigate("/yourblogs")
 
         } catch (error) {
-      
+
 
             error?.response?.data?.error?.forEach((msg) => {
                 toast.error(
@@ -154,83 +154,219 @@ export default function Createblogs() {
     if (l) return <Loadingscrenn />
 
     return (
-        <div className=" overflow-x-hidden  relative  h-screen">
+        // <div className=" overflow-x-hidden  relative bg-base-100  min-h-screen">
+        //     <Sidebar />
+
+
+
+        //     <Navbar />
+
+        //     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+        //      className="sm:p-6 p-3 sm:w-3xl w-[406px] mx-auto ">
+
+
+
+
+        //         <div className=" bg-base-300 p-6 shadow-lg rounded-xl space-y-6 ">
+
+        //             <div>
+        //                 <h1 className="text-3xl font-bold">Create Blog</h1>
+        //             </div>
+
+        //             <div className="">
+        //                 <label htmlFor="b" className="label mb-2">
+        //                     <span className="label-text font-semibold">Title</span>
+        //                 </label>
+        //                 <input type="text" id="b" className="input w-full" placeholder="Add title" required onChange={(e) => settitle(e.target.value)} />
+
+        //             </div>
+
+        //             <div className="relative">
+        //                 <label className="label mb-2" htmlFor="c">
+        //                     <span className="label-text font-semibold">Content</span>
+        //                 </label>
+        //                 <textarea name="" id="c" className="textarea  w-full min-h-[150px] " placeholder="write a blog with AI" onChange={(e) => setresult(e.target.value)} required value={result} style={{ scrollbarWidth: "none", scrollBehavior: "smooth" }}></textarea>
+
+        //                 <button className="btn mt-2 absolute bottom-4 z-20 right-6" onClick={generate} >{loading ? <span>Generating<span className="loading loading-spinner loading-sm ml-2"></span></span> : (<div className="flex items-center gap-1"><RiAiGenerate /><p>Generate Blog</p></div>)}</button>
+        //             </div>
+
+        //             <div className="">
+        //                 <label htmlFor="f" className="label mb-2">
+        //                     <span className="label-text font-semibold">Cover Image</span>
+        //                 </label>
+        //                 <input type="file" id="f" className="file-input w-full" onChange={handlefile} required />
+        //             </div>
+
+        //             <div className="">
+        //                 <label htmlFor="t" className="label mb-2">
+        //                     <span className="label-text font-semibold">Tags</span>
+        //                 </label>
+        //                 <div className="flex flex-wrap gap-2 " >
+        //                     {
+        //                         tags?.map((t, i) => (
+        //                             <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center badge badge-neutral gap-1 px-2 py-1 cursor-pointer">
+        //                                 <p>#{t}</p>
+        //                                 <IoIosClose className="text-2xl" onClick={() => removet(i)} />
+        //                             </motion.div>
+        //                         ))
+        //                     }
+        //                 </div>
+        //             </div>
+
+        //             <div className="flex gap-2 items-end">
+        //                 <div className="flex-1">
+        //                     <label htmlFor="t" className="label mb-2">
+        //                         <span className="label-text font-semibold">Add Tag</span>
+        //                     </label>
+
+        //                     <input type="email" id="t" className="input w-full" value={tag} placeholder="Create tag..." onChange={(e) => settag(e.target.value)} required />
+        //                 </div>
+        //                 <button className="btn btn-neutral " onClick={addt}>Add</button>
+        //             </div>
+
+
+        //             <div className=" flex justify-end gap-2">
+        //                 <button className="btn btn-primary" onClick={createblogs}>Create Blog</button>
+        //                 <button className="btn btn-error" onClick={() => navigate("/yourblogs")}>Cancel</button>
+        //             </div>
+
+        //         </div>
+        //     </motion.div>
+        // </div>
+
+        <div className="overflow-x-hidden relative min-h-screen bg-base-100">
             <Sidebar />
-
-
-
             <Navbar />
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="sm:p-6 p-3 sm:w-3xl w-[406px] mx-auto ">
 
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="max-w-2xl mx-auto px-4 py-6 sm:px-6"
+            >
+                <div className="bg-base-300 p-6 shadow-lg rounded-xl space-y-6">
+                    <h1 className="text-2xl sm:text-3xl font-bold">Create Blog</h1>
 
-
-
-                <div className=" bg-base-300 p-6 shadow-lg rounded-xl space-y-6 ">
 
                     <div>
-                        <h1 className="text-3xl font-bold">Create Blog</h1>
-                    </div>
-
-                    <div className="">
                         <label htmlFor="b" className="label mb-2">
                             <span className="label-text font-semibold">Title</span>
                         </label>
-                        <input type="text" id="b" className="input w-full" placeholder="Add title" required onChange={(e) => settitle(e.target.value)} />
-
+                        <input
+                            type="text"
+                            id="b"
+                            className="input input-bordered w-full"
+                            placeholder="Add title"
+                            required
+                            onChange={(e) => settitle(e.target.value)}
+                        />
                     </div>
+
 
                     <div className="relative">
                         <label className="label mb-2" htmlFor="c">
                             <span className="label-text font-semibold">Content</span>
                         </label>
-                        <textarea name="" id="c" className="textarea  w-full min-h-[150px] " placeholder="write a blog with AI" onChange={(e) => setresult(e.target.value)} required value={result} style={{ scrollbarWidth: "none", scrollBehavior: "smooth" }}></textarea>
+                        <textarea
+                            id="c"
+                            className="textarea textarea-bordered w-full min-h-[150px]"
+                            placeholder="Write a blog with AI"
+                            onChange={(e) => setresult(e.target.value)}
+                            required
+                            value={result}
+                        ></textarea>
 
-                        <button className="btn mt-2 absolute bottom-4 z-20 right-6" onClick={generate} >{loading ? <span>Generating<span className="loading loading-spinner loading-sm ml-2"></span></span> : (<div className="flex items-center gap-1"><RiAiGenerate /><p>Generate Blog</p></div>)}</button>
+
+                        <button
+                            className="btn btn-primary absolute bottom-3 right-3 text-xs sm:text-sm"
+                            onClick={generate}
+                        >
+                            {loading ? (
+                                <span>
+                                    Generating
+                                    <span className="loading loading-spinner loading-xs ml-1"></span>
+                                </span>
+                            ) : (
+                                <div className="flex items-center gap-1">
+                                    <RiAiGenerate />
+                                    <span className="hidden xs:inline">Generate Blog</span>
+                                </div>
+                            )}
+                        </button>
                     </div>
 
-                    <div className="">
+
+                    <div>
                         <label htmlFor="f" className="label mb-2">
                             <span className="label-text font-semibold">Cover Image</span>
                         </label>
-                        <input type="file" id="f" className="file-input w-full" onChange={handlefile} required />
+                        <input
+                            type="file"
+                            id="f"
+                            className="file-input file-input-bordered w-full"
+                            onChange={handlefile}
+                            required
+                        />
                     </div>
 
-                    <div className="">
-                        <label htmlFor="t" className="label mb-2">
+                    <div>
+                        <label className="label mb-2">
                             <span className="label-text font-semibold">Tags</span>
                         </label>
-                        <div className="flex flex-wrap gap-2 " >
-                            {
-                                tags?.map((t, i) => (
-                                    <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center badge badge-neutral gap-1 px-2 py-1 cursor-pointer">
-                                        <p>#{t}</p>
-                                        <IoIosClose className="text-2xl" onClick={() => removet(i)} />
-                                    </motion.div>
-                                ))
-                            }
+                        <div className="flex flex-wrap gap-2">
+                            {tags?.map((t, i) => (
+                                <motion.span
+                                    key={i}
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="badge badge-neutral flex items-center gap-1 cursor-pointer"
+                                >
+                                    #{t}
+                                    <IoIosClose className="text-lg" onClick={() => removet(i)} />
+                                </motion.span>
+                            ))}
                         </div>
                     </div>
 
-                    <div className="flex gap-2 items-end">
+                    <div className="flex flex-col sm:flex-row gap-2">
                         <div className="flex-1">
-                            <label htmlFor="t" className="label mb-2">
+                            <label htmlFor="t" className="label mb-2 sm:mb-0">
                                 <span className="label-text font-semibold">Add Tag</span>
                             </label>
-
-                            <input type="email" id="t" className="input w-full" value={tag} placeholder="Create tag..." onChange={(e) => settag(e.target.value)} required />
+                            <input
+                                type="text"
+                                id="t"
+                                className="input input-bordered w-full"
+                                value={tag}
+                                placeholder="Create tag..."
+                                onChange={(e) => settag(e.target.value)}
+                                required
+                            />
                         </div>
-                        <button className="btn btn-neutral " onClick={addt}>Add</button>
+                        <button className="btn btn-neutral mt-6 sm:mt-0" onClick={addt}>
+                            Add
+                        </button>
                     </div>
 
 
-                    <div className=" flex justify-end gap-2">
-                        <button className="btn btn-primary" onClick={createblogs}>Create Blog</button>
-                        <button className="btn btn-error" onClick={() => navigate("/yourblogs")}>Cancel</button>
+                    <div className="flex flex-col sm:flex-row justify-end gap-2">
+                        <button
+                            className="btn btn-primary w-full sm:w-auto"
+                            onClick={createblogs}
+                        >
+                            Create Blog
+                        </button>
+                        <button
+                            className="btn btn-error w-full sm:w-auto"
+                            onClick={() => navigate("/yourblogs")}
+                        >
+                            Cancel
+                        </button>
                     </div>
-
                 </div>
             </motion.div>
         </div>
+
     )
 }

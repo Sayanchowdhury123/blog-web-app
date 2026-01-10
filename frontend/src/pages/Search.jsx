@@ -31,7 +31,7 @@ export default function Search() {
 
 
     useEffect(() => {
-   
+
         setsearchhistory(sh)
     }, [])
 
@@ -40,7 +40,7 @@ export default function Search() {
         try {
             await fetchinfo()
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setloading(false)
         }
@@ -61,7 +61,7 @@ export default function Search() {
 
             }
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setload(false)
         }
@@ -93,7 +93,7 @@ export default function Search() {
             await sorting(e.target.value)
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         } finally {
             setload(false)
         }
@@ -107,7 +107,7 @@ export default function Search() {
             await getsh()
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -131,108 +131,189 @@ export default function Search() {
     if (load) return <Loading3 />
 
     return (
-        <div className="  relative bg-base-100 ">
+        // <div className="  relative bg-base-100 ">
 
+        //     <Sidebar />
+
+
+
+
+
+        //     <div className=" h-screen">
+
+        //         {
+        //             fopen && (
+        //                 <Filterbox />
+        //             )
+        //         }
+
+
+
+
+        //         <Navbar/>
+
+
+        //         <div className="mt-6 sm:flex block   justify-center lg:gap-50 sm:gap-10">
+        //             <div className="">
+        //                 <div className="flex gap-2 justify-center mb-4 ">
+        //                     <input type="text" className="input " onChange={(e) => {
+        //                         setst(e.target.value)
+        //                         onChangesearch(e.target.value)
+        //                     }} onClick={() => {
+        //                         setshopen((prev) => !prev)
+        //                         fetchsh()
+
+        //                     }} value={st} placeholder="Search" />
+        //                     <button className="btn" onClick={() => {
+        //                         searching()
+
+        //                     }} ><FaSearch /></button>
+
+        //                 </div>
+
+
+        //                 {
+        //                     shopen && (
+
+        //                         <div>
+        //                             {
+        //                                 searchhistory.length > 0 && (
+        //                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 sm:w-[187px] w-[308px] rounded-bl-xl rounded-xl absolute top-[144px] sm:left-[440px] left-[32px]  shadow-xl" >
+
+        //                                         {
+        //                                             searchhistory?.map((s, i) => (
+        //                                                 <div key={i} className="py-2 hover:text-gray-500 cursor-pointer flex items-center gap-3" onClick={() => {
+        //                                                     setshopen(false)
+        //                                                     search(s)
+        //                                                     setst(s)
+        //                                                 }} >
+
+        //                                                     <FaHistory /><p>{s}</p>
+        //                                                 </div>
+        //                                             ))
+        //                                         }
+        //                                     </motion.div>
+        //                                 )
+        //                             }
+
+        //                         </div>
+
+        //                     )
+        //                 }
+
+
+
+
+        //             </div>
+
+        //             <div className="flex sm:gap-2 gap-[203px] justify-center  ">
+        //                 <div>
+        //                     <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
+        //                         <option value="all">All</option>
+        //                         <option value="newest">Newest</option>
+        //                         <option value="oldest">Oldest</option>
+        //                         <option value="popularity">Popularity</option>
+        //                     </select>
+        //                 </div>
+
+
+        //                 <div>
+        //                     <button className="btn" onClick={setfopen}>Filter</button>
+
+        //                 </div>
+        //             </div>
+
+
+        //         </div>
+
+
+
+
+        //         {blogs?.length === 0 ? (
+        //             <NotFound />
+        //         ) : (<Sblogs />)}
+
+        //     </div>
+        // </div>
+        <div className="relative bg-base-100 min-h-screen">
             <Sidebar />
 
+            <div className="h-full p-4 sm:p-6">
+               
+                {fopen && <Filterbox />}
 
+                <Navbar />
 
-
-
-            <div className=" h-screen">
-
-                {
-                    fopen && (
-                        <Filterbox />
-                    )
-                }
-
+                <div className="mt-6 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:gap-6">
 
                  
-
-                <Navbar/>
-
-
-                <div className="mt-6 sm:flex block   justify-center lg:gap-50 sm:gap-10">
-                    <div className="">
-                        <div className="flex gap-2 justify-center mb-4 ">
-                            <input type="text" className="input " onChange={(e) => {
-                                setst(e.target.value)
-                                onChangesearch(e.target.value)
-                            }} onClick={() => {
-                                setshopen((prev) => !prev)
-                                fetchsh()
-
-                            }} value={st} placeholder="Search" />
-                            <button className="btn" onClick={() => {
-                                searching()
-
-                            }} ><FaSearch /></button>
-
+                    <div className="relative w-full sm:max-w-md">
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                className="input input-bordered w-full"
+                                onChange={(e) => {
+                                    setst(e.target.value);
+                                    onChangesearch(e.target.value);
+                                }}
+                                onClick={() => {
+                                    setshopen((prev) => !prev);
+                                    fetchsh();
+                                }}
+                                value={st}
+                                placeholder="Search blogs..."
+                            />
+                            <button className="btn btn-square" onClick={searching}>
+                                <FaSearch />
+                            </button>
                         </div>
 
-
-                        {
-                            shopen && (
-
-                                <div>
-                                    {
-                                        searchhistory.length > 0 && (
-                                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className=" z-10 bg-base-200 p-4 sm:w-[187px] w-[308px] rounded-bl-xl rounded-xl absolute top-[144px] sm:left-[440px] left-[32px]  shadow-xl" >
-
-                                                {
-                                                    searchhistory?.map((s, i) => (
-                                                        <div key={i} className="py-2 hover:text-gray-500 cursor-pointer flex items-center gap-3" onClick={() => {
-                                                            setshopen(false)
-                                                            search(s)
-                                                            setst(s)
-                                                        }} >
-
-                                                            <FaHistory /><p>{s}</p>
-                                                        </div>
-                                                    ))
-                                                }
-                                            </motion.div>
-                                        )
-                                    }
-
-                                </div>
-
-                            )
-                        }
-
-
-
-
+                     
+                        {shopen && searchhistory.length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="absolute z-10 mt-2 w-full bg-base-200 p-4 rounded-xl shadow-xl border border-base-300"
+                            >
+                                {searchhistory.map((s, i) => (
+                                    <div
+                                        key={i}
+                                        className="py-2 px-2 hover:bg-base-300 rounded cursor-pointer flex items-center gap-3 transition-colors"
+                                        onClick={() => {
+                                            setshopen(false);
+                                            search(s);
+                                            setst(s);
+                                        }}
+                                    >
+                                        <FaHistory />
+                                        <span>{s}</span>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        )}
                     </div>
 
-                    <div className="flex sm:gap-2 gap-[203px] justify-center  ">
-                        <div>
-                            <select name="" id="" className="select" onChange={(e) => sort(e)} value={sv}>
-                                <option value="all">All</option>
-                                <option value="newest">Newest</option>
-                                <option value="oldest">Oldest</option>
-                                <option value="popularity">Popularity</option>
-                            </select>
-                        </div>
+                   
+                    <div className="flex flex-wrap gap-3 justify-end sm:justify-start">
+                        <select
+                            className="select select-bordered w-full sm:w-auto"
+                            onChange={(e) => sort(e)}
+                            value={sv}
+                        >
+                            <option value="all">All</option>
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="popularity">Popularity</option>
+                        </select>
 
-
-                        <div>
-                            <button className="btn" onClick={setfopen}>Filter</button>
-
-                        </div>
+                        <button className="btn btn-outline w-full sm:w-auto" onClick={setfopen}>
+                            Filter
+                        </button>
                     </div>
-
-
                 </div>
 
-
-
-
-                {blogs?.length === 0 ? (
-                    <NotFound />
-                ) : (<Sblogs />)}
-
+                {/* Blog Content */}
+                {blogs?.length === 0 ? <NotFound /> : <Sblogs />}
             </div>
         </div>
     )

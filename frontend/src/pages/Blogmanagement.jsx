@@ -283,7 +283,7 @@ export default function Blogmanage() {
                 <motion.div initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
-                  className="flex items-center justify-center h-[60vh]">
+                  className="flex items-center justify-center h-[60vh] p-6">
                   <div className="text-center bg-base-200 p-8 rounded-xl shadow-md max-w-sm w-full mx-auto">
                     <p className="text-lg font-semibold text-base-content mb-4">
                       ✍️ No Blogs Created Yet
