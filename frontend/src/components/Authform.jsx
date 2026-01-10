@@ -108,7 +108,7 @@ export default function Authform({ type }) {
 
                                             />
                                         </label>
-                                        <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
+                                        <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1 ml-2" />
                                     </div>
 
 
@@ -119,7 +119,7 @@ export default function Authform({ type }) {
                                         <option value="editor">Editor</option>
                                     </select>
 
-                                    <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
+                                    <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1 ml-2" />
                                 </>
                             )}
 
@@ -140,7 +140,7 @@ export default function Authform({ type }) {
                                     <input type="email" className="grow" placeholder="mail@site.com" id="email" name="email" onChange={handleChange} onBlur={handleBlur} value={values.email} />
 
                                 </label>
-                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1  " />
+                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1 ml-2" />
 
 
 
@@ -176,7 +176,7 @@ export default function Authform({ type }) {
                                     />
                                 </label>
 
-                                <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+                                <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1 ml-2" />
                             </div>
 
 
