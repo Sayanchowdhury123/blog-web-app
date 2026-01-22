@@ -40,7 +40,7 @@ export default function Comments({ blogId, blogtitle, owner }) {
                     },
                 })
 
-                socket.emit("sendNotification",{
+                socket.emit("sendNotification", {
                     user: owner,
                     message: `💬 ${username} commented on your blog ${blogtitle}`,
                     link: `/search?blogId=${blogId}&openComment=${"true"}`,
@@ -51,7 +51,7 @@ export default function Comments({ blogId, blogtitle, owner }) {
             }
 
         } catch (error) {
-             toast.error(error.response?.data?.msg || "Something went wrong");
+            toast.error(error.response?.data?.msg || "Something went wrong");
         }
     }
 
@@ -193,19 +193,27 @@ export default function Comments({ blogId, blogtitle, owner }) {
 
                         <div className="mb-7 " type="button" onClick={() => setoption(option === c._id ? null : c._id)}>
                             <div className="relative">
-                                <BsThreeDots />
-
                                 {
-                                    option === c._id && (
-                                        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }} className="w-[100px] h-[60px] rounded-tl-xl rounded-bl-xl rounded-br-xl flex flex-col justify-center px-3 bg-base-200 absolute right-[-5px] top-5" >
+                                    c?.user?._id === user?.id && (
+                                        <>
+                                            <BsThreeDots />
 
-                                            <div className="text-sm flex items-center gap-2" onClick={() => del(c._id)}>
-                                                <RiEdit2Fill />Edit
-                                            </div>
-                                            <div className="text-sm flex items-center gap-2 cursor-pointer" onClick={() => handledelcomment(c._id)}><AiFillDelete />Delete</div>
-                                        </motion.div>
+                                            {
+                                                option === c._id && (
+                                                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }} className="w-[100px] h-[60px] rounded-tl-xl rounded-bl-xl rounded-br-xl flex flex-col justify-center px-3 bg-base-200 absolute right-[-5px] top-5" >
+
+                                                        <div className="text-sm flex items-center gap-2" onClick={() => del(c._id)}>
+                                                            <RiEdit2Fill />Edit
+                                                        </div>
+                                                        <div className="text-sm flex items-center gap-2 cursor-pointer" onClick={() => handledelcomment(c._id)}><AiFillDelete />Delete</div>
+                                                    </motion.div>
+                                                )
+                                            }
+                                        </>
                                     )
                                 }
+
+
 
                             </div>
 
